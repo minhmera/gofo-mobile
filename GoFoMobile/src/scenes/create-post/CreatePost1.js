@@ -20,8 +20,7 @@ function CreatePost1({navigation}) {
             //If file selected then create FormData
             const fileToUpload = singleFile;
             const data = new FormData();
-            //data.append('image.jpg', 'Image Upload');
-            data.append('images', fileToUpload);
+         
 
             const file = {
                 uri: fileToUpload.uri,
