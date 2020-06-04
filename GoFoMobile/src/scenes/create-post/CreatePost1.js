@@ -2,7 +2,8 @@ import React, {useEffect, useState, useCallback} from 'react';
 import {View, Text, TouchableOpacity,StyleSheet} from 'react-native';
 import Header from '../../components/Header';
 import {Button} from 'react-native-elements';
-import ImagePicker from 'react-native-image-picker';
+//import ImagePicker from 'react-native-image-picker';
+import ImagePicker from 'react-native-image-crop-picker';
 import * as api from '../../services/home';
 
 import LocalizationContext from '../../localization/LocalizationContext';
@@ -18,17 +19,23 @@ function CreatePost1({navigation}) {
         //Check if any file is selected or not
         if (singleFile != null) {
             //If file selected then create FormData
-            const fileToUpload = singleFile;
+            const fileToUpload = singleFile[0];
             const data = new FormData();
-         
+
 
             const file = {
-                uri: fileToUpload.uri,
-                name: fileToUpload.filename || Math.floor(Math.random() * Math.floor(999999999)) + '.jpg',
-                type: 'image/jpeg/jpg',
-                data: fileToUpload.data,
+                uri: fileToUpload.path,
+                //name: fileToUpload.filename || Math.floor(Math.random() * Math.floor(999999999)) + '.jpg',
+                name: `${Date.now()}` + '.jpg',
+                type: 'image/jpeg/jpg'
+                //data: fileToUpload.data,
             };
+
+            console.log('uploadImage body  ==>  ',file)
+
             data.append('images', file);
+
+
 
             //Please change file upload URL
             let res = await fetch(
@@ -53,29 +60,17 @@ function CreatePost1({navigation}) {
         }
     };
 
+
     async function selectFile() {
-        const options = {
-            title: 'Select Avatar',
-            storageOptions: {
-                skipBackup: true,
-                path: 'images',
-            },
-        };
 
-        ImagePicker.showImagePicker(options, (response) => {
-
-            if (response.didCancel) {
-                setSingleFile(null);
-                console.log('User cancelled image picker');
-            } else if (response.error) {
-                console.log('ImagePicker Error: ', response.error);
-            } else if (response.customButton) {
-                console.log('User tapped custom button: ', response.customButton);
-            } else {
-                const source = {uri: response.uri};
-                setSingleFile(response);
-                console.log(' ********* ImagePicker success  *************   ', source.uri);
-            }
+        ImagePicker.openPicker({
+            width: 300,
+            height: 400,
+            cropping: true,
+            multiple: true
+        }).then(images => {
+            console.log("selectFile  ==> ",images);
+            setSingleFile(images);
         });
     }
 
@@ -83,10 +78,7 @@ function CreatePost1({navigation}) {
     return (
         <View>
             <Header titleText='Login'/>
-            <Button
-                title="Choose Image to upload"
-                onPress={() => pickUpImage()}
-            />
+
 
             <View style={{alignItems: 'center'}}>
                 <Text style={{fontSize: 30, textAlign: 'center'}}>
@@ -167,3 +159,30 @@ const styles = StyleSheet.create({
 });
 
 export default CreatePost1;
+
+
+// async function selectFile1() {
+//     const options = {
+//         title: 'Select Avatar',
+//         storageOptions: {
+//             skipBackup: true,
+//             path: 'images',
+//         },
+//     };
+//
+//     ImagePicker.showImagePicker(options, (response) => {
+//
+//         if (response.didCancel) {
+//             setSingleFile(null);
+//             console.log('User cancelled image picker');
+//         } else if (response.error) {
+//             console.log('ImagePicker Error: ', response.error);
+//         } else if (response.customButton) {
+//             console.log('User tapped custom button: ', response.customButton);
+//         } else {
+//             const source = {uri: response.uri};
+//             setSingleFile(response);
+//             console.log(' ********* ImagePicker success  *************   ', source.uri);
+//         }
+//     });
+// }
