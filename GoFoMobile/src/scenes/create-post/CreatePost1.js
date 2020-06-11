@@ -1,12 +1,14 @@
 import React, {useEffect, useState, useCallback} from 'react';
 import {View,ScrollView, Text, TouchableOpacity,StyleSheet} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { Input } from 'react-native-elements';
+import { Input, Button } from 'react-native-elements';
+
 
 import Header from '../../components/Header';
-import {Button} from 'react-native-elements';
-//import ImagePicker from 'react-native-image-picker';
 import ImagePicker from 'react-native-image-crop-picker';
+
+import AppStyle from "../../style/style";
+
 import * as api from '../../services/home';
 
 import LocalizationContext from '../../localization/LocalizationContext';
@@ -49,47 +51,58 @@ function CreatePost1({navigation}) {
 
             <View style={styles.content}>
                 <View style={styles.uploadImageView}>
+                    <View style={styles.pickupImageView}>
 
+                    </View>
+                    <View style={styles.pickupImageView}>
+
+                    </View>
+                    <View style={styles.pickupImageView}>
+
+                    </View>
+
+
+
+                    <View style={styles.deleteImageView}>
+
+                    </View>
                 </View>
                 <View style={styles.inputInfoView}>
 
                     <Input
                         placeholder='BASIC INPUT'
+                        inputContainerStyle={styles.basicInput}
                     />
-
                     <Input
-                        placeholder='INPUT WITH ICON'
-                        leftIcon={{ type: 'font-awesome', name: 'chevron-left' }}
+                        placeholder='BASIC INPUT'
+                        inputContainerStyle={styles.basicInput}
                     />
-
                     <Input
-                        placeholder='INPUT WITH CUSTOM ICON'
-                        leftIcon={
-                            <Icon
-                                name='user'
-                                size={24}
-                                color='black'
-                            />
-                        }
+                        placeholder='BASIC INPUT'
+                        inputContainerStyle={styles.basicInput}
                     />
-
-
                     <Input
-                        placeholder="Comment"
-                        leftIcon={{ type: 'font-awesome', name: 'comment' }}
-                        style={styles}
-                        onChangeText={value => this.setState({ comment: value })}
+                        placeholder='BASIC INPUT'
+                        inputContainerStyle={styles.basicInput}
                     />
-
-
                     <Input
-                        placeholder='INPUT WITH ERROR MESSAGE'
-                        errorStyle={{ color: 'red' }}
-                        errorMessage='ENTER A VALID ERROR HERE'
+                        placeholder='BASIC INPUT'
+                        inputContainerStyle={styles.basicInput}
                     />
-
-                    <Input placeholder="Password" secureTextEntry={true} />
+                    <Input
+                        placeholder="Password"
+                        inputContainerStyle={styles.basicInput}
+                        secureTextEntry={true}
+                    />
+                    <View style={styles.bottomView}>
+                        <Button
+                            title="Solid Button"
+                            buttonStyle = {AppStyle.commonButton}
+                            containerStyle = {styles.localButton}
+                        />
+                    </View>
                 </View>
+
             </View>
             </ScrollView>
         </View>
@@ -109,12 +122,31 @@ const styles = StyleSheet.create({
     },
 
     uploadImageView: {
-        //flex: 1,
-        justifyContent: 'center',
+        flexDirection:'row',
+
+        alignItems: 'center',
         height: 100,
         borderColor: '#B5B5B5',
-        borderWidth: 1,
+        borderWidth: 0.5,
         borderRadius: 6,
+    },
+    pickupImageView: {
+        width:'30%',
+        height:80,
+        marginLeft:2,
+        marginRight:2,
+        borderRadius:6,
+        backgroundColor:'#1EACE0'
+    },
+    deleteImageView: {
+        width: 24,
+        height: 24,
+        //marginTop:-80,
+        alignSelf: 'flex-start',
+        right:0,
+        position:'absolute',
+        backgroundColor:'red'
+
     },
 
     inputInfoView: {
@@ -122,9 +154,25 @@ const styles = StyleSheet.create({
         marginTop:4,
         justifyContent: 'center',
         borderColor: '#B5B5B5',
-        borderWidth: 1,
+        borderWidth: 0.5,
         borderRadius: 6,
     },
+
+    basicInput: {
+        //borderColor:'red'
+        borderBottomWidth:0.5,
+        borderBottomColor:'#B5B5B5'
+    },
+
+    bottomView: {
+        height:120,
+    },
+
+    localButton: {
+        paddingTop:40,
+        padding: 40
+    },
+
 
 
 

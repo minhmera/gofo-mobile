@@ -39,6 +39,9 @@ const AppStyle = StyleSheet.create({
     buttonText: {
         fontSize: 20,
         textAlign: 'center'
+    },
+    commonButton: {
+        borderRadius:20
     }
 });
 
