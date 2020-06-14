@@ -2,8 +2,9 @@ import EStyleSheet from 'react-native-extended-stylesheet';
 
 const GlobalStyle = {
     colour: {
-        primaryColor: '#F93963',
+        primaryColor: '#1EACE0',
         inActiveColor: '#96969A',
+        tempColor: '#96969A',
         font: '#434e5a',
     }
 }

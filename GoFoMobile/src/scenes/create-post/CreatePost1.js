@@ -1,32 +1,52 @@
 import React, {useEffect, useState, useCallback} from 'react';
-import {View,ScrollView, Text, TouchableOpacity,StyleSheet} from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import { Input, Button } from 'react-native-elements';
-
+import {View, Image, ScrollView, Text, TouchableOpacity, TouchableWithoutFeedback, StyleSheet} from 'react-native';
+import {Input, CheckBox, Button} from 'react-native-elements';
+import Icon from 'react-native-vector-icons/AntDesign';
 
 import Header from '../../components/Header';
 import ImagePicker from 'react-native-image-crop-picker';
-
-import AppStyle from "../../style/style";
+import AppStyle from '../../style/style';
+import GlobalStyle from '../../style/GlobalStyle';
 
 import * as api from '../../services/home';
 
 import LocalizationContext from '../../localization/LocalizationContext';
 
+function renderImage(images) {
+    //let arrImages = ['a','b','c']
 
+    return images.map((item, index) => {
+        console.log('index ', index, 'item11 ', item.path);
+        return (
+            <View
+                style={styles.pickupImageView}
+                key={index}
+            >
+                <Image
+                    style={styles.imageItem}
+                    source={{uri: item.path}}
+                />
+
+
+            </View>
+        );
+    });
+
+}
 
 //Product Page1  {t('welcome')}
 function CreatePost1({navigation}) {
     const {t, i18n} = React.useContext(LocalizationContext);
     let [images, setImages] = useState(null);
+    let [isSell, setSellStatus] = useState(true);
 
     async function uploadImage() {
         try {
             //const fileToUpload = images[0];
-            let response = await api.uploadImages(images)
-            console.log('uploadImage response ==> ',response)
-        }catch (e) {
-            console.log('Error ',e)
+            let response = await api.uploadImages(images);
+            console.log('uploadImage response ==> ', response);
+        } catch (e) {
+            console.log('Error ', e);
         }
     }
 
@@ -35,9 +55,9 @@ function CreatePost1({navigation}) {
             width: 300,
             height: 400,
             cropping: true,
-            multiple: true
+            multiple: true,
         }).then(images => {
-            console.log("selectFile  ==> ",images);
+            console.log('selectFile  ==> ', images);
             setImages(images);
         });
     }
@@ -46,64 +66,120 @@ function CreatePost1({navigation}) {
     return (
         <View style={styles.container}>
             <Header titleText='Create Post'/>
-            <ScrollView style={{flex:1}}>
+            <ScrollView style={{flex: 1}}>
 
 
-            <View style={styles.content}>
-                <View style={styles.uploadImageView}>
-                    <View style={styles.pickupImageView}>
+                <View style={styles.content}>
+                    <View style={styles.uploadImageView}>
+                        {images != null ?
+                            renderImage(images) :
+                            <TouchableOpacity
+                                style={[styles.pickupImageView, {backgroundColor: GlobalStyle.colour.primaryColor}]}
+                                onPress={selectFile}
 
+                            >
+                                <Icon
+                                    name='camerao'
+                                    size={36}
+                                    color={'white'}
+                                />
+                            </TouchableOpacity>
+                        }
+
+
+                        <TouchableOpacity
+                            style={styles.deleteImageView}
+                            onPress={() => setImages(null)}
+                        >
+                            <Icon
+                                name='close'
+                                size={16}
+                                color={'white'}
+                            />
+
+                        </TouchableOpacity>
                     </View>
-                    <View style={styles.pickupImageView}>
+                    <View style={styles.inputInfoView}>
+                        <View style={styles.checkBoxView}>
+                            <View style={[styles.checkBoxItem,{marginLeft:0}]}>
 
-                    </View>
-                    <View style={styles.pickupImageView}>
+                                <CheckBox
+                                    size={28}
+                                    checked={isSell}
+                                    checkedColor={GlobalStyle.colour.primaryColor}
+                                    onPress={()=> setSellStatus(true)}
 
-                    </View>
+                                />
+                                <Text>
+                                    Rao bán
+                                </Text>
+                            </View>
+                            <View style={[styles.checkBoxItem,{marginLeft:0}]}>
 
+                                <CheckBox
+                                    size={28}
+                                    checked={!isSell}
+                                    checkedColor={GlobalStyle.colour.primaryColor}
+                                    onPress={()=> setSellStatus(false)}
+                                />
+                                <Text>
+                                    Rao mua
+                                </Text>
+                            </View>
 
+                        </View>
 
-                    <View style={styles.deleteImageView}>
-
-                    </View>
-                </View>
-                <View style={styles.inputInfoView}>
-
-                    <Input
-                        placeholder='BASIC INPUT'
-                        inputContainerStyle={styles.basicInput}
-                    />
-                    <Input
-                        placeholder='BASIC INPUT'
-                        inputContainerStyle={styles.basicInput}
-                    />
-                    <Input
-                        placeholder='BASIC INPUT'
-                        inputContainerStyle={styles.basicInput}
-                    />
-                    <Input
-                        placeholder='BASIC INPUT'
-                        inputContainerStyle={styles.basicInput}
-                    />
-                    <Input
-                        placeholder='BASIC INPUT'
-                        inputContainerStyle={styles.basicInput}
-                    />
-                    <Input
-                        placeholder="Password"
-                        inputContainerStyle={styles.basicInput}
-                        secureTextEntry={true}
-                    />
-                    <View style={styles.bottomView}>
-                        <Button
-                            title="Solid Button"
-                            buttonStyle = {AppStyle.commonButton}
-                            containerStyle = {styles.localButton}
+                        <Input
+                            placeholder='Phân loại sản phẩm '
+                            inputContainerStyle={styles.basicInput}
                         />
+                        <Input
+                            placeholder='Tên sản phẩm '
+                            inputContainerStyle={styles.basicInput}
+                        />
+                        <Input
+                            placeholder='Thành phố'
+                            inputContainerStyle={styles.basicInput}
+                        />
+                        <Input
+                            placeholder='Quận huyện'
+                            inputContainerStyle={styles.basicInput}
+                        />
+                        {isSell == true ?
+                            <Input
+                                placeholder='Thời gian thu hoạch'
+                                inputContainerStyle={styles.basicInput}
+                            /> : null
+                        }
+                        {isSell == true ?
+                            <Input
+                                placeholder='Sản lượng'
+                                inputContainerStyle={styles.basicInput}
+                            /> : null
+                        }
+                        <Input
+                            placeholder='Tiêu chuẩn'
+                            inputContainerStyle={styles.basicInput}
+                        />
+                        <Input
+                            placeholder='Email '
+                            inputContainerStyle={styles.basicInput}
+                        />
+                        <Input
+                            placeholder="Tên"
+                            inputContainerStyle={styles.basicInput}
+                            //secureTextEntry={true}
+                        />
+                        <View style={styles.bottomView}>
+                            <Button
+                                title="Upload Product"
+                                buttonStyle={[AppStyle.commonButton, styles.submitButton]} //submitButton
+                                containerStyle={styles.buttonContainer}
+                            />
+                        </View>
                     </View>
-                </View>
 
-            </View>
+                </View>
             </ScrollView>
         </View>
     );
@@ -113,17 +189,16 @@ const styles = StyleSheet.create({
 
     container: {
         flex: 1,
-        backgroundColor:'white'
+        backgroundColor: 'white',
     },
     content: {
         flex: 1,
         //justifyContent: 'center',
-        padding: 8
+        padding: 8,
     },
 
     uploadImageView: {
-        flexDirection:'row',
-
+        flexDirection: 'row',
         alignItems: 'center',
         height: 100,
         borderColor: '#B5B5B5',
@@ -131,27 +206,41 @@ const styles = StyleSheet.create({
         borderRadius: 6,
     },
     pickupImageView: {
-        width:'30%',
-        height:80,
-        marginLeft:2,
-        marginRight:2,
-        borderRadius:6,
-        backgroundColor:'#1EACE0'
+        width: '30%',
+        height: 80,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginLeft: 2,
+        marginRight: 2,
+        borderRadius: 6,
+        //backgroundColor:'#1EACE0'
+    },
+    imageItem: {
+        //padding:0
+        //flex:1,
+        borderRadius: 8,
+        width: '100%',
+        height: '100%',
+
     },
     deleteImageView: {
         width: 24,
         height: 24,
-        //marginTop:-80,
+        borderRadius: 12,
+        marginTop: -6,
+        marginRight: -4,
         alignSelf: 'flex-start',
-        right:0,
-        position:'absolute',
-        backgroundColor:'red'
+        justifyContent: 'center',
+        alignItems: 'center',
+        right: 0,
+        position: 'absolute',
+        backgroundColor: 'red',
 
     },
 
     inputInfoView: {
         flex: 1,
-        marginTop:4,
+        marginTop: 4,
         justifyContent: 'center',
         borderColor: '#B5B5B5',
         borderWidth: 0.5,
@@ -160,98 +249,34 @@ const styles = StyleSheet.create({
 
     basicInput: {
         //borderColor:'red'
-        borderBottomWidth:0.5,
-        borderBottomColor:'#B5B5B5'
+        borderBottomWidth: 0.5,
+        borderBottomColor: '#B5B5B5',
     },
 
-    bottomView: {
-        height:120,
+    checkBoxView: {
+        //flexDirection: 'row',
     },
-
-    localButton: {
-        paddingTop:40,
-        padding: 40
-    },
-
-
-
-
-
-    mainBody: {
+    checkBoxItem: {
         flex: 1,
-        justifyContent: 'center',
-        padding: 20,
+        flexDirection: 'row',
+        //justifyContent: 'center',
+        alignItems:'center'
     },
-    buttonStyle: {
-        backgroundColor: '#307ecc',
-        borderWidth: 0,
-        color: '#FFFFFF',
-        borderColor: '#307ecc',
-        height: 40,
-        alignItems: 'center',
-        borderRadius: 30,
-        marginLeft: 35,
-        marginRight: 35,
-        marginTop: 15,
+
+    buttonContainer: {
+        paddingTop: 40,
+        padding: 40,
+
     },
-    buttonTextStyle: {
-        color: '#FFFFFF',
-        paddingVertical: 10,
-        fontSize: 16,
+    bottomView: {
+        height: 120,
     },
-    textStyle: {
-        backgroundColor: '#fff',
-        fontSize: 15,
-        marginTop: 16,
-        marginLeft: 35,
-        marginRight: 35,
-        textAlign: 'center',
+    submitButton: {
+        backgroundColor: GlobalStyle.colour.primaryColor,
     },
+
+
 });
 
 export default CreatePost1;
 
-
-
-//
-// return (
-//     <View>
-//         <Header titleText='Login'/>
-//
-//
-//         <View style={{alignItems: 'center'}}>
-//             <Text style={{fontSize: 30, textAlign: 'center'}}>
-//                 React Native File Upload Example
-//             </Text>
-//             <Text
-//                 style={{
-//                     fontSize: 25,
-//                     marginTop: 20,
-//                     marginBottom: 30,
-//                     textAlign: 'center',
-//                 }}>
-//
-//             </Text>
-//         </View>
-//         {/*Showing the data of selected Single file*/}
-//         {images != null ? (
-//             <Text style={styles.textStyle}>
-//
-//             </Text>
-//         ) : null}
-//         <TouchableOpacity
-//             style={styles.buttonStyle}
-//             activeOpacity={0.5}
-//             onPress={selectFile}>
-//             <Text style={styles.buttonTextStyle}>Select File</Text>
-//         </TouchableOpacity>
-//         <TouchableOpacity
-//             style={styles.buttonStyle}
-//             activeOpacity={0.5}
-//             onPress={uploadImage}>
-//             <Text style={styles.buttonTextStyle}>Upload File</Text>
-//         </TouchableOpacity>
-//
-//
-//     </View>
-// );
