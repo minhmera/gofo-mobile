@@ -1,10 +1,22 @@
 import React, {useEffect, useState, useCallback} from 'react';
-import {View, Image, ScrollView, Text, TouchableOpacity, TouchableWithoutFeedback, StyleSheet} from 'react-native';
+import {
+    View,
+    Image,
+    ScrollView,
+    Text,
+    TouchableOpacity,
+    TouchableWithoutFeedback,
+    StyleSheet,
+    FlatList, ImageBackground,
+} from 'react-native';
 import {Input, CheckBox, Button} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/AntDesign';
 
-import Header from '../../components/Header';
 import ImagePicker from 'react-native-image-crop-picker';
+import Modal from 'react-native-modal';
+
+
+import Header from '../../components/Header';
 import AppStyle from '../../style/style';
 import GlobalStyle from '../../style/GlobalStyle';
 
@@ -34,11 +46,45 @@ function renderImage(images) {
 
 }
 
+function renderDropdown(items) {
+    //console.log('RenderCategoryList  data1 ==> ', data)
+    if (items.length > 0) {
+        return (
+            <View >
+                <FlatList
+                    data={items}
+                    renderItem={({item}) =>
+                        RenderCategoryItem(item)
+                    }
+
+                    keyExtractor={(item, index) => item._id}
+                />
+            </View>
+        )
+    }
+}
+
+function RenderCategoryItem(item) {
+    return (
+        <TouchableOpacity
+            style={styles.dropdownItem}
+            key = {item}
+        >
+            <Text>
+                {item}
+            </Text>
+        </TouchableOpacity>
+    )
+}
+
+
 //Product Page1  {t('welcome')}
 function CreatePost1({navigation}) {
     const {t, i18n} = React.useContext(LocalizationContext);
     let [images, setImages] = useState(null);
     let [isSell, setSellStatus] = useState(true);
+    let [isShowCityDropdown, setShowCityDropdown] = useState(false);
+    const [isModalVisible, setModalVisible] = useState(false);
 
     async function uploadImage() {
         try {
@@ -62,7 +108,23 @@ function CreatePost1({navigation}) {
         });
     }
 
-    ;
+    function dropdownButton() {
+        return  (
+            <TouchableOpacity
+                style={styles.dropdownButton}
+                activeOpacity={1}
+                onPress={()=> setShowCityDropdown(true)}
+            >
+                <Text>
+                    Dropdown
+                </Text>
+            </TouchableOpacity>
+        )
+    }
+
+    let cityList = ['Can tho', 'Sai gon', 'Ha noi']
+
+
     return (
         <View style={styles.container}>
             <Header titleText='Create Post'/>
@@ -133,6 +195,27 @@ function CreatePost1({navigation}) {
                             placeholder='Phân loại sản phẩm '
                             inputContainerStyle={styles.basicInput}
                         />
+
+                        {dropdownButton()}
+                        {/*{isShowCityDropdown == true ?
+                            <View
+                                style={styles.dropdownList}
+                            >
+                                {renderDropdown(cityList)}
+                            </View>
+                            : null
+                        }*/}
+
+                        <Modal isVisible={isShowCityDropdown}>
+                            <View style={{flex: 1}}>
+                                <Text>Hello!</Text>
+
+                                <Button title="Hide modal"
+                                        onPress={()=> setShowCityDropdown(false)}
+                                />
+                            </View>
+                        </Modal>
+
                         <Input
                             placeholder='Tên sản phẩm '
                             inputContainerStyle={styles.basicInput}
@@ -261,6 +344,29 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         //justifyContent: 'center',
         alignItems:'center'
+    },
+
+    dropdownButton: {
+        height:60,
+        //alignSelf: 'flex-end',
+        justifyContent:'flex-end',
+        borderWidth:1,
+        borderColor:'red',
+        marginLeft: 10,
+        marginRight: 10,
+    },
+
+    dropdownItem: {
+        marginLeft: 10,
+        //marginRight: 10,
+        //position: 'absolute',
+
+    },
+
+    dropdownList: {
+        flex:1,
+        height:150,
+        backgroundColor:'red'
     },
 
     buttonContainer: {
