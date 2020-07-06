@@ -14,7 +14,7 @@ import Icon from 'react-native-vector-icons/AntDesign';
 
 import ImagePicker from 'react-native-image-crop-picker';
 import Modal from 'react-native-modal';
-
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 import Header from '../../components/Header';
 import AppStyle from '../../style/style';
@@ -50,14 +50,14 @@ function renderDropdown(items) {
     //console.log('RenderCategoryList  data1 ==> ', data)
     if (items.length > 0) {
         return (
-            <View >
+            <View style={{flex:1,marginLeft: 10,marginRight: 10, marginTop:10}}>
                 <FlatList
                     data={items}
                     renderItem={({item}) =>
                         RenderCategoryItem(item)
                     }
 
-                    keyExtractor={(item, index) => item._id}
+                    keyExtractor={(item, index) => item}
                 />
             </View>
         )
@@ -70,7 +70,7 @@ function RenderCategoryItem(item) {
             style={styles.dropdownItem}
             key = {item}
         >
-            <Text>
+            <Text style={{marginBottom:10}}>
                 {item}
             </Text>
         </TouchableOpacity>
@@ -115,8 +115,8 @@ function CreatePost1({navigation}) {
                 activeOpacity={1}
                 onPress={()=> setShowCityDropdown(true)}
             >
-                <Text>
-                    Dropdown
+                <Text style={styles.dropdownButtonTitle}>
+                    Chọn thành phố
                 </Text>
             </TouchableOpacity>
         )
@@ -128,7 +128,7 @@ function CreatePost1({navigation}) {
     return (
         <View style={styles.container}>
             <Header titleText='Create Post'/>
-            <ScrollView style={{flex: 1}}>
+            <KeyboardAwareScrollView style={{flex: 1}} keyboardDismissMode = {'on-drag'}>
 
 
                 <View style={styles.content}>
@@ -207,16 +207,25 @@ function CreatePost1({navigation}) {
                         }*/}
 
                         <Modal isVisible={isShowCityDropdown}>
-                            <View style={{flex: 1}}>
-                                <Text>Hello!</Text>
+                            <View style={styles.dropDownContainer}>
+                                <Text style={styles.dropdownTitle}>Choose Your City</Text>
+                                {renderDropdown(cityList)}
 
-                                <Button title="Hide modal"
+                                <View
+                                    style= {styles.dropDownHideButtonView}>
+                                    <Button
+                                        style={{backgroundColor:GlobalStyle.colour.primaryColor,borderRadius:20,}}
+                                        title="Hide modal"
+                                        buttonStyle={[AppStyle.commonButton, styles.submitButton]} //submitButton
                                         onPress={()=> setShowCityDropdown(false)}
-                                />
+                                    />
+                                </View>
+
                             </View>
                         </Modal>
 
                         <Input
+                            inputStyle={styles.inputStyle}
                             placeholder='Tên sản phẩm '
                             inputContainerStyle={styles.basicInput}
                         />
@@ -256,14 +265,15 @@ function CreatePost1({navigation}) {
                         <View style={styles.bottomView}>
                             <Button
                                 title="Upload Product"
-                                buttonStyle={[AppStyle.commonButton, styles.submitButton]} //submitButton
+
+                                buttonStyle={[AppStyle.commonButton, styles.submitButton,]} //submitButton
                                 containerStyle={styles.buttonContainer}
                             />
                         </View>
                     </View>
 
                 </View>
-            </ScrollView>
+            </KeyboardAwareScrollView>
         </View>
     );
 }
@@ -279,7 +289,6 @@ const styles = StyleSheet.create({
         //justifyContent: 'center',
         padding: 8,
     },
-
     uploadImageView: {
         flexDirection: 'row',
         alignItems: 'center',
@@ -299,8 +308,6 @@ const styles = StyleSheet.create({
         //backgroundColor:'#1EACE0'
     },
     imageItem: {
-        //padding:0
-        //flex:1,
         borderRadius: 8,
         width: '100%',
         height: '100%',
@@ -335,6 +342,12 @@ const styles = StyleSheet.create({
         borderBottomWidth: 0.5,
         borderBottomColor: '#B5B5B5',
     },
+    inputStyle: {
+        fontSize:15 ,
+        fontWeight:'400',
+        //fontFamily:'Regular',
+
+    },
 
     checkBoxView: {
         //flexDirection: 'row',
@@ -345,22 +358,25 @@ const styles = StyleSheet.create({
         //justifyContent: 'center',
         alignItems:'center'
     },
-
     dropdownButton: {
-        height:60,
+        height:50,
         //alignSelf: 'flex-end',
-        justifyContent:'flex-end',
-        borderWidth:1,
-        borderColor:'red',
+        justifyContent:'center',
+        //borderWidth:1,
+        //borderColor:'red',
         marginLeft: 10,
         marginRight: 10,
+        borderBottomColor: GlobalStyle.colour.grayColor,
+        borderBottomWidth: 1,
     },
 
     dropdownItem: {
-        marginLeft: 10,
-        //marginRight: 10,
-        //position: 'absolute',
 
+        justifyContent:'center',
+        height:40,
+        //backgroundColor:'yellow'
+        borderBottomColor: GlobalStyle.colour.grayColor,
+        borderBottomWidth: 0.5,
     },
 
     dropdownList: {
@@ -368,18 +384,53 @@ const styles = StyleSheet.create({
         height:150,
         backgroundColor:'red'
     },
-
     buttonContainer: {
         paddingTop: 40,
         padding: 40,
-
     },
     bottomView: {
         height: 120,
     },
     submitButton: {
         backgroundColor: GlobalStyle.colour.primaryColor,
+
     },
+
+    dropdownButtonTitle: {
+        color:GlobalStyle.colour.grayColor,
+        fontSize: 15,
+        fontWeight: '500',
+        fontStyle:'normal'
+        //fontFamily:'Nunito-Regular'
+
+    },
+
+    dropDownContainer: {
+        //flex:1,
+        height:'80%',
+        borderRadius:6,
+        backgroundColor:'white',
+
+    },
+    dropDownHideButtonView: {
+        width:'80%',
+        marginBottom:20,
+        alignSelf: 'center',
+        //backgroundColor:GlobalStyle.colour.primaryColor,
+    },
+    dropdownTitle: {
+        fontSize:16,
+        fontWeight:'600',
+        alignSelf:'center',
+        paddingTop:20,
+    },
+
+
+
+
+
+
+
 
 
 });

@@ -7,7 +7,8 @@ import {TOKEN_KEY, useAuth, USER_KEY} from "../../providers/auth";
 import Form from 'react-native-basic-form';
 import CTA from "../../components/CTA";
 import {Header, ErrorText} from "../../components/Shared";
-
+import Header2 from '../../components/Header';
+import GlobalStyle from '../../style/GlobalStyle';
 
 
 async function getTokenKey() {
@@ -26,7 +27,7 @@ export default function Login(props) {
     const { handleLogin } = useAuth();
 
     const fields = [
-        {name: 'email', label: 'Email Address', required: true},
+        {name: 'email', label: 'Email Address',autoCapitalize: "none", required: true},
         {name: 'password', label: 'Password', required: true, secure: true}
     ];
 
@@ -44,14 +45,18 @@ export default function Login(props) {
 
             console.log('Log in token  ',response.result.token)
 
+            if (response.result.token) {
 
-            try {
-                await AsyncStorage.setItem(TOKEN_KEY, response.result.token)
-            } catch (error) {
-                // Error saving data
-                console.log('AsyncStorage Error 1 ',error)
+                try {
+                    await AsyncStorage.setItem(TOKEN_KEY, response.result.token)
+                } catch (error) {
+                    // Error saving data
+                    console.log('AsyncStorage Error 1 ',error)
+
+                }
 
             }
+
 
             //check if username is null
             // let username = (response.user.username !== null);
@@ -66,10 +71,16 @@ export default function Login(props) {
     let formProps = {title: "Login", fields, onSubmit, loading};
     return (
         <View style={{flex: 1, paddingHorizontal: 16, backgroundColor:"#fff"}}>
-            <Header title={"Login22"}/>
+            <Header title={"Login"}/>
+
             <View style={{flex: 1}}>
                 <ErrorText error={error}/>
-                <Form {...formProps}>
+                <Form
+                    {...formProps}
+                    buttonStyle={{borderRadius:24, height:48, backgroundColor:GlobalStyle.colour.primaryColor}}
+
+                    autoCapitalize = {true}
+                >
                     <CTA
                         ctaText={"Forgot Password?"}
                         //onPress={() => navigation.navigate("ForgotPassword")}
@@ -86,6 +97,8 @@ export default function Login(props) {
                 </Form>
             </View>
         </View>
+
+
     );
 };
 

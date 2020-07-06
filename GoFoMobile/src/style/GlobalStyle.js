@@ -6,6 +6,7 @@ const GlobalStyle = {
         inActiveColor: '#96969A',
         tempColor: '#96969A',
         font: '#434e5a',
+        grayColor: '#D6D6D6',
     }
 }
 

@@ -15,13 +15,13 @@ export default function AuthLoading(props) {
     async function initialize() {
         try {
             const {user} = await getAuthState();
-            console.log('AuthLoading initialize 22',user)
+            console.log('AuthLoading initialize 22 --1',user)
             if (user) {
                 //check if username exist
                 let username = !!(user.username);
 
                 if (username) navigate('App');
-                else navigate('Auth', {}, StackActions.replace({ routeName: "Username" }))
+                else navigate('Auth', {}, StackActions.replace({ routeName: "Login" }))
 
             } else navigate('Auth');
         } catch (e) {
