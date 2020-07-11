@@ -27,11 +27,12 @@ function RenderCategoryList(data) {
     }
 }
 
-
-function ProductPage1({navigation}) {
+//({ route, navigation })
+function ProductPage1({route}) {
     const {t, i18n} = React.useContext(LocalizationContext);
     //Product Page1  {t('welcome')}
 
+    console.log("MERA  ProductPage1 param ==>  ",route,' -- ')
 
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);

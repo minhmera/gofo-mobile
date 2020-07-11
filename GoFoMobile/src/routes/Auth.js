@@ -19,8 +19,12 @@ const AuthStack = createStackNavigator(
     },
     {
         initialRouteName: 'Login',
-        defaultNavigationOptions: () => ({headerStyle, headerTitleStyle})
-    }
+        headerMode: 'none',
+        //defaultNavigationOptions: () => ({headerStyle, headerTitleStyle})
+
+    },
+
+
 );
 
 export default AuthStack;

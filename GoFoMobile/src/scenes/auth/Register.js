@@ -1,14 +1,23 @@
 import React, { useState } from 'react';
-import {Alert, View} from 'react-native';
+import {StatusBar, Alert, View} from 'react-native';
 
 import * as api from "../../services/auth";
 
 import Form from 'react-native-basic-form';
 import CTA from "../../components/CTA";
-import {Header, ErrorText} from "../../components/Shared";
+import {ErrorText} from "../../components/Shared";
+import Header from '../../components/Header'
+import ProductPage1 from '../product/ProductPage1';
 
-export default function Register(props) {
+//function ProductPage1({route})
+function Register(props) {
     const {navigation} = props;
+    //const {route} = props.route;
+
+    let movies = navigation.getParam('movies');
+
+
+    console.log('MERA Register ==>  ',movies)
 
     //1 - DECLARE VARIABLES
     const [error, setError] = useState(null);
@@ -41,15 +50,19 @@ export default function Register(props) {
 
     let formProps = {title: "Register", fields, onSubmit, loading };
     return (
-        <View style={{flex: 1, paddingHorizontal: 16, backgroundColor:"#fff"}}>
-            <Header title={"Register"}/>
-            <View style={{flex:1}}>
+        <View style={{flex: 1, backgroundColor:"#fff"}}>
+            <Header titleText='Register' navigation = {navigation}/>
+
+            <StatusBar backgroundColor='blue' barStyle='light-content' />
+
+            <View style={{flex:1,paddingHorizontal: 16}}>
                 <ErrorText error={error}/>
                 <Form {...formProps}>
                     <CTA
                         title={"Already have an account?"}
                         ctaText={"Login"}
-                        onPress={() => navigation.replace("Login")}
+                        //onPress={() => navigation.replace("Login")}
+                        onPress={() => navigation.goBack()}
                         style={{marginTop: 50}}/>
                 </Form>
             </View>
@@ -57,8 +70,4 @@ export default function Register(props) {
     );
 };
 
-Register.navigationOptions = ({}) => {
-    return {
-        title: ``
-    }
-};
+export default Register

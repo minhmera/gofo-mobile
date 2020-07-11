@@ -2,31 +2,25 @@ import React, {useEffect} from 'react';
 import {ActivityIndicator, View, Text} from 'react-native';
 import { StackActions } from 'react-navigation';
 
-import { useAuth } from "../../providers/auth";
-
+import {TOKEN_KEY, useAuth} from '../../providers/auth';
+//import AsyncStorage from '@react-native-community/async-storage';
+import AsyncStorage from '@react-native-community/async-storage'
 export default function AuthLoading(props) {
     const {navigate} = props.navigation;
     const { getAuthState } = useAuth();
 
     useEffect(() => {
-        initialize()
+        getTokenKey()
     }, []);
 
-    async function initialize() {
-        try {
-            const {user} = await getAuthState();
-            console.log('AuthLoading initialize 22 --1',user)
-            if (user) {
-                //check if username exist
-                let username = !!(user.username);
 
-                if (username) navigate('App');
-                else navigate('Auth', {}, StackActions.replace({ routeName: "Login" }))
+    async function getTokenKey() {
+        let token = await AsyncStorage.getItem(TOKEN_KEY);
+        console.log("MERA getTokenKey11   ==> ", token)
+        if (token) {
+            navigate('App');
 
-            } else navigate('Auth');
-        } catch (e) {
-            navigate('Auth');
-        }
+        } else navigate('Auth');
     }
 
     return (

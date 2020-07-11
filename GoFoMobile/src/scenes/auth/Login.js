@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
-import {AsyncStorage, View} from 'react-native';
+import {StatusBar, View} from 'react-native';
+
+import AsyncStorage from '@react-native-community/async-storage'
 
 import * as api from "../../services/auth";
 import {TOKEN_KEY, useAuth, USER_KEY} from "../../providers/auth";
@@ -13,7 +15,7 @@ import GlobalStyle from '../../style/GlobalStyle';
 
 async function getTokenKey() {
     let token = await AsyncStorage.getItem(TOKEN_KEY);
-    console.log("getTokenKey   ==> ", token)
+    console.log("MERA getTokenKey   ==> ", token)
 }
 
 
@@ -34,27 +36,22 @@ export default function Login(props) {
 
 
     async function onSubmit(state) {
-        console.log("onSubmit  ==> ",state);
+        console.log("MERA  onSubmit  ==> ",state);
         setLoading(true);
 
         try {
             let response = await api.login(state);
             //await handleLogin(response);
-
             setLoading(false);
+            console.log('MERA  Log in token  ',response.result.token)
+            try {
+                let token = await AsyncStorage.setItem(TOKEN_KEY, response.result.token)
+                //navigate.setParams({"param":"Value cc "})
+                navigate('App');
 
-            console.log('Log in token  ',response.result.token)
-
-            if (response.result.token) {
-
-                try {
-                    await AsyncStorage.setItem(TOKEN_KEY, response.result.token)
-                } catch (error) {
-                    // Error saving data
-                    console.log('AsyncStorage Error 1 ',error)
-
-                }
-
+            } catch (error) {
+                // Error saving data
+                console.log('AsyncStorage Error 1 ',error)
             }
 
 
@@ -68,11 +65,22 @@ export default function Login(props) {
         }
     }
 
+    function testNavigate() {
+        //navigation.navigate('Register');
+        //navigation.setParams({ name: 'Lucy' })
+
+        navigation.push('Register',{
+            movies: { name: 'Lucy' }
+        })
+    }
+
     let formProps = {title: "Login", fields, onSubmit, loading};
+    const {token} = AsyncStorage.getItem(TOKEN_KEY)
+    console.log('MERA AAsyncStorage token ==>  ',token)
     return (
         <View style={{flex: 1, paddingHorizontal: 16, backgroundColor:"#fff"}}>
             <Header title={"Login"}/>
-
+            <StatusBar barStyle="light-content" />
             <View style={{flex: 1}}>
                 <ErrorText error={error}/>
                 <Form
@@ -84,7 +92,7 @@ export default function Login(props) {
                     <CTA
                         ctaText={"Forgot Password?"}
                         //onPress={() => navigation.navigate("ForgotPassword")}
-                        onPress={() => navigation.navigate({ routeName: 'App' })}
+                        onPress={() => testNavigate()  }
                         style={{marginTop: 20}}/>
 
                     <CTA

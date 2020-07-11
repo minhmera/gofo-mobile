@@ -19,10 +19,9 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import Header from '../../components/Header';
 import AppStyle from '../../style/style';
 import GlobalStyle from '../../style/GlobalStyle';
-
 import * as api from '../../services/home';
-
 import LocalizationContext from '../../localization/LocalizationContext';
+import ModelList from '../../components/ModelList'
 
 function renderImage(images) {
     //let arrImages = ['a','b','c']
@@ -45,38 +44,6 @@ function renderImage(images) {
     });
 
 }
-
-function renderDropdown(items) {
-    //console.log('RenderCategoryList  data1 ==> ', data)
-    if (items.length > 0) {
-        return (
-            <View style={{flex:1,marginLeft: 10,marginRight: 10, marginTop:10}}>
-                <FlatList
-                    data={items}
-                    renderItem={({item}) =>
-                        RenderCategoryItem(item)
-                    }
-
-                    keyExtractor={(item, index) => item}
-                />
-            </View>
-        )
-    }
-}
-
-function RenderCategoryItem(item) {
-    return (
-        <TouchableOpacity
-            style={styles.dropdownItem}
-            key = {item}
-        >
-            <Text style={{marginBottom:10}}>
-                {item}
-            </Text>
-        </TouchableOpacity>
-    )
-}
-
 
 //Product Page1  {t('welcome')}
 function CreatePost1({navigation}) {
@@ -108,22 +75,37 @@ function CreatePost1({navigation}) {
         });
     }
 
-    function dropdownButton() {
+    function dropdownButton(title,onPress) {
         return  (
             <TouchableOpacity
                 style={styles.dropdownButton}
                 activeOpacity={1}
-                onPress={()=> setShowCityDropdown(true)}
+                //onPress={()=> setShowCityDropdown(true)}
+                onPress={()=> onPress()}
             >
-                <Text style={styles.dropdownButtonTitle}>
-                    Chọn thành phố
-                </Text>
+                <View style={{flex:4}}>
+                    <Text style={styles.dropdownButtonTitle}>
+                        {title}
+                    </Text>
+                </View>
+                <View style={{flex:1,alignItems:'flex-end', marginRight:4}}>
+                    <Icon
+                        name='right'
+                        size={20}
+                        color={'black'}
+                    />
+                </View>
+
             </TouchableOpacity>
         )
     }
 
     let cityList = ['Can tho', 'Sai gon', 'Ha noi']
 
+    function cityDropDownCallBack(cityName) {
+        console.log('MERA cityDropDownCallBack ', cityName)
+        setShowCityDropdown(false)
+    }
 
     return (
         <View style={styles.container}>
@@ -192,72 +174,57 @@ function CreatePost1({navigation}) {
                         </View>
 
                         <Input
+                            inputStyle={styles.inputStyle}
                             placeholder='Phân loại sản phẩm '
                             inputContainerStyle={styles.basicInput}
                         />
 
-                        {dropdownButton()}
-                        {/*{isShowCityDropdown == true ?
-                            <View
-                                style={styles.dropdownList}
-                            >
-                                {renderDropdown(cityList)}
-                            </View>
-                            : null
-                        }*/}
+                        {dropdownButton('Choose city',()=> setShowCityDropdown(true))}
 
-                        <Modal isVisible={isShowCityDropdown}>
-                            <View style={styles.dropDownContainer}>
-                                <Text style={styles.dropdownTitle}>Choose Your City</Text>
-                                {renderDropdown(cityList)}
-
-                                <View
-                                    style= {styles.dropDownHideButtonView}>
-                                    <Button
-                                        style={{backgroundColor:GlobalStyle.colour.primaryColor,borderRadius:20,}}
-                                        title="Hide modal"
-                                        buttonStyle={[AppStyle.commonButton, styles.submitButton]} //submitButton
-                                        onPress={()=> setShowCityDropdown(false)}
-                                    />
-                                </View>
-
-                            </View>
-                        </Modal>
+                        <ModelList
+                            isVisible = {isShowCityDropdown}
+                            title = {'Choose Your City'}
+                            items = {cityList}
+                            callBack = {(item)=> cityDropDownCallBack(item)}
+                        />
 
                         <Input
                             inputStyle={styles.inputStyle}
                             placeholder='Tên sản phẩm '
                             inputContainerStyle={styles.basicInput}
                         />
+
                         <Input
-                            placeholder='Thành phố'
-                            inputContainerStyle={styles.basicInput}
-                        />
-                        <Input
+                            inputStyle={styles.inputStyle}
                             placeholder='Quận huyện'
                             inputContainerStyle={styles.basicInput}
                         />
                         {isSell == true ?
                             <Input
+                                inputStyle={styles.inputStyle}
                                 placeholder='Thời gian thu hoạch'
                                 inputContainerStyle={styles.basicInput}
                             /> : null
                         }
                         {isSell == true ?
                             <Input
+                                inputStyle={styles.inputStyle}
                                 placeholder='Sản lượng'
                                 inputContainerStyle={styles.basicInput}
                             /> : null
                         }
                         <Input
+                            inputStyle={styles.inputStyle}
                             placeholder='Tiêu chuẩn'
                             inputContainerStyle={styles.basicInput}
                         />
                         <Input
+                            inputStyle={styles.inputStyle}
                             placeholder='Email '
                             inputContainerStyle={styles.basicInput}
                         />
                         <Input
+                            inputStyle={styles.inputStyle}
                             placeholder="Tên"
                             inputContainerStyle={styles.basicInput}
                             //secureTextEntry={true}
@@ -327,7 +294,6 @@ const styles = StyleSheet.create({
         backgroundColor: 'red',
 
     },
-
     inputInfoView: {
         flex: 1,
         marginTop: 4,
@@ -336,19 +302,14 @@ const styles = StyleSheet.create({
         borderWidth: 0.5,
         borderRadius: 6,
     },
-
     basicInput: {
-        //borderColor:'red'
         borderBottomWidth: 0.5,
         borderBottomColor: '#B5B5B5',
     },
     inputStyle: {
-        fontSize:15 ,
+        fontSize:16 ,
         fontWeight:'400',
-        //fontFamily:'Regular',
-
     },
-
     checkBoxView: {
         //flexDirection: 'row',
     },
@@ -360,10 +321,10 @@ const styles = StyleSheet.create({
     },
     dropdownButton: {
         height:50,
-        //alignSelf: 'flex-end',
+        flexDirection:'row',
+        alignItems: 'center',
         justifyContent:'center',
-        //borderWidth:1,
-        //borderColor:'red',
+
         marginLeft: 10,
         marginRight: 10,
         borderBottomColor: GlobalStyle.colour.grayColor,
@@ -371,14 +332,12 @@ const styles = StyleSheet.create({
     },
 
     dropdownItem: {
-
         justifyContent:'center',
         height:40,
-        //backgroundColor:'yellow'
+        ///backgroundColor:'yellow',
         borderBottomColor: GlobalStyle.colour.grayColor,
         borderBottomWidth: 0.5,
     },
-
     dropdownList: {
         flex:1,
         height:150,
@@ -397,14 +356,13 @@ const styles = StyleSheet.create({
     },
 
     dropdownButtonTitle: {
-        color:GlobalStyle.colour.grayColor,
+        //color:'black',//GlobalStyle.colour.grayColor,
         fontSize: 15,
         fontWeight: '500',
-        fontStyle:'normal'
+
         //fontFamily:'Nunito-Regular'
 
     },
-
     dropDownContainer: {
         //flex:1,
         height:'80%',

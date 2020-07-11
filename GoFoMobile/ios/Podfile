@@ -85,6 +85,8 @@ target 'GoFoMobile' do
 
   pod 'RNImageCropPicker', :path => '../node_modules/react-native-image-crop-picker'
 
+  pod 'RNCAsyncStorage', :path => '../node_modules/@react-native-community/async-storage'
+
   target 'GoFoMobileTests' do
     inherit! :complete
     # Pods for testing

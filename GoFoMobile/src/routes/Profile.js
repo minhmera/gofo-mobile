@@ -1,7 +1,9 @@
 import {createStackNavigator} from "react-navigation-stack";
 import ProfilePage1 from "../scenes/profile/ProfilePage1";
 import ProfilePage2 from "../scenes/profile/ProfilePage2";
-import ProductStack from "./Product";
+
+
+
 
 
 const ProfileStack = createStackNavigator(
@@ -14,7 +16,8 @@ const ProfileStack = createStackNavigator(
             screen: ProfilePage2
         },
     },{
-        headerMode: 'none'
+        headerMode: 'none',
+        initialRouteName: 'ProfilePage1',
     }
 )
 
