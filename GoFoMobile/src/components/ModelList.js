@@ -9,6 +9,7 @@ import Modal from 'react-native-modal';
 
 
 function ModelList({isVisible,title,items, callBack}) {
+    //console.log('ModelList ==> ',items.length)
     function RenderCategoryItem(item) {
         return (
             <TouchableOpacity
@@ -41,7 +42,7 @@ function ModelList({isVisible,title,items, callBack}) {
     }
     return (
         <Modal isVisible={isVisible}>
-            <View style={styles.dropDownContainer}>
+            <TouchableOpacity style={styles.dropDownContainer} activeOpacity={1} onPress={()=> callBack('')}>
                 <Text style={styles.dropdownTitle}>{title}</Text>
                 {renderDropdown(items)}
 
@@ -55,7 +56,7 @@ function ModelList({isVisible,title,items, callBack}) {
                     />
                 </View>*/}
 
-            </View>
+            </TouchableOpacity>
         </Modal>
     )
 

@@ -14,3 +14,6 @@ export const FORGOT_PASSWORD = `${API_URL}/auth/recover`;
 
 export const GET_CATEGORY_LIST = `${API_URL}/categories/getAll`;
 export const UPLOAD_IMAGES = `${API_URL}/image-upload`;
+
+
+export const GET_LOCATION = `${API_URL}/getLocation`;

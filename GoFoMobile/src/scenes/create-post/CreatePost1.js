@@ -19,7 +19,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import Header from '../../components/Header';
 import AppStyle from '../../style/style';
 import GlobalStyle from '../../style/GlobalStyle';
-import * as api from '../../services/home';
+import * as api from '../../services/products';
 import LocalizationContext from '../../localization/LocalizationContext';
 import ModelList from '../../components/ModelList'
 
@@ -45,13 +45,47 @@ function renderImage(images) {
 
 }
 
+function dropdownButton(title,onPress) {
+    return  (
+        <TouchableOpacity
+            style={styles.dropdownButton}
+            activeOpacity={1}
+            //onPress={()=> setShowCityDropdown(true)}
+            onPress={()=> onPress()}
+        >
+            <View style={{flex:4}}>
+                <Text style={styles.dropdownButtonTitle}>
+                    {title}
+                </Text>
+            </View>
+            <View style={{flex:1,alignItems:'flex-end', marginRight:4}}>
+                <Icon
+                    name='right'
+                    size={20}
+                    color={'black'}
+                />
+            </View>
+
+        </TouchableOpacity>
+    )
+}
+
 //Product Page1  {t('welcome')}
 function CreatePost1({navigation}) {
     const {t, i18n} = React.useContext(LocalizationContext);
     let [images, setImages] = useState(null);
     let [isSell, setSellStatus] = useState(true);
     let [isShowCityDropdown, setShowCityDropdown] = useState(false);
-    const [isModalVisible, setModalVisible] = useState(false);
+    let [isShowDistrictDropdown, setShowDistrictDropdown] = useState(false);
+    const [cities, setCities] = useState({});
+    const [districts, setDistricts] = useState({});
+    const [locations, setLocations] = useState({});
+    const [error, setError] = useState(null);
+    const [loading, setLoading] = useState(false);
+
+    const [selectedCity, setSelectedCity] = useState('');
+    const [selectedDistrict, setSelectedDistrict] = useState('');
+
 
     async function uploadImage() {
         try {
@@ -75,36 +109,52 @@ function CreatePost1({navigation}) {
         });
     }
 
-    function dropdownButton(title,onPress) {
-        return  (
-            <TouchableOpacity
-                style={styles.dropdownButton}
-                activeOpacity={1}
-                //onPress={()=> setShowCityDropdown(true)}
-                onPress={()=> onPress()}
-            >
-                <View style={{flex:4}}>
-                    <Text style={styles.dropdownButtonTitle}>
-                        {title}
-                    </Text>
-                </View>
-                <View style={{flex:1,alignItems:'flex-end', marginRight:4}}>
-                    <Icon
-                        name='right'
-                        size={20}
-                        color={'black'}
-                    />
-                </View>
+    async function fetchData() {
+        //setLoading(true);
+        console.log('MERA fetchData   selectedCity:  ==>  ',selectedCity)
+        try {
+            let response = await api.getLocation();
+            let cities = []
+            if (response.result) {
+                let locations = response.result
+                setLocations(locations)
+                locations.map((item,index)=> {
+                    cities.push(item.name)
+                })
+                setCities(cities)
+            }
+            //setCities(response.result)
+            console.log(' getLocation1 =====>  ',cities.length)
+            setLoading(false);
 
-            </TouchableOpacity>
-        )
+        } catch (error) {
+            setError(error.message);
+            setLoading(false)
+        }
     }
 
-    let cityList = ['Can tho', 'Sai gon', 'Ha noi']
+    useEffect(() => {
+        fetchData();
+    }, []);
 
     function cityDropDownCallBack(cityName) {
-        console.log('MERA cityDropDownCallBack ', cityName)
+
+        setSelectedCity(cityName)
+        setSelectedDistrict('')
+        let index = locations.findIndex(x => x.name === cityName)
+        let districtObject  = locations[index].districts
+        let districtList = []
+        districtObject.map((item,index) => {
+            districtList.push(item.name)
+        })
+        setDistricts(districtList)
         setShowCityDropdown(false)
+
+    }
+
+    function districtDropDownCallBack(district) {
+        setSelectedDistrict(district)
+        setShowDistrictDropdown(false)
     }
 
     return (
@@ -179,13 +229,22 @@ function CreatePost1({navigation}) {
                             inputContainerStyle={styles.basicInput}
                         />
 
-                        {dropdownButton('Choose city',()=> setShowCityDropdown(true))}
+                        {dropdownButton(selectedCity === "" ?  "Choose city" : selectedCity,()=> setShowCityDropdown(true))}
+
+                        {dropdownButton(selectedDistrict === "" ? "Choose district": selectedDistrict,()=> setShowDistrictDropdown(true))}
 
                         <ModelList
                             isVisible = {isShowCityDropdown}
                             title = {'Choose Your City'}
-                            items = {cityList}
+                            items = {cities}
                             callBack = {(item)=> cityDropDownCallBack(item)}
+                        />
+
+                        <ModelList
+                            isVisible = {isShowDistrictDropdown}
+                            title = {'Choose Your City'}
+                            items = {districts}
+                            callBack = {(item)=> districtDropDownCallBack(item)}
                         />
 
                         <Input
@@ -193,12 +252,7 @@ function CreatePost1({navigation}) {
                             placeholder='Tên sản phẩm '
                             inputContainerStyle={styles.basicInput}
                         />
-
-                        <Input
-                            inputStyle={styles.inputStyle}
-                            placeholder='Quận huyện'
-                            inputContainerStyle={styles.basicInput}
-                        />
+                        
                         {isSell == true ?
                             <Input
                                 inputStyle={styles.inputStyle}
@@ -363,26 +417,6 @@ const styles = StyleSheet.create({
         //fontFamily:'Nunito-Regular'
 
     },
-    dropDownContainer: {
-        //flex:1,
-        height:'80%',
-        borderRadius:6,
-        backgroundColor:'white',
-
-    },
-    dropDownHideButtonView: {
-        width:'80%',
-        marginBottom:20,
-        alignSelf: 'center',
-        //backgroundColor:GlobalStyle.colour.primaryColor,
-    },
-    dropdownTitle: {
-        fontSize:16,
-        fontWeight:'600',
-        alignSelf:'center',
-        paddingTop:20,
-    },
-
 
 
 
