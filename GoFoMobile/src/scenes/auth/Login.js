@@ -92,14 +92,15 @@ export default function Login(props) {
                     <CTA
                         ctaText={"Forgot Password?"}
                         //onPress={() => navigation.navigate("ForgotPassword")}
-                        onPress={() => testNavigate()  }
+                        onPress={() => getTokenKey()}
                         style={{marginTop: 20}}/>
 
                     <CTA
                         title={"Don't have an account?"}
                         ctaText={"Register"}
                         //onPress={() => navigation.replace("Register")}
-                        onPress={() => getTokenKey()}
+
+                        onPress={() => testNavigate()  }
 
                         style={{marginTop: 50}}/>
                 </Form>
