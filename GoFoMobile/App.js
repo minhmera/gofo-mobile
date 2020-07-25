@@ -8,14 +8,14 @@ import AuthProvider from './src/providers/auth';
 
 export default function App() {
   return (
-      <StoreProvider store={store}>
-        <PaperProvider>
+       /*<StoreProvider store={store}>*/
+        /*<PaperProvider>*/
           <LocalizationProvider>
             <AuthProvider>
               <AppNavigator/>
             </AuthProvider>
           </LocalizationProvider>
-        </PaperProvider>
-      </StoreProvider>
+        /*</PaperProvider>*/
+       /*</StoreProvider>*/
   )
 }

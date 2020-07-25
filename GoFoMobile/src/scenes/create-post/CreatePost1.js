@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useCallback} from 'react';
+import React, {useEffect, useState, useCallback,useReducer} from 'react';
 import {
     View,
     Image,
@@ -22,6 +22,10 @@ import GlobalStyle from '../../style/GlobalStyle';
 import * as api from '../../services/products';
 import LocalizationContext from '../../localization/LocalizationContext';
 import ModelList from '../../components/ModelList'
+import categoryReducer from  '../../reducers/category'
+
+
+
 
 function renderImage(images) {
     //let arrImages = ['a','b','c']
@@ -86,6 +90,7 @@ function CreatePost1({navigation}) {
     const [selectedCity, setSelectedCity] = useState('');
     const [selectedDistrict, setSelectedDistrict] = useState('');
 
+    const [globalCategory, setGlobalCategory] = useReducer(categoryReducer, null);
 
     async function uploadImage() {
         try {
@@ -202,6 +207,7 @@ function CreatePost1({navigation}) {
                                     checked={isSell}
                                     checkedColor={GlobalStyle.colour.primaryColor}
                                     onPress={()=> setSellStatus(true)}
+                                    //onPress={()=> console.log('MERA globalCategory  ',globalCategory)}
 
                                 />
                                 <Text>
@@ -229,6 +235,12 @@ function CreatePost1({navigation}) {
                             inputContainerStyle={styles.basicInput}
                         />
 
+                        <Input
+                            inputStyle={styles.inputStyle}
+                            placeholder='Tên sản phẩm '
+                            inputContainerStyle={styles.basicInput}
+                        />
+
                         {dropdownButton(selectedCity === "" ?  "Choose city" : selectedCity,()=> setShowCityDropdown(true))}
 
                         {dropdownButton(selectedDistrict === "" ? "Choose district": selectedDistrict,()=> setShowDistrictDropdown(true))}
@@ -247,12 +259,6 @@ function CreatePost1({navigation}) {
                             callBack = {(item)=> districtDropDownCallBack(item)}
                         />
 
-                        <Input
-                            inputStyle={styles.inputStyle}
-                            placeholder='Tên sản phẩm '
-                            inputContainerStyle={styles.basicInput}
-                        />
-                        
                         {isSell == true ?
                             <Input
                                 inputStyle={styles.inputStyle}

@@ -1,9 +1,9 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useReducer} from 'react';
 import {View,TouchableOpacity,TouchableWithoutFeedback, ImageBackground, Text, FlatList, StyleSheet, Alert} from 'react-native'
 //import {Text, FAB, List} from 'react-native-paper'
 import Header from '../../components/Header'
 import LocalizationContext from "../../localization/LocalizationContext";
-
+import categoryReducer from  '../../reducers/category'
 
 import * as api from "../../services/home";
 
@@ -38,18 +38,21 @@ function ProductPage1({route}) {
     const [loading, setLoading] = useState(false);
 
     const [categories, setCategories] = useState({});
+    const [globalCategory, setGlobalCategory] = useReducer(categoryReducer, null);
 
     async function fetchData() {
         //setLoading(true);
         try {
             let response = await api.getCategoryList();
             setCategories(response.result)
+            setGlobalCategory({ type: 'OnSuccess', payload: response.result })
             //console.log(' getCategoryList =====>  ',response.result)
             setLoading(false);
 
         } catch (error) {
             setError(error.message);
             setLoading(false)
+            setGlobalCategory({ type: 'OnFailure' })
         }
     }
 
@@ -59,9 +62,11 @@ function ProductPage1({route}) {
     }, []);
 
     return (
+
         <View style={{flex: 1}}>
             <Header titleText='Danh mục sản phẩm'/>
             {RenderCategoryList(categories)}
+            {console.log('MERA categoryReducer 44 ==>  ', globalCategory)}
         </View>
     )
 }

@@ -2,10 +2,11 @@ import React from 'react'
 import {View, Text} from 'react-native'
 import Header from '../../components/Header'
 import LocalizationContext from "../../localization/LocalizationContext";
-
+import { useStore } from '../../store'
 
 function PostedPage1({navigation}) {
     const {t, i18n} = React.useContext(LocalizationContext);
+    //const [{ todos, filter }, dispatch] = useStore();
     return (
         <View>
             <Header titleText='Login'/>
