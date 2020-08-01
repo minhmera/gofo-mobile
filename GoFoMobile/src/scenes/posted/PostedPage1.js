@@ -1,12 +1,10 @@
 import React from 'react'
-import {View, Text} from 'react-native'
+import {View, Text, TouchableOpacity} from 'react-native'
 import Header from '../../components/Header'
 import LocalizationContext from "../../localization/LocalizationContext";
-import { useStore } from '../../store'
 
 function PostedPage1({navigation}) {
     const {t, i18n} = React.useContext(LocalizationContext);
-    //const [{ todos, filter }, dispatch] = useStore();
     return (
         <View>
             <Header titleText='Login'/>
@@ -14,19 +12,22 @@ function PostedPage1({navigation}) {
                 PostedPage1    {t('welcome')}
 
             </Text>
-            <View
+            <TouchableOpacity
                 //style={AppStyle.tabBigButton}
                 style = {
                     {
+                        marginTop:30,
+                        marginLeft:130,
                         height: 80,
                         width: 80,
                         borderRadius: 100,
                         backgroundColor: '#F93963',
-                        paddingTop: 15
                     }
                 }
+
+
             >
-            </View>
+            </TouchableOpacity>
         </View>
     )
 }
