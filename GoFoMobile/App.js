@@ -1,7 +1,7 @@
 import React, {useEffect,useReducer, useState} from 'react'
 import AppNavigator from './src/navigation'
 import LocalizationProvider from './src/localization/LocalizationProvider';
-import AuthProvider from './src/providers/auth';
+import AuthProvider from './src/contexts/auth';
 import { StoreProvider } from './src/store'
 
 export default function App() {

@@ -4,7 +4,7 @@ import {StatusBar, View} from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage'
 
 import * as api from "../../services/auth";
-import {TOKEN_KEY, useAuth, USER_KEY} from "../../providers/auth";
+import {TOKEN_KEY, useAuth, USER_KEY} from "../../contexts/auth";
 
 import Form from 'react-native-basic-form';
 import CTA from "../../components/CTA";

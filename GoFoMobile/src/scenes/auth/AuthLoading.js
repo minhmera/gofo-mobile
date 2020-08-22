@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import {ActivityIndicator, View, Text} from 'react-native';
 import { StackActions } from 'react-navigation';
 
-import {TOKEN_KEY, useAuth} from '../../providers/auth';
+import {TOKEN_KEY, useAuth} from '../../contexts/auth';
 //import AsyncStorage from '@react-native-community/async-storage';
 import AsyncStorage from '@react-native-community/async-storage'
 export default function AuthLoading(props) {
