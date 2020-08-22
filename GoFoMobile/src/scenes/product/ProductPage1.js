@@ -5,7 +5,7 @@ import Header from '../../components/Header'
 import LocalizationContext from "../../localization/LocalizationContext";
 import * as api from "../../services/home";
 
- const setCategory = categories => ({ type: 'OnSuccess', payload: { categories } });
+const setCategory = categories => ({ type: 'OnSuccess', payload: { categories } });
 
 function RenderCategoryList(data) {
     //console.log('RenderCategoryList  data1 ==> ', data)

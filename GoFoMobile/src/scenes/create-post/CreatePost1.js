@@ -2,10 +2,8 @@ import React, {useEffect, useState, useCallback,useReducer} from 'react';
 import {
     View,
     Image,
-    ScrollView,
     Text,
     TouchableOpacity,
-    TouchableWithoutFeedback,
     StyleSheet,
     FlatList, ImageBackground,
 } from 'react-native';
@@ -22,7 +20,6 @@ import GlobalStyle from '../../style/GlobalStyle';
 import * as api from '../../services/products';
 import LocalizationContext from '../../localization/LocalizationContext';
 import ModelList from '../../components/ModelList'
-import categoryReducer from  '../../reducers/category'
 
 
 
@@ -90,7 +87,6 @@ function CreatePost1({navigation}) {
     const [selectedCity, setSelectedCity] = useState('');
     const [selectedDistrict, setSelectedDistrict] = useState('');
 
-    const [globalCategory, setGlobalCategory] = useReducer(categoryReducer, null);
 
     async function uploadImage() {
         try {
