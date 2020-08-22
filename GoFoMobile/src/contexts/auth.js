@@ -3,7 +3,7 @@ import {AsyncStorage} from "react-native";
 import axios from "axios";
 
 //IMPORT REDUCER, INITIAL STATE AND ACTION TYPES
-import reducer, {initialState, LOGGED_IN, LOGGED_OUT} from "../reducer/reducer";
+import reducer, {initialState, LOGGED_IN, LOGGED_OUT} from "../reducer/authReducer";
 
 // CONFIG KEYS [Storage Keys]===================================
 export const TOKEN_KEY = 'token';

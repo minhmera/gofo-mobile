@@ -4,9 +4,12 @@ import {View, Text} from 'react-native'
 import Header from '../../components/Header'
 import LocalizationContext from "../../localization/LocalizationContext";
 
+import {useGlobalDataContext, setCategories} from '../../contexts/globalDataContext'
 
 function Notification1({navigation}) {
     const {t, i18n} = React.useContext(LocalizationContext);
+    const { globalState, dispatch } = useGlobalDataContext();
+    console.log('MERA  globalState ==>  ',globalState)
     return (
         <View>
             <Header titleText='Login'/>
@@ -14,19 +17,8 @@ function Notification1({navigation}) {
                 Product Page1  {t('welcome')}
 
             </Text>
-            <View
-                //style={AppStyle.tabBigButton}
-                style = {
-                    {
-                        height: 80,
-                        width: 80,
-                        borderRadius: 100,
-                        backgroundColor: '#F93963',
-                        paddingTop: 15
-                    }
-                }
-            >
-            </View>
+
+            <Text>{globalState.categories.length}</Text>
         </View>
     )
 }

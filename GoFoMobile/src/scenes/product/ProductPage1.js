@@ -1,14 +1,14 @@
 import React, {useState, useEffect, useReducer} from 'react';
 import {View,TouchableOpacity,TouchableWithoutFeedback, ImageBackground, Text, FlatList, StyleSheet, Alert} from 'react-native'
-//import {Text, FAB, List} from 'react-native-paper'
 import Header from '../../components/Header'
 import LocalizationContext from "../../localization/LocalizationContext";
 import * as api from "../../services/home";
+import {useGlobalDataContext, setCategories} from '../../contexts/globalDataContext'
 
-const setCategory = categories => ({ type: 'OnSuccess', payload: { categories } });
+
 
 function RenderCategoryList(data) {
-    //console.log('RenderCategoryList  data1 ==> ', data)
+    console.log('RenderCategoryList 22 data ==> ', data)
     if (data.length > 0) {
         return (
             <View style={styles.container}>
@@ -29,21 +29,21 @@ function RenderCategoryList(data) {
 function ProductPage1({route}) {
     const {t, i18n} = React.useContext(LocalizationContext);
     //Product Page1  {t('welcome')}
-    console.log("MERA  ProductPage1 param ==>  ",route,' -- ')
+   // console.log("MERA  ProductPage1 param ==>  ",route,' -- ')
 
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
 
-    const [categories, setCategories] = useState({});
+    //const [categories, setCategories] = useState({});
+
+    const { globalState, dispatch } = useGlobalDataContext();
 
     async function fetchData() {
         //setLoading(true);
         try {
             let response = await api.getCategoryList();
-            console.log(' getCategoryList 22 =====>  ',response.result)
-            setCategories(response.result)
-            //dispatch({ type: 'OnSuccess', payload: {response} })
-            dispatch(()=> setCategory(response) )
+            //setCategories(response.result)
+            dispatch(setCategories(response.result))
 
             setLoading(false);
 
@@ -62,14 +62,13 @@ function ProductPage1({route}) {
 
         <View style={{flex: 1}}>
             <Header titleText='Danh mục sản phẩm'/>
-            {RenderCategoryList(categories)}
+            {RenderCategoryList(globalState.categories )}
             {/*{console.log('MERA categoryReducer 44 ==>  ', globalCategory)}*/}
         </View>
     )
 }
 
 function RenderCategoryItem(item) {
-    console.log(' RenderCategoryItem on11  ',item.title_vi)
     return (
         <View style={[styles.itemContainer]} >
             <ImageBackground source={{uri: item.photoUrl}} style={styles.bgImage}>
