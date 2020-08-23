@@ -5,13 +5,11 @@ import {
     Text,
     TouchableOpacity,
     StyleSheet,
-    FlatList, ImageBackground,
 } from 'react-native';
 import {Input, CheckBox, Button} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/AntDesign';
 
 import ImagePicker from 'react-native-image-crop-picker';
-import Modal from 'react-native-modal';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 import Header from '../../components/Header';
@@ -21,6 +19,7 @@ import * as api from '../../services/products';
 import LocalizationContext from '../../localization/LocalizationContext';
 import ModelList from '../../components/ModelList'
 import ModelCalendar from '../../components/ModelCalendar'
+import {ProductCertifications} from '../../config/AppConfig'
 
 
 
@@ -88,12 +87,14 @@ function CreatePost1({navigation}) {
     let [isShowCityDropdown, setShowCityDropdown] = useState(false);
     let [isShowDistrictDropdown, setShowDistrictDropdown] = useState(false);
     let [isShowCropTimeCalendar, setShowCropTimeCalendar ] = useState(false);
+    let [isShowCertification, setShowCertification ] = useState(false);
 
     const [selectedCity, setSelectedCity] = useState('');
     const [selectedDistrict, setSelectedDistrict] = useState('');
     const [selectedCropTimeDate, setSelectedCropTimeDate ] = useState("");
+    const [selectedCertification, setSelectedCertification ] = useState("");
 
-    
+
     async function uploadProduct() {
         try {
             let response = await api.uploadImages(images);
@@ -167,6 +168,11 @@ function CreatePost1({navigation}) {
         console.log('cropTimeCalendarCallBack ==> ',day)
         setSelectedCropTimeDate(day.dateString)
         setShowCropTimeCalendar(false)
+    }
+
+    function certificationCallBack(certification) {
+        setSelectedCertification(certification)
+        setShowCertification(false)
     }
 
     return (
@@ -274,6 +280,13 @@ function CreatePost1({navigation}) {
                             callBack = {(day)=> cropTimeCalendarCallBack(day)}
                         />
 
+                        <ModelList
+                            isVisible = {isShowCertification}
+                            title = {'Chọn tiêu chuẩn'}
+                            items = {ProductCertifications}
+                            callBack = {(item)=> certificationCallBack(item)}
+                        />
+
                         {isSell == true ?
 
                             dropdownButton(selectedCropTimeDate === "" ? "Thời gian thu hoạch": selectedCropTimeDate,()=> setShowCropTimeCalendar(true)) : null
@@ -286,11 +299,7 @@ function CreatePost1({navigation}) {
                                 inputContainerStyle={styles.basicInput}
                             /> : null
                         }
-                        <Input
-                            inputStyle={styles.inputStyle}
-                            placeholder='Tiêu chuẩn'
-                            inputContainerStyle={styles.basicInput}
-                        />
+                        {dropdownButton(selectedCertification === "" ? "Tiêu chuẩn": selectedCertification,()=> setShowCertification(true))}
                         <Input
                             inputStyle={styles.inputStyle}
                             placeholder='Email '
