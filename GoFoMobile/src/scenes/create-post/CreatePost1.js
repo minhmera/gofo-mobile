@@ -20,6 +20,7 @@ import GlobalStyle from '../../style/GlobalStyle';
 import * as api from '../../services/products';
 import LocalizationContext from '../../localization/LocalizationContext';
 import ModelList from '../../components/ModelList'
+import ModelCalendar from '../../components/ModelCalendar'
 
 
 
@@ -76,21 +77,25 @@ function CreatePost1({navigation}) {
     const {t, i18n} = React.useContext(LocalizationContext);
     let [images, setImages] = useState(null);
     let [isSell, setSellStatus] = useState(true);
-    let [isShowCityDropdown, setShowCityDropdown] = useState(false);
-    let [isShowDistrictDropdown, setShowDistrictDropdown] = useState(false);
+
     const [cities, setCities] = useState({});
     const [districts, setDistricts] = useState({});
     const [locations, setLocations] = useState({});
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
 
+
+    let [isShowCityDropdown, setShowCityDropdown] = useState(false);
+    let [isShowDistrictDropdown, setShowDistrictDropdown] = useState(false);
+    let [isShowCropTimeCalendar, setShowCropTimeCalendar ] = useState(false);
+
     const [selectedCity, setSelectedCity] = useState('');
     const [selectedDistrict, setSelectedDistrict] = useState('');
+    const [selectedCropTimeDate, setSelectedCropTimeDate ] = useState("");
 
-
-    async function uploadImage() {
+    
+    async function uploadProduct() {
         try {
-            //const fileToUpload = images[0];
             let response = await api.uploadImages(images);
             console.log('uploadImage response ==> ', response);
         } catch (e) {
@@ -156,6 +161,12 @@ function CreatePost1({navigation}) {
     function districtDropDownCallBack(district) {
         setSelectedDistrict(district)
         setShowDistrictDropdown(false)
+    }
+
+    function cropTimeCalendarCallBack(day) {
+        console.log('cropTimeCalendarCallBack ==> ',day)
+        setSelectedCropTimeDate(day.dateString)
+        setShowCropTimeCalendar(false)
     }
 
     return (
@@ -241,6 +252,7 @@ function CreatePost1({navigation}) {
 
                         {dropdownButton(selectedDistrict === "" ? "Choose district": selectedDistrict,()=> setShowDistrictDropdown(true))}
 
+
                         <ModelList
                             isVisible = {isShowCityDropdown}
                             title = {'Choose Your City'}
@@ -255,12 +267,17 @@ function CreatePost1({navigation}) {
                             callBack = {(item)=> districtDropDownCallBack(item)}
                         />
 
+                        <ModelCalendar
+                            isVisible = {isShowCropTimeCalendar}
+                            title = {'Select a Crop Day'}
+                            items = {districts}
+                            callBack = {(day)=> cropTimeCalendarCallBack(day)}
+                        />
+
                         {isSell == true ?
-                            <Input
-                                inputStyle={styles.inputStyle}
-                                placeholder='Thời gian thu hoạch'
-                                inputContainerStyle={styles.basicInput}
-                            /> : null
+
+                            dropdownButton(selectedCropTimeDate === "" ? "Thời gian thu hoạch": selectedCropTimeDate,()=> setShowCropTimeCalendar(true)) : null
+
                         }
                         {isSell == true ?
                             <Input
@@ -288,7 +305,7 @@ function CreatePost1({navigation}) {
                         <View style={styles.bottomView}>
                             <Button
                                 title="Upload Product"
-
+                                onPress={()=> uploadProduct()}
                                 buttonStyle={[AppStyle.commonButton, styles.submitButton,]} //submitButton
                                 containerStyle={styles.buttonContainer}
                             />

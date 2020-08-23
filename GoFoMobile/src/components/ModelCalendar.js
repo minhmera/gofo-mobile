@@ -6,45 +6,38 @@ import GlobalStyle from "../style/GlobalStyle";
 import {Button} from 'react-native-elements';
 import AppStyle from '../style/style';
 import Modal from 'react-native-modal';
+import {LocaleConfig, Calendar} from 'react-native-calendars';
 
 
-function ModelList({isVisible,title,items, callBack}) {
-    console.log('ModelList ==> ',items.length)
-    function RenderCategoryItem(item) {
-        return (
-            <TouchableOpacity
-                style={styles.dropdownItem}
-                key = {item}
-                onPress={()=> callBack(item)}
-            >
-                <Text>
-                    {item}
-                </Text>
-            </TouchableOpacity>
-        )
-    }
-    function renderDropdown(items) {
-        //console.log('RenderCategoryList  data1 ==> ', data)
-        if (items.length > 0) {
-            return (
-                <View style={{flex:1,marginLeft: 10,marginRight: 10, marginTop:10}}>
-                    <FlatList
-                        data={items}
-                        renderItem={({item}) =>
-                            RenderCategoryItem(item)
-                        }
 
-                        keyExtractor={(item, index) => item}
-                    />
-                </View>
-            )
-        }
-    }
+
+
+function ModelCalendar({isVisible,title,items, callBack}) {
+
+    LocaleConfig.locales['vn'] = {
+        monthNames: ['Tháng một','Tháng hai ','Tháng ba','Tháng tư','Tháng năm','Tháng sáu','Tháng bảy ','Tháng tám ','Tháng chín ','Tháng mười ','Tháng mười hai'],
+        monthNamesShort: ['Janv.','Févr.','Mars','Avril','Mai','Juin','Juil.','Août','Sept.','Oct.','Nov.','Déc.'],
+        dayNames: ['Chủ nhật','Thứ hai','Thứ ba','Thứ tư','Thứ năm','Thứ sáu','Thứ bảy'],
+        dayNamesShort: ['CN','T2','T3','T4','T5','T6','T7'],
+        today: 'Hôm nay'
+    };
+
+    LocaleConfig.defaultLocale = 'vn'
+    //console.log('ModelCalendar ==>  ',LocaleConfig)
+
     return (
         <Modal isVisible={isVisible}>
-            <TouchableOpacity style={styles.dropDownContainer} activeOpacity={1} onPress={()=> callBack('')}>
+            <TouchableOpacity style={styles.dropDownContainer} activeOpacity={1} >
                 <Text style={styles.dropdownTitle}>{title}</Text>
-                {renderDropdown(items)}
+
+                <Calendar
+                    onDayPress={(day) => callBack(day)}
+                    markedDates={{
+                        '2020-08-25': { selected: true, selectedColor: GlobalStyle.colour.primaryColor},
+                        //'2020-08-26': {dots: [massage, workout], disabled: true}
+                    }}
+                    markingType={'multi-dot'}
+                />
 
                 {/*<View
                     style= {styles.dropDownHideButtonView}>
@@ -61,7 +54,7 @@ function ModelList({isVisible,title,items, callBack}) {
     )
 
 }
-export default ModelList
+export default ModelCalendar
 
 const styles = StyleSheet.create({
     headerContainer: {
