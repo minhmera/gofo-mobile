@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import {StatusBar, View} from 'react-native';
+import {StatusBar, StyleSheet, View} from 'react-native';
 
 import AsyncStorage from '@react-native-community/async-storage'
 
@@ -8,10 +8,13 @@ import {TOKEN_KEY, useAuth, USER_KEY} from "../../contexts/auth";
 
 import Form from 'react-native-basic-form';
 import CTA from "../../components/CTA";
-import {Header, ErrorText} from "../../components/Shared";
+import {ErrorText} from "../../components/Shared";
 import Header2 from '../../components/Header';
 import GlobalStyle from '../../style/GlobalStyle';
-
+import Header from '../../components/Header';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import {Button, Input} from 'react-native-elements';
+import AppStyle from '../../style/style';
 
 async function getTokenKey() {
     let token = await AsyncStorage.getItem(TOKEN_KEY);
@@ -33,17 +36,23 @@ export default function Login(props) {
         {name: 'password', label: 'Password', required: true, secure: true}
     ];
 
+    const [userName, setUserName] = useState('');
+    const [userNameError, setUserNameError] = useState({});
+
+    const [password, setPassword] = useState('');
+    const [passwordError, setPasswordError] = useState({});
 
 
-    async function onSubmit(state) {
-        console.log("MERA  onSubmit  ==> ",state);
+    async function onSubmit() {
+        let submitObj = { email: userName,  password:password}
+        console.log("MERA  onSubmit  ==> ");
         setLoading(true);
 
         try {
-            let response = await api.login(state);
+            let response = await api.login(submitObj);
             //await handleLogin(response);
             setLoading(false);
-            console.log('MERA  Log in token  ',response.result.token)
+            console.log('MERA  Log in token  ',response.result)
             try {
                 let token = await AsyncStorage.setItem(TOKEN_KEY, response.result.token)
                 //navigate.setParams({"param":"Value cc "})
@@ -78,37 +87,47 @@ export default function Login(props) {
     const {token} = AsyncStorage.getItem(TOKEN_KEY)
     console.log('MERA AAsyncStorage token ==>  ',token)
     return (
-        <View style={{flex: 1, paddingHorizontal: 16, backgroundColor:"#fff"}}>
-            <Header title={"Login"}/>
-            <StatusBar barStyle="light-content" />
-            <View style={{flex: 1}}>
-                <ErrorText error={error}/>
-                <Form
-                    {...formProps}
-                    buttonStyle={{borderRadius:24, height:48, backgroundColor:GlobalStyle.colour.primaryColor}}
 
-                    autoCapitalize = {true}
-                >
-                    <CTA
-                        ctaText={"Forgot Password?"}
-                        //onPress={() => navigation.navigate("ForgotPassword")}
-                        onPress={() => getTokenKey()}
-                        style={{marginTop: 20}}/>
+        <View style={{flex: 1, backgroundColor: '#fff'}}>
+            <Header titleText='Login' navigation={navigation}/>
 
-                    <CTA
-                        title={"Don't have an account?"}
-                        ctaText={"Register"}
-                        //onPress={() => navigation.replace("Register")}
 
-                        onPress={() => testNavigate()  }
+            <KeyboardAwareScrollView style={{flex: 1}} keyboardDismissMode = {'on-drag'}>
+                <View style={{flex: 1,marginTop:20}}>
+                    <Input
+                        inputStyle={styles.inputStyle}
+                        inputContainerStyle={styles.basicInput}
+                        //errorStyle={{ color: 'red' }}
+                        placeholder='User name'
+                        //errorMessage={userNameError.text}
+                        onChangeText={text => setUserName(text)}
 
-                        style={{marginTop: 50}}/>
-                </Form>
-            </View>
+                    />
+                    <Input
+                        inputStyle={styles.inputStyle}
+                        inputContainerStyle={styles.basicInput}
+                        //errorMessage={passwordError.text}
+                        placeholder='Password'
+                        onChangeText={text => setPassword(text)}
+
+                    />
+
+
+
+                    <View style={styles.bottomView}>
+                        <Button
+                            title="Login"
+                            onPress={() => onSubmit()}
+                            buttonStyle={[AppStyle.commonButton, styles.submitButton]} //submitButton
+                            containerStyle={styles.buttonContainer}
+                        />
+                    </View>
+                </View>
+            </KeyboardAwareScrollView>
         </View>
 
-
     );
+
 };
 
 Login.navigationOptions = ({}) => {
@@ -116,3 +135,61 @@ Login.navigationOptions = ({}) => {
         title: ``
     }
 };
+
+
+
+const styles = StyleSheet.create({
+    bottomView: {},
+    buttonContainer: {
+        paddingTop: 40,
+        padding: 20,
+    },
+    submitButton: {
+        backgroundColor: GlobalStyle.colour.primaryColor,
+        height: 40,
+
+    },
+    inputStyle: {
+        fontSize:16 ,
+        fontWeight:'400',
+    },
+    basicInput: {
+        borderBottomWidth: 0.5,
+        borderBottomColor: '#B5B5B5',
+    },
+});
+
+
+
+// return (
+//     <View style={{flex: 1, paddingHorizontal: 16, backgroundColor:"#fff"}}>
+//         <Header title={"Login"}/>
+//         <StatusBar barStyle="light-content" />
+//         <View style={{flex: 1}}>
+//             <ErrorText error={error}/>
+//             <Form
+//                 {...formProps}
+//                 buttonStyle={{borderRadius:24, height:48, backgroundColor:GlobalStyle.colour.primaryColor}}
+//
+//                 autoCapitalize = {true}
+//             >
+//                 <CTA
+//                     ctaText={"Forgot Password?"}
+//                     //onPress={() => navigation.navigate("ForgotPassword")}
+//                     onPress={() => getTokenKey()}
+//                     style={{marginTop: 20}}/>
+//
+//                 <CTA
+//                     title={"Don't have an account?"}
+//                     ctaText={"Register"}
+//                     //onPress={() => navigation.replace("Register")}
+//
+//                     onPress={() => testNavigate()  }
+//
+//                     style={{marginTop: 50}}/>
+//             </Form>
+//         </View>
+//     </View>
+//
+//
+// );
