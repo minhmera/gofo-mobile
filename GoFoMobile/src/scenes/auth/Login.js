@@ -6,15 +6,17 @@ import AsyncStorage from '@react-native-community/async-storage'
 import * as api from "../../services/auth";
 import {TOKEN_KEY, useAuth, USER_KEY} from "../../contexts/auth";
 
-import Form from 'react-native-basic-form';
 import CTA from "../../components/CTA";
 import {ErrorText} from "../../components/Shared";
-import Header2 from '../../components/Header';
 import GlobalStyle from '../../style/GlobalStyle';
 import Header from '../../components/Header';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {Button, Input} from 'react-native-elements';
 import AppStyle from '../../style/style';
+import AnimatedLoader from  '../../utils/custom-view/AnimatedLoader'
+import {backgroundColor} from 'react-native-calendars/src/style';
+
+
 
 async function getTokenKey() {
     let token = await AsyncStorage.getItem(TOKEN_KEY);
@@ -123,6 +125,22 @@ export default function Login(props) {
                         />
                     </View>
                 </View>
+
+
+                <AnimatedLoader
+                    visible={true}
+                    //overlayColor="rgba(215,215,215,0.55)"
+                    overlayColor="rgba(69,69,169,0.55)"
+                    animationType = 'slide'
+                    source={require("../../utils/custom-view/loader.json")}
+                    animationStyle={styles.lottie}
+                    animationStyle = {{height: 200, width: 200}}
+                    loop = {true}
+                    speed={1}
+                />
+
+
+
             </KeyboardAwareScrollView>
         </View>
 
@@ -139,6 +157,10 @@ Login.navigationOptions = ({}) => {
 
 
 const styles = StyleSheet.create({
+    lottie: {
+        width: 100,
+        height: 100
+    },
     bottomView: {},
     buttonContainer: {
         paddingTop: 40,
@@ -157,6 +179,7 @@ const styles = StyleSheet.create({
         borderBottomWidth: 0.5,
         borderBottomColor: '#B5B5B5',
     },
+
 });
 
 
