@@ -80,7 +80,7 @@ function Register(props) {
         }
 
         let registerObj = {
-            "email":userName,
+            "username":userName,
             "password":password,
 
         }

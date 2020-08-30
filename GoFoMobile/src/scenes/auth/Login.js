@@ -46,7 +46,7 @@ export default function Login(props) {
 
 
     async function onSubmit() {
-        let submitObj = { email: userName,  password:password}
+        let submitObj = { username: userName,  password:password}
         console.log("MERA  onSubmit  ==> ");
         setLoading(true);
 
@@ -127,7 +127,7 @@ export default function Login(props) {
                 </View>
 
 
-                <AnimatedLoader
+                {/*<AnimatedLoader
                     visible={true}
                     //overlayColor="rgba(215,215,215,0.55)"
                     overlayColor="rgba(69,69,169,0.55)"
@@ -137,7 +137,7 @@ export default function Login(props) {
                     animationStyle = {{height: 200, width: 200}}
                     loop = {true}
                     speed={1}
-                />
+                />*/}
 
 
 
