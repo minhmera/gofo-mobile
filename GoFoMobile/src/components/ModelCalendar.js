@@ -12,7 +12,7 @@ import {LocaleConfig, Calendar} from 'react-native-calendars';
 
 
 
-function ModelCalendar({isVisible,title,items, callBack}) {
+function ModelCalendar({isVisible,title,items,style, callBack}) {
 
     LocaleConfig.locales['vn'] = {
         monthNames: ['Tháng một','Tháng hai ','Tháng ba','Tháng tư','Tháng năm','Tháng sáu','Tháng bảy ','Tháng tám ','Tháng chín ','Tháng mười ','Tháng mười hai'],
@@ -24,10 +24,16 @@ function ModelCalendar({isVisible,title,items, callBack}) {
 
     LocaleConfig.defaultLocale = 'vn'
     //console.log('ModelCalendar ==>  ',LocaleConfig)
+    let customStyle = {}
+    if (style !== undefined) {
+        customStyle = style
+    }
+
+    console.log('customStyle ===>  ',customStyle)
 
     return (
         <Modal isVisible={isVisible}>
-            <TouchableOpacity style={styles.dropDownContainer} activeOpacity={1} >
+            <TouchableOpacity style={[styles.dropDownContainer,customStyle]} activeOpacity={1} >
                 <Text style={styles.dropdownTitle}>{title}</Text>
 
                 <Calendar

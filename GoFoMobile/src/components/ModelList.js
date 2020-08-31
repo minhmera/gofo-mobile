@@ -1,17 +1,17 @@
 import React from 'react';
-import {View, TouchableOpacity, StyleSheet, Text, FlatList} from 'react-native';
+import {View, TouchableOpacity, TouchableWithoutFeedback, StyleSheet, Text, FlatList, Alert} from 'react-native';
 import {Appbar, Title} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/AntDesign';
 import GlobalStyle from '../style/GlobalStyle';
 import {Button} from 'react-native-elements';
 import AppStyle from '../style/style';
-import Modal from 'react-native-modal';
+import Modal, { SlideAnimation, ModalContent } from 'react-native-modal';
 
 
-function ModelList({isVisible, title, items, customField, customItemId, callBack}) {
-    console.log('MERA ModelList 11 ==> ', items);
+function ModelList({isVisible, title, items, customField, customItemId, style, callBack}) {
+    //console.log('MERA ModelList 11 ==> ', items);
 
-    function RenderCategoryItem(item,customField) {
+    function RenderCategoryItem(item, customField) {
         if (customField === undefined) {
             return (
                 <TouchableOpacity
@@ -25,7 +25,7 @@ function ModelList({isVisible, title, items, customField, customItemId, callBack
                 </TouchableOpacity>
             );
         } else {
-            console.log('MERA ModelList ==> RenderCategoryItem  ', item, '|| 22  customField ==> ',customField, 'item.customField ' ,item.title_vi);
+            console.log('MERA ModelList ==> RenderCategoryItem  ', item, '|| 22  customField ==> ', customField, 'item.customField ', item.title_vi);
             return (
                 <TouchableOpacity
                     style={styles.dropdownItem}
@@ -43,41 +43,50 @@ function ModelList({isVisible, title, items, customField, customItemId, callBack
 
     function renderDropdown(items, customField) {
 
-
-
-
         if (items.length > 0) {
             return (
                 <View style={{flex: 1, marginLeft: 10, marginRight: 10, marginTop: 10}}>
                     <FlatList
                         data={items}
                         renderItem={({item}) =>
-                            RenderCategoryItem(item,customField)
+                            RenderCategoryItem(item, customField)
                         }
 
-                        keyExtractor={(item, index) => customField === undefined ? item : item[`${customItemId}`] }
+                        keyExtractor={(item, index) => customField === undefined ? item : item[`${customItemId}`]}
                     />
                 </View>
             );
         }
     }
 
+    let customStyle = {};
+    if (style !== undefined) {
+        customStyle = style;
+    }
     return (
-        <Modal isVisible={isVisible}>
-            <TouchableOpacity style={styles.dropDownContainer} activeOpacity={1} onPress={() => callBack('')}>
-                <Text style={styles.dropdownTitle}>{title}</Text>
-                {renderDropdown(items, customField)}
+        <Modal
+            isVisible={isVisible}
+            //modalAnimation="slide"
+            animationIn = {'slideInUp'}
+            animationInTiming = {100}
+        >
+            <TouchableOpacity style={styles.container} activeOpacity = {1} onPress={() => callBack('')} >
+                <TouchableOpacity style={[styles.dropDownContainer, customStyle]} activeOpacity={1}
+                                  onPress={() => callBack('')}>
+                    <Text style={styles.dropdownTitle}>{title}</Text>
+                    {renderDropdown(items, customField)}
 
-                {/*<View
-                    style= {styles.dropDownHideButtonView}>
+                    {/*<View
+                    style={styles.dropDownHideButtonView}>
                     <Button
-                        style={{backgroundColor:GlobalStyle.colour.primaryColor,borderRadius:20,}}
+                        style={{backgroundColor: GlobalStyle.colour.primaryColor, borderRadius: 20}}
                         title="Hide modal"
                         buttonStyle={[AppStyle.commonButton, styles.submitButton]} //submitButton
-                        onPress={()=> callBack()}
+                        onPress={() => callBack()}
                     />
                 </View>*/}
 
+                </TouchableOpacity>
             </TouchableOpacity>
         </Modal>
     );
@@ -92,10 +101,11 @@ const styles = StyleSheet.create({
     },
     container: {
         flex: 1,
-        flexDirection: 'row',
-        //justifyContent: 'center',
-        alignItems: 'center',
-        textAlign: 'center',
+        justifyContent: 'center',
+        //alignItems: 'center',
+        //textAlign: 'center',
+
+
     },
     backButtonView: {
         width: 40,
@@ -115,7 +125,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     dropDownContainer: {
-        //flex:1,
         height: '80%',
         borderRadius: 6,
         backgroundColor: 'white',

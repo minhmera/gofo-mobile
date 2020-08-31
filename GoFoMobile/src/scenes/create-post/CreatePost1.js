@@ -273,6 +273,7 @@ function CreatePost1({navigation}) {
                         <ModelList
                             isVisible = {isShowCategoryDropdown}
                             title = {'Choose Category'}
+                            style = {{height:300}}
                             items = {globalState.categories}
                             customField = {'title_vi'}
                             customItemId = {'_id'}
@@ -288,7 +289,7 @@ function CreatePost1({navigation}) {
 
                         <ModelList
                             isVisible = {isShowDistrictDropdown}
-                            title = {'Choose Your City'}
+                            title = {'Choose Your District'}
                             items = {districts}
                             callBack = {(item)=> districtDropDownCallBack(item)}
                         />
@@ -296,6 +297,7 @@ function CreatePost1({navigation}) {
                         <ModelCalendar
                             isVisible = {isShowCropTimeCalendar}
                             title = {'Select a Crop Day'}
+                            style = {{height:460}}
                             items = {districts}
                             callBack = {(day)=> cropTimeCalendarCallBack(day)}
                         />
@@ -303,6 +305,7 @@ function CreatePost1({navigation}) {
                         <ModelList
                             isVisible = {isShowCertification}
                             title = {'Chọn tiêu chuẩn'}
+                            style = {{height:180}}
                             items = {ProductCertifications}
                             callBack = {(item)=> certificationCallBack(item)}
                         />
