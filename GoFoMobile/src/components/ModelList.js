@@ -1,50 +1,72 @@
-import React from 'react'
+import React from 'react';
 import {View, TouchableOpacity, StyleSheet, Text, FlatList} from 'react-native';
-import { Appbar, Title } from 'react-native-paper'
+import {Appbar, Title} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/AntDesign';
-import GlobalStyle from "../style/GlobalStyle";
+import GlobalStyle from '../style/GlobalStyle';
 import {Button} from 'react-native-elements';
 import AppStyle from '../style/style';
 import Modal from 'react-native-modal';
 
 
-function ModelList({isVisible,title,items, callBack}) {
-    console.log('ModelList ==> ',items.length)
-    function RenderCategoryItem(item) {
-        return (
-            <TouchableOpacity
-                style={styles.dropdownItem}
-                key = {item}
-                onPress={()=> callBack(item)}
-            >
-                <Text>
-                    {item}
-                </Text>
-            </TouchableOpacity>
-        )
+function ModelList({isVisible, title, items, customField, customItemId, callBack}) {
+    console.log('MERA ModelList 11 ==> ', items);
+
+    function RenderCategoryItem(item,customField) {
+        if (customField === undefined) {
+            return (
+                <TouchableOpacity
+                    style={styles.dropdownItem}
+                    key={item}
+                    onPress={() => callBack(item)}
+                >
+                    <Text>
+                        {item}
+                    </Text>
+                </TouchableOpacity>
+            );
+        } else {
+            console.log('MERA ModelList ==> RenderCategoryItem  ', item, '|| 22  customField ==> ',customField, 'item.customField ' ,item.title_vi);
+            return (
+                <TouchableOpacity
+                    style={styles.dropdownItem}
+                    key={item[`${customItemId}`]}
+                    onPress={() => callBack(item)}
+                >
+                    <Text>
+                        {item[`${customField}`]}
+                    </Text>
+                </TouchableOpacity>
+            );
+        }
+
     }
-    function renderDropdown(items) {
-        //console.log('RenderCategoryList  data1 ==> ', data)
+
+    function renderDropdown(items, customField) {
+
+
+
+
         if (items.length > 0) {
             return (
-                <View style={{flex:1,marginLeft: 10,marginRight: 10, marginTop:10}}>
+                <View style={{flex: 1, marginLeft: 10, marginRight: 10, marginTop: 10}}>
                     <FlatList
                         data={items}
                         renderItem={({item}) =>
-                            RenderCategoryItem(item)
+                            RenderCategoryItem(item,customField)
                         }
 
-                        keyExtractor={(item, index) => item}
+                        keyExtractor={(item, index) => customField === undefined ? item : item[`${customItemId}`] }
                     />
                 </View>
-            )
+            );
         }
     }
+
     return (
         <Modal isVisible={isVisible}>
-            <TouchableOpacity style={styles.dropDownContainer} activeOpacity={1} onPress={()=> callBack('')}>
+            <TouchableOpacity style={styles.dropDownContainer} activeOpacity={1} onPress={() => callBack('')}>
                 <Text style={styles.dropdownTitle}>{title}</Text>
-                {renderDropdown(items)}
+                {renderDropdown(items, customField)}
 
                 {/*<View
                     style= {styles.dropDownHideButtonView}>
@@ -58,31 +80,32 @@ function ModelList({isVisible,title,items, callBack}) {
 
             </TouchableOpacity>
         </Modal>
-    )
+    );
 
 }
-export default ModelList
+
+export default ModelList;
 
 const styles = StyleSheet.create({
     headerContainer: {
-        backgroundColor: GlobalStyle.colour.primaryColor
+        backgroundColor: GlobalStyle.colour.primaryColor,
     },
     container: {
-        flex:1,
-        flexDirection:'row',
+        flex: 1,
+        flexDirection: 'row',
         //justifyContent: 'center',
         alignItems: 'center',
-        textAlign:'center'
+        textAlign: 'center',
     },
     backButtonView: {
-        width:40,
+        width: 40,
         //backgroundColor: 'blue',
         justifyContent: 'center',
         alignItems: 'center',
 
     },
     titleView: {
-        flex:1,
+        flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
     },
@@ -93,26 +116,25 @@ const styles = StyleSheet.create({
     },
     dropDownContainer: {
         //flex:1,
-        height:'80%',
-        borderRadius:6,
-        backgroundColor:'white',
-
+        height: '80%',
+        borderRadius: 6,
+        backgroundColor: 'white',
 
 
     },
     dropDownHideButtonView: {
-        width:'80%',
-        marginBottom:20,
+        width: '80%',
+        marginBottom: 20,
         alignSelf: 'center',
 
 
     },
     dropdownTitle: {
-        color:GlobalStyle.colour.primaryColor,
-        fontSize:20,
-        fontWeight:'700',
-        alignSelf:'center',
-        paddingTop:20,
+        color: GlobalStyle.colour.primaryColor,
+        fontSize: 20,
+        fontWeight: '700',
+        alignSelf: 'center',
+        paddingTop: 20,
     },
 
     submitButton: {
@@ -121,15 +143,17 @@ const styles = StyleSheet.create({
     },
 
     dropdownItem: {
-        height:40,
+        height: 40,
         //backgroundColor:'yellow',
         borderBottomColor: GlobalStyle.colour.grayColor,
         borderBottomWidth: 0.5,
 
-        justifyContent:'center',
-        alignItems:'center'
+        justifyContent: 'center',
+        alignItems: 'center',
     },
 
-})
+});
+
+
 
 

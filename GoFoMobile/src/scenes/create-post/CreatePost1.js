@@ -20,7 +20,7 @@ import LocalizationContext from '../../localization/LocalizationContext';
 import ModelList from '../../components/ModelList'
 import ModelCalendar from '../../components/ModelCalendar'
 import {ProductCertifications} from '../../config/AppConfig'
-
+import {useGlobalDataContext, setCategories} from '../../contexts/globalDataContext'
 
 
 
@@ -74,6 +74,9 @@ function dropdownButton(title,onPress) {
 //Product Page1  {t('welcome')}
 function CreatePost1({navigation}) {
     const {t, i18n} = React.useContext(LocalizationContext);
+
+    const { globalState, dispatch } = useGlobalDataContext();
+
     let [images, setImages] = useState(null);
     let [isSell, setSellStatus] = useState(true);
 
@@ -86,11 +89,17 @@ function CreatePost1({navigation}) {
 
     let [isShowCityDropdown, setShowCityDropdown] = useState(false);
     let [isShowDistrictDropdown, setShowDistrictDropdown] = useState(false);
+
+    let [isShowCategoryDropdown, setShowCategoryDropdown] = useState(false);
+
     let [isShowCropTimeCalendar, setShowCropTimeCalendar ] = useState(false);
     let [isShowCertification, setShowCertification ] = useState(false);
 
     const [selectedCity, setSelectedCity] = useState('');
     const [selectedDistrict, setSelectedDistrict] = useState('');
+
+    const [selectedCategory, setSelectedCategory] = useState('');
+
     const [selectedCropTimeDate, setSelectedCropTimeDate ] = useState("");
     const [selectedCertification, setSelectedCertification ] = useState("");
 
@@ -143,6 +152,12 @@ function CreatePost1({navigation}) {
     useEffect(() => {
         fetchData();
     }, []);
+
+    function cityCategoryCallBack(category) {
+        setSelectedCategory(category.title_vi)
+        setShowCategoryDropdown(false)
+
+    }
 
     function cityDropDownCallBack(cityName) {
 
@@ -242,11 +257,8 @@ function CreatePost1({navigation}) {
 
                         </View>
 
-                        <Input
-                            inputStyle={styles.inputStyle}
-                            placeholder='Phân loại sản phẩm '
-                            inputContainerStyle={styles.basicInput}
-                        />
+
+                        {dropdownButton(selectedCategory === "" ?  "Phân loại sản phẩm" : selectedCategory,()=> setShowCategoryDropdown(true))}
 
                         <Input
                             inputStyle={styles.inputStyle}
@@ -258,6 +270,14 @@ function CreatePost1({navigation}) {
 
                         {dropdownButton(selectedDistrict === "" ? "Choose district": selectedDistrict,()=> setShowDistrictDropdown(true))}
 
+                        <ModelList
+                            isVisible = {isShowCategoryDropdown}
+                            title = {'Choose Category'}
+                            items = {globalState.categories}
+                            customField = {'title_vi'}
+                            customItemId = {'_id'}
+                            callBack = {(item)=> cityCategoryCallBack(item)}
+                        />
 
                         <ModelList
                             isVisible = {isShowCityDropdown}
