@@ -1,5 +1,5 @@
 import React from 'react'
-import { View,TouchableOpacity, StyleSheet } from 'react-native'
+import {View, TouchableOpacity, StyleSheet, StatusBar} from 'react-native';
 import { Appbar, Title } from 'react-native-paper'
 import Icon from 'react-native-vector-icons/AntDesign';
 
@@ -7,13 +7,20 @@ import GlobalStyle from "../style/GlobalStyle";
 
 
 function Header({ titleText,navigation }) {
+  //console.log('MERA Header ==>  navigation  ',navigation)
+  function goBack() {
+    console.log('MERA Header ==>  navigation  ',navigation)
+    //navigation.replace("Login")
+    navigation.goBack()
+  }
   if (navigation) {
     return (
         <Appbar.Header style={styles.headerContainer}>
+          <StatusBar backgroundColor="blue" barStyle={'light-content'} />
           <View style={styles.container}>
             <TouchableOpacity
                 style={styles.backButtonView}
-                onPress={() => navigation.goBack()}
+                onPress={() => goBack()}
             >
               <Icon
                   name='arrowleft'
@@ -31,6 +38,7 @@ function Header({ titleText,navigation }) {
   }  else {
     return (
         <Appbar.Header style={styles.headerContainer}>
+          <StatusBar backgroundColor="blue" barStyle={'light-content'} />
           <View style={styles.container}>
             <View style={styles.titleView}>
               <Title style={styles.titleText}>{titleText}</Title>

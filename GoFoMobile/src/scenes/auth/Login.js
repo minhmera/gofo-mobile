@@ -91,6 +91,7 @@ export default function Login(props) {
     return (
 
         <View style={{flex: 1, backgroundColor: '#fff'}}>
+
             <Header titleText='Login' navigation={navigation}/>
 
 
@@ -123,6 +124,13 @@ export default function Login(props) {
                             buttonStyle={[AppStyle.commonButton, styles.submitButton]} //submitButton
                             containerStyle={styles.buttonContainer}
                         />
+                        <Button
+                            title="Register"
+                            onPress={() => testNavigate()}
+                            buttonStyle={[AppStyle.commonButton, styles.submitButton]} //submitButton
+                            containerStyle={styles.buttonContainer}
+                        />
+
                     </View>
                 </View>
 
