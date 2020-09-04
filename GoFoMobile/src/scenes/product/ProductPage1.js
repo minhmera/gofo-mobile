@@ -4,6 +4,7 @@ import Header from '../../components/Header'
 import LocalizationContext from "../../localization/LocalizationContext";
 import * as api from "../../services/home";
 import {useGlobalDataContext, setCategories} from '../../contexts/globalDataContext'
+import AnimatedLoader from '../../utils/custom-view/AnimatedLoader';
 
 
 
@@ -39,7 +40,7 @@ function ProductPage1({route}) {
     const { globalState, dispatch } = useGlobalDataContext();
 
     async function fetchData() {
-        //setLoading(true);
+        setLoading(true);
         try {
             let response = await api.getCategoryList();
             //setCategories(response.result)
@@ -63,7 +64,17 @@ function ProductPage1({route}) {
         <View style={{flex: 1}}>
             <Header titleText='Danh mục sản phẩm'/>
             {RenderCategoryList(globalState.categories )}
-            {/*{console.log('MERA categoryReducer 44 ==>  ', globalCategory)}*/}
+
+            <AnimatedLoader
+                visible={loading}
+                //overlayColor="rgba(215,215,215,0.55)"
+                overlayColor="rgba(0,0,0,0.55)"
+                animationType = 'slide'
+                animationStyle={styles.lottie}
+                animationStyle = {{height: 120, width: 120}}
+                loop = {true}
+                speed={3}
+            />
         </View>
     )
 }

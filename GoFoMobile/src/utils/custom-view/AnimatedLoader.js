@@ -9,7 +9,7 @@ export default class AnimatedLoader extends React.PureComponent {
         visible: false,
         overlayColor: 'rgba(0, 0, 0, 0.25)',
         animationType: 'none',
-        source: require('./loader.json'),
+        source: require('./LoadingJSON/spinning-circle.json'),
         animationStyle: {},
         speed: 1,
         loop: true,
@@ -90,7 +90,7 @@ export default class AnimatedLoader extends React.PureComponent {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: 'transparent',
+        backgroundColor: 'red',
         position: 'absolute',
         top: 0,
         bottom: 0,

@@ -59,6 +59,7 @@ export default function Login(props) {
                 let token = await AsyncStorage.setItem(TOKEN_KEY, response.result.token)
                 //navigate.setParams({"param":"Value cc "})
                 navigate('App');
+                setLoading(false);
 
             } catch (error) {
                 // Error saving data
@@ -85,7 +86,6 @@ export default function Login(props) {
         })
     }
 
-    let formProps = {title: "Login", fields, onSubmit, loading};
     const {token} = AsyncStorage.getItem(TOKEN_KEY)
     console.log('MERA AAsyncStorage token ==>  ',token)
     return (
@@ -135,17 +135,16 @@ export default function Login(props) {
                 </View>
 
 
-                {/*<AnimatedLoader
-                    visible={true}
+                <AnimatedLoader
+                    visible={loading}
                     //overlayColor="rgba(215,215,215,0.55)"
-                    overlayColor="rgba(69,69,169,0.55)"
+                    overlayColor="rgba(0,0,0,0.55)"
                     animationType = 'slide'
-                    source={require("../../utils/custom-view/loader.json")}
                     animationStyle={styles.lottie}
-                    animationStyle = {{height: 200, width: 200}}
+                    //animationStyle = {{height: 200, width: 200}}
                     loop = {true}
                     speed={1}
-                />*/}
+                />
 
 
 
