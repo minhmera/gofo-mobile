@@ -5,7 +5,8 @@ import AuthProvider from './src/contexts/auth';
 //import GlobalData from './src/contexts/globalDataContext';
 import {GlobalDataProvider} from './src/contexts/globalDataContext';
 import { StoreProvider } from './src/store'
-
+import {StatusBar} from 'react-native';
+//'default' | 'light-content' | 'dark-content';
 export default function App() {
 
 
@@ -16,6 +17,7 @@ export default function App() {
                 <AuthProvider>
 
                         <GlobalDataProvider>
+                            <StatusBar backgroundColor="blue" barStyle={'light-content'} />
                             <AppNavigator/>
                         </GlobalDataProvider>
 

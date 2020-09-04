@@ -16,7 +16,6 @@ function Header({ titleText,navigation }) {
   if (navigation) {
     return (
         <Appbar.Header style={styles.headerContainer}>
-          <StatusBar backgroundColor="blue" barStyle={'light-content'} />
           <View style={styles.container}>
             <TouchableOpacity
                 style={styles.backButtonView}
@@ -38,7 +37,6 @@ function Header({ titleText,navigation }) {
   }  else {
     return (
         <Appbar.Header style={styles.headerContainer}>
-          <StatusBar backgroundColor="blue" barStyle={'light-content'} />
           <View style={styles.container}>
             <View style={styles.titleView}>
               <Title style={styles.titleText}>{titleText}</Title>

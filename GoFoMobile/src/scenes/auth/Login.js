@@ -88,11 +88,12 @@ export default function Login(props) {
 
     const {token} = AsyncStorage.getItem(TOKEN_KEY)
     console.log('MERA AAsyncStorage token ==>  ',token)
+    ////'default' | 'light-content' | 'dark-content';
     return (
 
         <View style={{flex: 1, backgroundColor: '#fff'}}>
 
-            <Header titleText='Login' navigation={navigation}/>
+            <Header titleText='Login' />
 
 
             <KeyboardAwareScrollView style={{flex: 1}} keyboardDismissMode = {'on-drag'}>
