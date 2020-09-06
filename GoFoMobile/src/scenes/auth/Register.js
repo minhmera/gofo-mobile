@@ -107,6 +107,7 @@ function Register(props) {
     return (
 
             <View style={{flex: 1, backgroundColor: '#fff'}}>
+                <StatusBar barStyle="light-content" />
                 <Header titleText='Register' navigation={navigation}/>
 
 

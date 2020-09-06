@@ -4,7 +4,7 @@ import {
     Image,
     Text,
     TouchableOpacity,
-    StyleSheet,
+    StyleSheet, Alert,
 } from 'react-native';
 import {Input, CheckBox, Button} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/AntDesign';
@@ -110,6 +110,36 @@ function CreatePost1({navigation}) {
             console.log('uploadImage response ==> ', response);
         } catch (e) {
             console.log('Error ', e);
+        }
+    }
+
+    async function onSubmit() {
+        let sellingObj = {
+            "categoryId":1,
+            "productName":"Chôm chôm",
+            "provinceId":1,
+            "districtId":8,
+            "cropDay": "2020-12-28",
+            "productCertification": "Viet GAP",
+            "sellerPhone": "0976999864"
+        }
+
+        try {
+            let response = await api.sellingPost(sellingObj);
+            console.log('MERA  sellingPost   ', response);
+            setLoading(false);
+            Alert.alert(
+                'Registration Successful',
+                response.message,
+
+                [
+                    {text: 'OK'}, //  {text: 'OK', onPress: () => navigation.replace("Login")}
+                ],
+                {cancelable: false},
+            );
+        } catch (error) {
+            setError(error.message);
+            setLoading(false);
         }
     }
 
@@ -315,22 +345,18 @@ function CreatePost1({navigation}) {
                             dropdownButton(selectedCropTimeDate === "" ? "Thời gian thu hoạch": selectedCropTimeDate,()=> setShowCropTimeCalendar(true)) : null
 
                         }
-                        {isSell == true ?
+                        {/*{isSell == true ?
                             <Input
                                 inputStyle={styles.inputStyle}
                                 placeholder='Sản lượng'
                                 inputContainerStyle={styles.basicInput}
                             /> : null
-                        }
+                        }*/}
                         {dropdownButton(selectedCertification === "" ? "Tiêu chuẩn": selectedCertification,()=> setShowCertification(true))}
+
                         <Input
                             inputStyle={styles.inputStyle}
-                            placeholder='Email '
-                            inputContainerStyle={styles.basicInput}
-                        />
-                        <Input
-                            inputStyle={styles.inputStyle}
-                            placeholder="Tên"
+                            placeholder="Số điện thoại"
                             inputContainerStyle={styles.basicInput}
                             //secureTextEntry={true}
                         />

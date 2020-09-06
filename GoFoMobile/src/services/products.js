@@ -1,6 +1,7 @@
 import axios from 'axios';
 
 import * as c from '../constants';
+import {handler} from './auth';
 
 export async function getLocation() {
     try {
@@ -39,3 +40,13 @@ export async function uploadImages(images) {
 
 }
 
+
+export async function sellingPost(data){
+    try{
+        let res = await axios.post(c.SELLING_POST, data);
+
+        return res.data;
+    }catch (e) {
+        throw handler(e);
+    }
+}

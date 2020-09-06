@@ -92,7 +92,7 @@ export default function Login(props) {
     return (
 
         <View style={{flex: 1, backgroundColor: '#fff'}}>
-
+            <StatusBar barStyle="light-content" />
             <Header titleText='Login' />
 
 
