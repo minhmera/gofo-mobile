@@ -1,14 +1,14 @@
 import React, {useState, useEffect, useReducer} from 'react';
-import {View,TouchableOpacity,TouchableWithoutFeedback, ImageBackground, Text, FlatList, StyleSheet, Alert} from 'react-native'
+import {View,TouchableOpacity,TouchableWithoutFeedback, ImageBackground, Text, FlatList, StyleSheet, Alert,RefreshControl} from 'react-native'
 import Header from '../../components/Header'
 import LocalizationContext from "../../localization/LocalizationContext";
 import * as api from "../../services/home";
 import {useGlobalDataContext, setCategories} from '../../contexts/globalDataContext'
 import AnimatedLoader from '../../utils/custom-view/AnimatedLoader';
+import GlobalStyle from '../../style/GlobalStyle'
 
 
-
-function RenderCategoryList(data) {
+function RenderCategoryList(data,refreshing,onRefresh) {
     console.log('RenderCategoryList 22 data ==> ', data)
     if (data.length > 0) {
         return (
@@ -20,6 +20,14 @@ function RenderCategoryList(data) {
                         }
 
                     keyExtractor={(item, index) => item._id}
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={refreshing}
+                            onRefresh={onRefresh}
+                            tintColor = {GlobalStyle.colour.primaryColor}
+                        />
+                    }
+
                 />
             </View>
         )
@@ -34,6 +42,7 @@ function ProductPage1({route}) {
 
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
+    const [refreshing, setRefreshing] = useState(false);
 
     //const [categories, setCategories] = useState({});
 
@@ -54,6 +63,20 @@ function ProductPage1({route}) {
         }
     }
 
+    async function refreshData() {
+        setRefreshing(true);
+        try {
+            let response = await api.getCategoryList();
+            //setCategories(response.result)
+            dispatch(setCategories(response.result))
+
+            setRefreshing(false);
+
+        } catch (error) {
+            setError(error.message);
+            setRefreshing(false)
+        }
+    }
 
     useEffect(() => {
         fetchData();
@@ -63,7 +86,8 @@ function ProductPage1({route}) {
 
         <View style={{flex: 1}}>
             <Header titleText='Danh mục sản phẩm'/>
-            {RenderCategoryList(globalState.categories )}
+            {/*{RenderCategoryList(globalState.categories)}*/}
+            {RenderCategoryList(globalState.categories,refreshing, ()=> refreshData() )}
 
             <AnimatedLoader
                 visible={loading}
