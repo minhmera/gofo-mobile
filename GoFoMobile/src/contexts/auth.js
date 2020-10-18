@@ -1,13 +1,11 @@
-import React, {useMemo, useReducer, useContext} from 'react';
+import React, {useContext, useMemo, useReducer} from 'react';
 import {AsyncStorage} from "react-native";
 import axios from "axios";
 
 //IMPORT REDUCER, INITIAL STATE AND ACTION TYPES
 import reducer, {initialState, LOGGED_IN, LOGGED_OUT} from "../reducer/authReducer";
+import {TOKEN_KEY, USER_KEY} from "../config/Contants";
 
-// CONFIG KEYS [Storage Keys]===================================
-export const TOKEN_KEY = 'token';
-export const USER_KEY = 'user';
 export const keys = [TOKEN_KEY, USER_KEY];
 
 // CONTEXT ===================================

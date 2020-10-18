@@ -4,7 +4,7 @@ import {StatusBar, StyleSheet, View} from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage'
 
 import * as api from "../../services/auth";
-import {TOKEN_KEY, useAuth, USER_KEY} from "../../contexts/auth";
+import { useAuth} from "../../contexts/auth";
 
 import CTA from "../../components/CTA";
 import {ErrorText} from "../../components/Shared";
@@ -15,7 +15,7 @@ import {Button, Input} from 'react-native-elements';
 import AppStyle from '../../style/style';
 import AnimatedLoader from  '../../utils/custom-view/AnimatedLoader'
 import {backgroundColor} from 'react-native-calendars/src/style';
-
+import {TOKEN_KEY, USER_ID_KEY, USER_KEY} from "../../config/Contants";
 
 
 async function getTokenKey() {
@@ -47,16 +47,17 @@ export default function Login(props) {
 
     async function onSubmit() {
         let submitObj = { username: userName,  password:password}
-        console.log("MERA  onSubmit  ==> ");
+        console.log("MERA  onSubmit  ==> ",USER_ID_KEY);
         setLoading(true);
 
         try {
             let response = await api.login(submitObj);
             //await handleLogin(response);
             setLoading(false);
-            console.log('MERA  Log in token  ',response.result)
+            console.log('MERA  Log in token  ',response.result.userInfo._id)
             try {
                 let token = await AsyncStorage.setItem(TOKEN_KEY, response.result.token)
+                let id = await AsyncStorage.setItem(USER_ID_KEY, response.result.userInfo._id)
                 //navigate.setParams({"param":"Value cc "})
                 navigate('App');
                 setLoading(false);

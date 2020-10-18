@@ -4,7 +4,7 @@ import {Text, FAB, List} from 'react-native-paper'
 import { View} from 'react-native';
 import Header from '../../components/Header'
 import AsyncStorage from '@react-native-community/async-storage';
-import {TOKEN_KEY} from '../../contexts/auth';
+import {TOKEN_KEY} from "../../config/Contants";
 
 
 function ProfilePage1({navigation}) {

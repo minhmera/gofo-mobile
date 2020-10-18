@@ -25,7 +25,7 @@ function ModelList({isVisible, title, items, customField, customItemId, style, c
                 </TouchableOpacity>
             );
         } else {
-            console.log('MERA ModelList ==> RenderCategoryItem  ', item, '|| 22  customField ==> ', customField, 'item.customField ', item.title_vi);
+            //console.log('MERA ModelList ==> RenderCategoryItem  ', item, '|| 22  customField ==> ', customField, 'item.customField ', item.title_vi);
             return (
                 <TouchableOpacity
                     style={styles.dropdownItem}

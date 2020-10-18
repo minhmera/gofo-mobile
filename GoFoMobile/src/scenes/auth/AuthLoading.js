@@ -2,9 +2,10 @@ import React, {useEffect} from 'react';
 import {ActivityIndicator, View, Text} from 'react-native';
 import { StackActions } from 'react-navigation';
 
-import {TOKEN_KEY, useAuth} from '../../contexts/auth';
+import {useAuth} from '../../contexts/auth';
 //import AsyncStorage from '@react-native-community/async-storage';
 import AsyncStorage from '@react-native-community/async-storage'
+import {TOKEN_KEY} from "../../config/Contants";
 export default function AuthLoading(props) {
     const {navigate} = props.navigation;
     const { getAuthState } = useAuth();

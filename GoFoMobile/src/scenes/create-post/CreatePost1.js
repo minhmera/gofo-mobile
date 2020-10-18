@@ -98,7 +98,7 @@ function CreatePost1({navigation}) {
     const [selectedCity, setSelectedCity] = useState('');
     const [selectedDistrict, setSelectedDistrict] = useState('');
 
-    const [selectedCategory, setSelectedCategory] = useState('');
+    const [selectedCategory, setSelectedCategory] = useState(null);
 
     const [selectedCropTimeDate, setSelectedCropTimeDate ] = useState("");
     const [selectedCertification, setSelectedCertification ] = useState("");
@@ -157,9 +157,10 @@ function CreatePost1({navigation}) {
 
     async function fetchData() {
         //setLoading(true);
-        console.log('MERA fetchData   selectedCity:  ==>  ',selectedCity)
+
         try {
             let response = await api.getLocation();
+            console.log('MERA getLocation22  :  ==>  ',response)
             let cities = []
             if (response.result) {
                 let locations = response.result
@@ -170,7 +171,7 @@ function CreatePost1({navigation}) {
                 setCities(cities)
             }
             //setCities(response.result)
-            console.log(' getLocation1 =====>  ',cities.length)
+            //console.log(' getLocation1 =====>  ',cities)
             setLoading(false);
 
         } catch (error) {
@@ -183,14 +184,15 @@ function CreatePost1({navigation}) {
         fetchData();
     }, []);
 
-    function cityCategoryCallBack(category) {
-        setSelectedCategory(category.title_vi)
+    function selectedCategoryCallBack(category) {
+        console.log('MERA selected category ',category)
+        setSelectedCategory(category)
         setShowCategoryDropdown(false)
 
     }
 
     function cityDropDownCallBack(cityName) {
-
+        console.log('MERA selected city ',cityName)
         setSelectedCity(cityName)
         setSelectedDistrict('')
         let index = locations.findIndex(x => x.name === cityName)
@@ -205,6 +207,7 @@ function CreatePost1({navigation}) {
     }
 
     function districtDropDownCallBack(district) {
+        console.log('MERA selected district ',cityName)
         setSelectedDistrict(district)
         setShowDistrictDropdown(false)
     }
@@ -288,7 +291,7 @@ function CreatePost1({navigation}) {
                         </View>
 
 
-                        {dropdownButton(selectedCategory === "" ?  "Phân loại sản phẩm" : selectedCategory,()=> setShowCategoryDropdown(true))}
+                        {dropdownButton(selectedCategory === null ?  "Phân loại sản phẩm" : selectedCategory.title_vi,()=> setShowCategoryDropdown(true))}
 
                         <Input
                             inputStyle={styles.inputStyle}
@@ -307,7 +310,7 @@ function CreatePost1({navigation}) {
                             items = {globalState.categories}
                             customField = {'title_vi'}
                             customItemId = {'_id'}
-                            callBack = {(item)=> cityCategoryCallBack(item)}
+                            callBack = {(item)=> selectedCategoryCallBack(item)}
                         />
 
                         <ModelList

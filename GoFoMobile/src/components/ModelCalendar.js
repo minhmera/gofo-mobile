@@ -29,7 +29,7 @@ function ModelCalendar({isVisible,title,items,style, callBack}) {
         customStyle = style
     }
 
-    console.log('customStyle ===>  ',customStyle)
+    //console.log('customStyle ===>  ',customStyle)
 
     return (
         <Modal isVisible={isVisible}>

@@ -9,7 +9,7 @@ import GlobalStyle from '../../style/GlobalStyle'
 
 
 function RenderCategoryList(data,refreshing,onRefresh) {
-    console.log('RenderCategoryList 22 data ==> ', data)
+    //console.log('RenderCategoryList 22 data ==> ', data)
     if (data.length > 0) {
         return (
             <View style={styles.container}>
