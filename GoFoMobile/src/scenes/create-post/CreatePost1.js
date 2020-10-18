@@ -113,25 +113,20 @@ function CreatePost1({navigation}) {
         try {
             let response = await api.uploadImages(images);
             console.log('uploadImage response ==> ', response);
+            let imageUrls = response.imageUrls
+            let res = await onSubmit(imageUrls)
+            console.log('MERA ==> onSubmit ',res)
         } catch (e) {
             console.log('Error ', e);
         }
     }
 
-    async function onSubmit() {
-        // let sellingObj = {
-        //     "categoryId":1,
-        //     "productName":"Chôm chôm",
-        //     "provinceId":1,
-        //     "districtId":8,
-        //     "cropDay": "2020-12-28",
-        //     "productCertification": "Viet GAP",
-        //     "sellerPhone": "0976999864"
-        // }
+    async function onSubmit(photoUrls) {
 
         let userId = await AsyncStorage.getItem(USER_ID_KEY);
         let sellingObj = {
-            userId:userId,
+            "photoUrls":photoUrls,
+            "userId":userId,
             "categoryId":selectedCategory.type,
             "productName":productName,
             "provinceId":selectedCity.id,
@@ -410,7 +405,7 @@ function CreatePost1({navigation}) {
                         <View style={styles.bottomView}>
                             <Button
                                 title="Upload Product"
-                                onPress={()=> onSubmit()}
+                                onPress={()=> uploadProduct()}
                                 buttonStyle={[AppStyle.commonButton, styles.submitButton,]} //submitButton
                                 containerStyle={styles.buttonContainer}
                             />
