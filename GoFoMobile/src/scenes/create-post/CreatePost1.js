@@ -24,6 +24,7 @@ import {ProductCertifications} from '../../config/AppConfig'
 import {useGlobalDataContext, setCategories} from '../../contexts/globalDataContext'
 import AsyncStorage from "@react-native-community/async-storage";
 import {USER_ID_KEY} from "../../config/Contants";
+import AnimatedLoader from "../../utils/custom-view/AnimatedLoader";
 
 
 
@@ -110,14 +111,17 @@ function CreatePost1({navigation}) {
 
 
     async function uploadProduct() {
+        setLoading(true);
         try {
             let response = await api.uploadImages(images);
             console.log('uploadImage response ==> ', response);
             let imageUrls = response.imageUrls
             let res = await onSubmit(imageUrls)
             console.log('MERA ==> onSubmit ',res)
+            setLoading(false);
         } catch (e) {
             console.log('Error ', e);
+            setLoading(false);
         }
     }
 
@@ -139,7 +143,7 @@ function CreatePost1({navigation}) {
         try {
             let response = await api.sellingPost(sellingObj);
             console.log('MERA  sellingPost   ', response);
-            setLoading(false);
+
             Alert.alert(
                 'Posting Successful',
                 response.message,
@@ -160,7 +164,6 @@ function CreatePost1({navigation}) {
                 {cancelable: false},
             );
             setError(error.message);
-            setLoading(false);
         }
     }
 
@@ -414,6 +417,17 @@ function CreatePost1({navigation}) {
 
                 </View>
             </KeyboardAwareScrollView>
+
+            <AnimatedLoader
+                visible={loading}
+                //overlayColor="rgba(215,215,215,0.55)"
+                overlayColor="rgba(0,0,0,0.55)"
+                animationType = 'slide'
+                animationStyle={styles.lottie}
+                animationStyle = {{height: 120, width: 120}}
+                loop = {true}
+                speed={3}
+            />
         </View>
     );
 }
