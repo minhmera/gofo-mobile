@@ -37,7 +37,7 @@
     "jest": "^24.9.0",
     "lodash.remove": "4.7.0",
     "metro-react-native-babel-preset": "^0.58.0",
-    "moment": "^2.24.0",
+    "moment": "^2.29.1",
     "react": "~16.9.0",
     "react-dom": "~16.9.0",
     "react-i18next": "^11.3.4",

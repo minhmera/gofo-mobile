@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 import {Input, CheckBox, Button} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/AntDesign';
+const moment = require('moment');
 
 import ImagePicker from 'react-native-image-crop-picker';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
@@ -95,12 +96,12 @@ function CreatePost1({navigation}) {
     let [isShowCropTimeCalendar, setShowCropTimeCalendar ] = useState(false);
     let [isShowCertification, setShowCertification ] = useState(false);
 
-    const [selectedCity, setSelectedCity] = useState('');
-    const [selectedDistrict, setSelectedDistrict] = useState('');
+    const [selectedCity, setSelectedCity] = useState(null);
+    const [selectedDistrict, setSelectedDistrict] = useState(null);
 
     const [selectedCategory, setSelectedCategory] = useState(null);
 
-    const [selectedCropTimeDate, setSelectedCropTimeDate ] = useState("");
+    const [selectedCropTimeDate, setSelectedCropTimeDate ] = useState(null);
     const [selectedCertification, setSelectedCertification ] = useState("");
 
 
@@ -160,14 +161,19 @@ function CreatePost1({navigation}) {
 
         try {
             let response = await api.getLocation();
-            console.log('MERA getLocation22  :  ==>  ',response)
+            //console.log('MERA getLocation22  :  ==>  ',response)
             let cities = []
             if (response.result) {
                 let locations = response.result
                 setLocations(locations)
                 locations.map((item,index)=> {
-                    cities.push(item.name)
+                    let cityObj = {
+                        name: item.name,
+                        id: item.id,
+                    }
+                    cities.push(cityObj)
                 })
+
                 setCities(cities)
             }
             //setCities(response.result)
@@ -191,15 +197,19 @@ function CreatePost1({navigation}) {
 
     }
 
-    function cityDropDownCallBack(cityName) {
-        console.log('MERA selected city ',cityName)
-        setSelectedCity(cityName)
-        setSelectedDistrict('')
-        let index = locations.findIndex(x => x.name === cityName)
+    function cityDropDownCallBack(cityObj) {
+        console.log('MERA selected city ',cityObj)
+        setSelectedCity(cityObj)
+        setSelectedDistrict(null)
+        let index = locations.findIndex(x => x.name === cityObj.name)
         let districtObject  = locations[index].districts
         let districtList = []
         districtObject.map((item,index) => {
-            districtList.push(item.name)
+            let districtsObj = {
+                name: item.name,
+                id: item.id
+            }
+            districtList.push(districtsObj)
         })
         setDistricts(districtList)
         setShowCityDropdown(false)
@@ -207,14 +217,17 @@ function CreatePost1({navigation}) {
     }
 
     function districtDropDownCallBack(district) {
-        console.log('MERA selected district ',cityName)
+        console.log('MERA selected district ',district)
         setSelectedDistrict(district)
         setShowDistrictDropdown(false)
     }
 
     function cropTimeCalendarCallBack(day) {
-        console.log('cropTimeCalendarCallBack ==> ',day)
-        setSelectedCropTimeDate(day.dateString)
+        console.log('MERA cropTimeCalendarCallBack ==> ',day)
+        let selectedDate = moment(day.dateString);
+        let dateString = selectedDate.format('DD-MM-YYYY')
+        console.log('MERA cropTimeCalendarCallBack ==> ',  dateString );
+        setSelectedCropTimeDate(selectedDate)
         setShowCropTimeCalendar(false)
     }
 
@@ -299,9 +312,9 @@ function CreatePost1({navigation}) {
                             inputContainerStyle={styles.basicInput}
                         />
 
-                        {dropdownButton(selectedCity === "" ?  "Choose city" : selectedCity,()=> setShowCityDropdown(true))}
+                        {dropdownButton(selectedCity === null ?  "Choose city" : selectedCity.name,()=> setShowCityDropdown(true))}
 
-                        {dropdownButton(selectedDistrict === "" ? "Choose district": selectedDistrict,()=> setShowDistrictDropdown(true))}
+                        {dropdownButton(selectedDistrict === null ? "Choose district": selectedDistrict.name,()=> setShowDistrictDropdown(true))}
 
                         <ModelList
                             isVisible = {isShowCategoryDropdown}
@@ -317,6 +330,8 @@ function CreatePost1({navigation}) {
                             isVisible = {isShowCityDropdown}
                             title = {'Choose Your City'}
                             items = {cities}
+                            customField = {'name'}
+                            customItemId = {'id'}
                             callBack = {(item)=> cityDropDownCallBack(item)}
                         />
 
@@ -324,6 +339,8 @@ function CreatePost1({navigation}) {
                             isVisible = {isShowDistrictDropdown}
                             title = {'Choose Your District'}
                             items = {districts}
+                            customField = {'name'}
+                            customItemId = {'id'}
                             callBack = {(item)=> districtDropDownCallBack(item)}
                         />
 
@@ -345,7 +362,7 @@ function CreatePost1({navigation}) {
 
                         {isSell == true ?
 
-                            dropdownButton(selectedCropTimeDate === "" ? "Thời gian thu hoạch": selectedCropTimeDate,()=> setShowCropTimeCalendar(true)) : null
+                            dropdownButton(selectedCropTimeDate === null ? "Thời gian thu hoạch": selectedCropTimeDate.format('DD-MM-YYYY'),()=> setShowCropTimeCalendar(true)) : null
 
                         }
                         {/*{isSell == true ?
