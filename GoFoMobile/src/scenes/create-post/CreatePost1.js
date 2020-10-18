@@ -22,6 +22,8 @@ import ModelList from '../../components/ModelList'
 import ModelCalendar from '../../components/ModelCalendar'
 import {ProductCertifications} from '../../config/AppConfig'
 import {useGlobalDataContext, setCategories} from '../../contexts/globalDataContext'
+import AsyncStorage from "@react-native-community/async-storage";
+import {USER_ID_KEY} from "../../config/Contants";
 
 
 
@@ -81,6 +83,8 @@ function CreatePost1({navigation}) {
     let [images, setImages] = useState(null);
     let [isSell, setSellStatus] = useState(true);
 
+    const [productName, setProductName] = useState('');
+    const [phoneNumber, setPhoneNumber] = useState('');
     const [cities, setCities] = useState({});
     const [districts, setDistricts] = useState({});
     const [locations, setLocations] = useState({});
@@ -115,22 +119,34 @@ function CreatePost1({navigation}) {
     }
 
     async function onSubmit() {
-        let sellingObj = {
-            "categoryId":1,
-            "productName":"Chôm chôm",
-            "provinceId":1,
-            "districtId":8,
-            "cropDay": "2020-12-28",
-            "productCertification": "Viet GAP",
-            "sellerPhone": "0976999864"
-        }
+        // let sellingObj = {
+        //     "categoryId":1,
+        //     "productName":"Chôm chôm",
+        //     "provinceId":1,
+        //     "districtId":8,
+        //     "cropDay": "2020-12-28",
+        //     "productCertification": "Viet GAP",
+        //     "sellerPhone": "0976999864"
+        // }
 
+        let userId = await AsyncStorage.getItem(USER_ID_KEY);
+        let sellingObj = {
+            userId:userId,
+            "categoryId":selectedCategory.type,
+            "productName":productName,
+            "provinceId":selectedCity.id,
+            "districtId":selectedDistrict.id,
+            "cropDay": selectedCropTimeDate.format('YYYY-MM-DD'),
+            "productCertification": selectedCertification,
+            "sellerPhone": phoneNumber
+        }
+        console.log('MERA submit object ',sellingObj)
         try {
             let response = await api.sellingPost(sellingObj);
             console.log('MERA  sellingPost   ', response);
             setLoading(false);
             Alert.alert(
-                'Registration Successful',
+                'Posting Successful',
                 response.message,
 
                 [
@@ -139,6 +155,15 @@ function CreatePost1({navigation}) {
                 {cancelable: false},
             );
         } catch (error) {
+            Alert.alert(
+                'Posting',
+                error.message,
+
+                [
+                    {text: 'OK'}, //  {text: 'OK', onPress: () => navigation.replace("Login")}
+                ],
+                {cancelable: false},
+            );
             setError(error.message);
             setLoading(false);
         }
@@ -225,8 +250,8 @@ function CreatePost1({navigation}) {
     function cropTimeCalendarCallBack(day) {
         console.log('MERA cropTimeCalendarCallBack ==> ',day)
         let selectedDate = moment(day.dateString);
-        let dateString = selectedDate.format('DD-MM-YYYY')
-        console.log('MERA cropTimeCalendarCallBack ==> ',  dateString );
+        //let dateString = selectedDate.format('DD-MM-YYYY')
+        //console.log('MERA cropTimeCalendarCallBack ==> ', dateString );
         setSelectedCropTimeDate(selectedDate)
         setShowCropTimeCalendar(false)
     }
@@ -310,6 +335,7 @@ function CreatePost1({navigation}) {
                             inputStyle={styles.inputStyle}
                             placeholder='Tên sản phẩm '
                             inputContainerStyle={styles.basicInput}
+                            onChangeText={value => setProductName(value)}
                         />
 
                         {dropdownButton(selectedCity === null ?  "Choose city" : selectedCity.name,()=> setShowCityDropdown(true))}
@@ -378,12 +404,13 @@ function CreatePost1({navigation}) {
                             inputStyle={styles.inputStyle}
                             placeholder="Số điện thoại"
                             inputContainerStyle={styles.basicInput}
-                            //secureTextEntry={true}
+                            keyboardType={'phone-pad'}
+                            onChangeText={value => setPhoneNumber(value)}
                         />
                         <View style={styles.bottomView}>
                             <Button
                                 title="Upload Product"
-                                onPress={()=> uploadProduct()}
+                                onPress={()=> onSubmit()}
                                 buttonStyle={[AppStyle.commonButton, styles.submitButton,]} //submitButton
                                 containerStyle={styles.buttonContainer}
                             />

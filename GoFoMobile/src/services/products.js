@@ -2,6 +2,9 @@ import axios from 'axios';
 
 import * as c from '../constants';
 import {handler} from './auth';
+import AsyncStorage from '@react-native-community/async-storage'
+import {TOKEN_KEY, USER_ID_KEY} from "../config/Contants";
+
 
 export async function getLocation() {
     try {
@@ -42,8 +45,16 @@ export async function uploadImages(images) {
 
 
 export async function sellingPost(data){
+    let token = await AsyncStorage.getItem(TOKEN_KEY);
+
+    let axiosConfig = {
+        headers: {
+            'Authorization': token,
+        }
+    };
+
     try{
-        let res = await axios.post(c.SELLING_POST, data);
+        let res = await axios.post(c.SELLING_POST, data,axiosConfig );
 
         return res.data;
     }catch (e) {
