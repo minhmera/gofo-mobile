@@ -61,3 +61,22 @@ export async function sellingPost(data){
         throw handler(e);
     }
 }
+
+
+export async function buyingPost(data){
+    let token = await AsyncStorage.getItem(TOKEN_KEY);
+
+    let axiosConfig = {
+        headers: {
+            'Authorization': token,
+        }
+    };
+
+    try{
+        let res = await axios.post(c.BUYING_POST, data,axiosConfig );
+
+        return res.data;
+    }catch (e) {
+        throw handler(e);
+    }
+}

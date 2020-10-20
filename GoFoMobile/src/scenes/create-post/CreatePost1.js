@@ -110,13 +110,13 @@ function CreatePost1({navigation}) {
     const [selectedCertification, setSelectedCertification ] = useState("");
 
 
-    async function uploadProduct() {
+    async function uploadSellingProduct() {
         setLoading(true);
         try {
             let response = await api.uploadImages(images);
             console.log('uploadImage response ==> ', response);
             let imageUrls = response.imageUrls
-            let res = await onSubmit(imageUrls)
+            let res = await onSubmitSelling(imageUrls)
             console.log('MERA ==> onSubmit ',res)
             setLoading(false);
         } catch (e) {
@@ -125,7 +125,7 @@ function CreatePost1({navigation}) {
         }
     }
 
-    async function onSubmit(photoUrls) {
+    async function onSubmitSelling(photoUrls) {
 
         let userId = await AsyncStorage.getItem(USER_ID_KEY);
         let sellingObj = {
@@ -166,7 +166,54 @@ function CreatePost1({navigation}) {
             setError(error.message);
         }
     }
+    function submitPost() {
+        if (isSell == true) {
+            let res = uploadSellingProduct()
+        } else {
+            let res = uploadBuyingProduct()
+        }
+    }
 
+
+    async function uploadBuyingProduct() {
+        setLoading(true);
+        let userId = await AsyncStorage.getItem(USER_ID_KEY);
+        let buyingObj = {
+            "userId":userId,
+            "categoryId":selectedCategory.type,
+            "productName":productName,
+            "provinceId":selectedCity.id,
+            "districtId":selectedDistrict.id,
+            "productCertification": selectedCertification,
+            "buyerPhone": phoneNumber
+        }
+        console.log('MERA submit object ',buyingObj)
+        try {
+            let response = await api.buyingPost(buyingObj);
+            console.log('MERA  sellingPost   ', response);
+            setLoading(false);
+            Alert.alert(
+                'Posting Successful',
+                response.message,
+
+                [
+                    {text: 'OK'}, //  {text: 'OK', onPress: () => navigation.replace("Login")}
+                ],
+                {cancelable: false},
+            );
+        } catch (error) {
+            Alert.alert(
+                'Posting',
+                error.message,
+
+                [
+                    {text: 'OK'}, //  {text: 'OK', onPress: () => navigation.replace("Login")}
+                ],
+                {cancelable: false},
+            );
+            setError(error.message);
+        }
+    }
     async function selectFile() {
         ImagePicker.openPicker({
             width: 300,
@@ -408,7 +455,7 @@ function CreatePost1({navigation}) {
                         <View style={styles.bottomView}>
                             <Button
                                 title="Upload Product"
-                                onPress={()=> uploadProduct()}
+                                onPress={()=> submitPost()}
                                 buttonStyle={[AppStyle.commonButton, styles.submitButton,]} //submitButton
                                 containerStyle={styles.buttonContainer}
                             />
