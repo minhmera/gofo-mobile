@@ -70,7 +70,7 @@ function ModelList({isVisible, title, items, customField, customItemId, style, c
             animationIn = {'slideInUp'}
             animationInTiming = {100}
         >
-            <TouchableOpacity style={styles.container} activeOpacity = {1} onPress={() => callBack('')} >
+            <TouchableOpacity style={styles.container} activeOpacity = {1} onPress={() => callBack(null)} >
                 <TouchableOpacity style={[styles.dropDownContainer, customStyle]} activeOpacity={1}
                                   onPress={() => callBack('')}>
                     <Text style={styles.dropdownTitle}>{title}</Text>

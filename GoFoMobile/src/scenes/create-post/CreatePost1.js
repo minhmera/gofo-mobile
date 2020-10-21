@@ -50,16 +50,24 @@ function renderImage(images) {
 
 }
 
-function dropdownButton(title,onPress) {
+function dropdownButton(title,onPress,isError) {
+    console.log('MERA  dropdownButton ',title, ' ---  ',isError)
+    let errorStyle = null
+    if (isError == true) {
+        errorStyle = {
+                borderBottomColor: GlobalStyle.colour.errorColor,
+                color:GlobalStyle.colour.errorColor
+        }
+    }
+
     return  (
         <TouchableOpacity
-            style={styles.dropdownButton}
+            style={[styles.dropdownButton,errorStyle]}
             activeOpacity={1}
-            //onPress={()=> setShowCityDropdown(true)}
             onPress={()=> onPress()}
         >
             <View style={{flex:4}}>
-                <Text style={styles.dropdownButtonTitle}>
+                <Text style={[styles.dropdownButtonTitle,errorStyle]}>
                     {title}
                 </Text>
             </View>
@@ -67,7 +75,7 @@ function dropdownButton(title,onPress) {
                 <Icon
                     name='right'
                     size={20}
-                    color={'black'}
+                    color={errorStyle ? 'red' : 'black'}
                 />
             </View>
 
@@ -107,8 +115,14 @@ function CreatePost1({navigation}) {
     const [selectedCategory, setSelectedCategory] = useState(null);
 
     const [selectedCropTimeDate, setSelectedCropTimeDate ] = useState(null);
-    const [selectedCertification, setSelectedCertification ] = useState("");
+    const [selectedCertification, setSelectedCertification ] = useState(null);
 
+    // Error States
+
+    let [isCategoryError, setCategoryErrorState ] = useState(null);
+    let [isCityError, setCityErrorState ] = useState(null);
+    let [isProductNameError, setProductNameError ] = useState(null);
+    let [isPhoneError, setPhoneError ] = useState(null);
 
     async function uploadSellingProduct() {
         setLoading(true);
@@ -166,14 +180,17 @@ function CreatePost1({navigation}) {
             setError(error.message);
         }
     }
+
     function submitPost() {
         if (isSell == true) {
-            let res = uploadSellingProduct()
+            if (isSellingValid() == true) {
+                let res = uploadSellingProduct()
+            }
+
         } else {
             let res = uploadBuyingProduct()
         }
     }
-
 
     async function uploadBuyingProduct() {
         setLoading(true);
@@ -214,6 +231,7 @@ function CreatePost1({navigation}) {
             setError(error.message);
         }
     }
+
     async function selectFile() {
         ImagePicker.openPicker({
             width: 300,
@@ -271,18 +289,22 @@ function CreatePost1({navigation}) {
         console.log('MERA selected city ',cityObj)
         setSelectedCity(cityObj)
         setSelectedDistrict(null)
-        let index = locations.findIndex(x => x.name === cityObj.name)
-        let districtObject  = locations[index].districts
-        let districtList = []
-        districtObject.map((item,index) => {
-            let districtsObj = {
-                name: item.name,
-                id: item.id
-            }
-            districtList.push(districtsObj)
-        })
-        setDistricts(districtList)
+        if (cityObj != null) {
+            let index = locations.findIndex(x => x.name === cityObj.name)
+            let districtObject  = locations[index].districts
+            let districtList = []
+            districtObject.map((item,index) => {
+                let districtsObj = {
+                    name: item.name,
+                    id: item.id
+                }
+                districtList.push(districtsObj)
+            })
+            setDistricts(districtList)
+
+        }
         setShowCityDropdown(false)
+
 
     }
 
@@ -302,14 +324,55 @@ function CreatePost1({navigation}) {
     }
 
     function certificationCallBack(certification) {
+        console.log('MERA certificationCallBack ==>  ',certification)
         setSelectedCertification(certification)
         setShowCertification(false)
+    }
+
+    function handleShowDistrictDropdown() {
+        if (selectedCity != null) {
+            setShowDistrictDropdown(true)
+        }
+    }
+
+
+    function isSellingValid() {
+        let isValidAllField = true
+        if (selectedCategory == null) {
+            isValidAllField = false
+            setCategoryErrorState(true)
+        } else {
+            setCategoryErrorState(false)
+        }
+
+        if (selectedCity == null) {
+            isValidAllField = false
+            setCityErrorState(true)
+        } else {
+            setCityErrorState(false)
+        }
+
+        if (productName === "") {
+            isValidAllField = false
+            setProductNameError(true)
+        } else {
+            setProductNameError(false)
+        }
+        //setPhoneError
+        if (phoneNumber === "") {
+            isValidAllField = false
+            setPhoneError(true)
+        } else {
+            setPhoneError(false)
+        }
+        console.log('MERA1  isSellingValid  ==>   ',productName,' < -- >',isProductNameError)
+        return isValidAllField
     }
 
     return (
         <View style={styles.container}>
             <Header titleText='Create Post'/>
-            <KeyboardAwareScrollView style={{flex: 1}} keyboardDismissMode = {'on-drag'}>
+            <KeyboardAwareScrollView style={{flex: 1}} keyboardDismissMode = {'interactive'}>
 
 
                 <View style={styles.content}>
@@ -374,18 +437,19 @@ function CreatePost1({navigation}) {
                         </View>
 
 
-                        {dropdownButton(selectedCategory === null ?  "Phân loại sản phẩm" : selectedCategory.title_vi,()=> setShowCategoryDropdown(true))}
+                        {dropdownButton(selectedCategory === null ?  "Phân loại sản phẩm" : selectedCategory.title_vi,()=> setShowCategoryDropdown(true), isCategoryError)}
 
                         <Input
                             inputStyle={styles.inputStyle}
-                            placeholder='Tên sản phẩm '
-                            inputContainerStyle={styles.basicInput}
+                            errorMessage = {isProductNameError === true ?  'Vui lòng nhập tên sản phẩm': ''}
+                            placeholder='Tên sản phẩm'
+                            inputContainerStyle={[styles.basicInput,{borderBottomColor: isProductNameError === true ? GlobalStyle.colour.errorColor : GlobalStyle.colour.grayColor}]}
                             onChangeText={value => setProductName(value)}
                         />
 
-                        {dropdownButton(selectedCity === null ?  "Choose city" : selectedCity.name,()=> setShowCityDropdown(true))}
+                        {dropdownButton(selectedCity === null ?  "Choose city" : selectedCity.name,()=> setShowCityDropdown(true), isCityError)}
 
-                        {dropdownButton(selectedDistrict === null ? "Choose district": selectedDistrict.name,()=> setShowDistrictDropdown(true))}
+                        {dropdownButton(selectedDistrict === null ? "Choose district": selectedDistrict.name,()=> handleShowDistrictDropdown())}
 
                         <ModelList
                             isVisible = {isShowCategoryDropdown}
@@ -409,6 +473,7 @@ function CreatePost1({navigation}) {
                         <ModelList
                             isVisible = {isShowDistrictDropdown}
                             title = {'Choose Your District'}
+                            style = {{height:400}}
                             items = {districts}
                             customField = {'name'}
                             customItemId = {'id'}
@@ -443,12 +508,14 @@ function CreatePost1({navigation}) {
                                 inputContainerStyle={styles.basicInput}
                             /> : null
                         }*/}
-                        {dropdownButton(selectedCertification === "" ? "Tiêu chuẩn": selectedCertification,()=> setShowCertification(true))}
+                        {dropdownButton(selectedCertification == null ? "Tiêu chuẩn": selectedCertification,()=> setShowCertification(true))}
 
                         <Input
                             inputStyle={styles.inputStyle}
                             placeholder="Số điện thoại"
+                            errorMessage = {isPhoneError === true ?  'Vui lòng số điện thoại': ''}
                             inputContainerStyle={styles.basicInput}
+                            inputContainerStyle={[styles.basicInput,{borderBottomColor: isPhoneError === true ? GlobalStyle.colour.errorColor : GlobalStyle.colour.grayColor}]}
                             keyboardType={'phone-pad'}
                             onChangeText={value => setPhoneNumber(value)}
                         />
@@ -525,7 +592,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         right: 0,
         position: 'absolute',
-        backgroundColor: 'red',
+        backgroundColor: GlobalStyle.colour.errorColor,
 
     },
     inputInfoView: {
@@ -538,7 +605,7 @@ const styles = StyleSheet.create({
     },
     basicInput: {
         borderBottomWidth: 0.5,
-        borderBottomColor: '#B5B5B5',
+        borderBottomColor: GlobalStyle.colour.grayColor
     },
     inputStyle: {
         fontSize:16 ,
@@ -562,7 +629,7 @@ const styles = StyleSheet.create({
         marginLeft: 10,
         marginRight: 10,
         borderBottomColor: GlobalStyle.colour.grayColor,
-        borderBottomWidth: 1,
+        borderBottomWidth: 0.5,
     },
 
     dropdownItem: {
@@ -582,7 +649,7 @@ const styles = StyleSheet.create({
         padding: 40,
     },
     bottomView: {
-        height: 120,
+        height: 160,
     },
     submitButton: {
         backgroundColor: GlobalStyle.colour.primaryColor,
@@ -590,11 +657,8 @@ const styles = StyleSheet.create({
     },
 
     dropdownButtonTitle: {
-        //color:'black',//GlobalStyle.colour.grayColor,
         fontSize: 15,
-        fontWeight: '500',
-
-        //fontFamily:'Nunito-Regular'
+        fontWeight: '400',
 
     },
 

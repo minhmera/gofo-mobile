@@ -7,6 +7,7 @@ const GlobalStyle = {
         tempColor: '#96969A',
         font: '#434e5a',
         grayColor: '#D6D6D6',
+        errorColor:'#ff3333'
     }
 }
 
