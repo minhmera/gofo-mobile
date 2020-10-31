@@ -281,6 +281,9 @@ function CreatePost1({navigation}) {
     function selectedCategoryCallBack(category) {
         console.log('MERA selected category ',category)
         setSelectedCategory(category)
+        if (category != null) {
+            setCategoryErrorState(false)
+        }
         setShowCategoryDropdown(false)
 
     }
@@ -288,6 +291,10 @@ function CreatePost1({navigation}) {
     function cityDropDownCallBack(cityObj) {
         console.log('MERA selected city ',cityObj)
         setSelectedCity(cityObj)
+        if (cityObj != null) {
+            setCityErrorState(false)
+        }
+
         setSelectedDistrict(null)
         if (cityObj != null) {
             let index = locations.findIndex(x => x.name === cityObj.name)
@@ -513,7 +520,7 @@ function CreatePost1({navigation}) {
                         <Input
                             inputStyle={styles.inputStyle}
                             placeholder="Số điện thoại"
-                            errorMessage = {isPhoneError === true ?  'Vui lòng số điện thoại': ''}
+                            errorMessage = {isPhoneError === true ?  'Vui lòng nhập số điện thoại': ''}
                             inputContainerStyle={styles.basicInput}
                             inputContainerStyle={[styles.basicInput,{borderBottomColor: isPhoneError === true ? GlobalStyle.colour.errorColor : GlobalStyle.colour.grayColor}]}
                             keyboardType={'phone-pad'}

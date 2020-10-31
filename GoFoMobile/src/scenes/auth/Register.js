@@ -112,7 +112,7 @@ function Register(props) {
 
 
                 <KeyboardAwareScrollView style={{flex: 1}} keyboardDismissMode = {'on-drag'}>
-                <View style={{flex: 1,marginTop:20}}>
+                <View style={{flex: 1,marginTop:120,marginLeft:32, marginRight:32}}>
                     <Input
                         inputStyle={styles.inputStyle}
                         inputContainerStyle={[styles.basicInput,userNameError.style]}
@@ -142,7 +142,7 @@ function Register(props) {
 
                     <View style={styles.bottomView}>
                         <Button
-                            title="Register"
+                            title="Đăng Ký"
                             onPress={(state) => onSubmit(state)}
                             buttonStyle={[AppStyle.commonButton, styles.submitButton]} //submitButton
                             containerStyle={styles.buttonContainer}
@@ -165,15 +165,18 @@ const styles = StyleSheet.create({
     bottomView: {},
     buttonContainer: {
         paddingTop: 40,
-        padding: 20,
+        // paddingLeft: 32,
+        // paddingRight: 32,
     },
     submitButton: {
         backgroundColor: GlobalStyle.colour.primaryColor,
-        height: 40,
+        height: 48,
 
     },
     inputStyle: {
-        fontSize:16 ,
+        fontSize:16,
+        paddingTop:18,
+        height: 58,
         fontWeight:'400',
     },
     basicInput: {

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import {StatusBar, StyleSheet, View} from 'react-native';
+import {StatusBar, StyleSheet, View,Text} from 'react-native';
 
 import AsyncStorage from '@react-native-community/async-storage'
 
@@ -98,7 +98,7 @@ export default function Login(props) {
 
 
             <KeyboardAwareScrollView style={{flex: 1}} keyboardDismissMode = {'on-drag'}>
-                <View style={{flex: 1,marginTop:20}}>
+                <View style={{flex: 1,marginTop:120}}>
                     <Input
                         inputStyle={styles.inputStyle}
                         inputContainerStyle={styles.basicInput}
@@ -119,19 +119,26 @@ export default function Login(props) {
 
 
 
+
+
                     <View style={styles.bottomView}>
                         <Button
-                            title="Login"
+                            title="Đăng Nhập"
                             onPress={() => onSubmit()}
+                            textStyle = {{fontWeight:'800'}}
                             buttonStyle={[AppStyle.commonButton, styles.submitButton]} //submitButton
                             containerStyle={styles.buttonContainer}
                         />
-                        <Button
-                            title="Register"
-                            onPress={() => testNavigate()}
-                            buttonStyle={[AppStyle.commonButton, styles.submitButton]} //submitButton
-                            containerStyle={styles.buttonContainer}
-                        />
+
+                        <View style={{flexDirection:'row',paddingTop: 8, alignItems:'center', justifyContent:'center'}}>
+                            <Text>Chưa có tài khoản?</Text>
+                            <Text
+                                style={styles.registerText}
+                                onPress={() => testNavigate()}
+                            >Đăng Ký</Text>
+                        </View>
+
+
 
                     </View>
                 </View>
@@ -173,55 +180,33 @@ const styles = StyleSheet.create({
     bottomView: {},
     buttonContainer: {
         paddingTop: 40,
-        padding: 20,
+        paddingLeft: 32,
+        paddingRight: 32,
     },
     submitButton: {
         backgroundColor: GlobalStyle.colour.primaryColor,
-        height: 40,
+        height: 48,
 
     },
     inputStyle: {
+
+        height:56,
         fontSize:16 ,
         fontWeight:'400',
     },
     basicInput: {
+        marginLeft:24,
+        marginRight:24,
         borderBottomWidth: 0.5,
         borderBottomColor: '#B5B5B5',
     },
+    registerText: {
+        paddingLeft: 4,
+        color:GlobalStyle.colour.primaryColor,
+        fontWeight:'600'
+    }
 
 });
 
 
 
-// return (
-//     <View style={{flex: 1, paddingHorizontal: 16, backgroundColor:"#fff"}}>
-//         <Header title={"Login"}/>
-//         <StatusBar barStyle="light-content" />
-//         <View style={{flex: 1}}>
-//             <ErrorText error={error}/>
-//             <Form
-//                 {...formProps}
-//                 buttonStyle={{borderRadius:24, height:48, backgroundColor:GlobalStyle.colour.primaryColor}}
-//
-//                 autoCapitalize = {true}
-//             >
-//                 <CTA
-//                     ctaText={"Forgot Password?"}
-//                     //onPress={() => navigation.navigate("ForgotPassword")}
-//                     onPress={() => getTokenKey()}
-//                     style={{marginTop: 20}}/>
-//
-//                 <CTA
-//                     title={"Don't have an account?"}
-//                     ctaText={"Register"}
-//                     //onPress={() => navigation.replace("Register")}
-//
-//                     onPress={() => testNavigate()  }
-//
-//                     style={{marginTop: 50}}/>
-//             </Form>
-//         </View>
-//     </View>
-//
-//
-// );
