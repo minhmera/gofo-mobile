@@ -1,13 +1,40 @@
-import React, {useState} from 'react'
-import {StyleSheet, View, Text, TouchableOpacity} from 'react-native'
+import React, {useEffect, useState} from 'react'
+import {StyleSheet, View, Text, TouchableOpacity, FlatList, RefreshControl, ImageBackground} from 'react-native'
 import Header from '../../components/Header'
 import LocalizationContext from "../../localization/LocalizationContext";
 import SegmentedControlTab from 'react-native-segmented-control-tab';
 import GlobalStyle from '../../style/GlobalStyle';
 import AppStyle from '../../style/style';
 import {backgroundColor} from "react-native-calendars/src/style";
+import * as api from "../../services/products";
+import {setCategories} from "../../contexts/globalDataContext";
 
 
+function RenderList(data,refreshing,onRefresh) {
+    console.log('MERA RenderList data ==> ', data.length)
+    if (data.length > 0) {
+        return (
+            <View style={{marginTop:8}} >
+                <FlatList
+                    data={data}
+                    renderItem={({item}) =>
+                        RenderItem(item)
+                    }
+
+                    keyExtractor={(item, index) => item._id}
+                    /*refreshControl={
+                        <RefreshControl
+                            refreshing={refreshing}
+                            onRefresh={onRefresh}
+                            tintColor = {GlobalStyle.colour.primaryColor}
+                        />
+                    }*/
+
+                />
+            </View>
+        )
+    }
+}
 
 
 
@@ -15,34 +42,45 @@ import {backgroundColor} from "react-native-calendars/src/style";
 
 function PostedPage1({navigation}) {
     const {t, i18n} = React.useContext(LocalizationContext);
-    // For single select SegmentedControlTab
-    const [selectedIndex, setSelectedIndex] = useState(0);
-    // For multi select SegmentedControlTab
-    const [selectedIndices, setSelectedIndices] = useState([0]);
-    // For custom SegmentedControlTab
     const [customStyleIndex, setCustomStyleIndex] = useState(0);
 
-    const handleSingleIndexSelect = (index) => {
-        // For single Tab Selection SegmentedControlTab
-        setSelectedIndex(index);
-    };
+    const [error, setError] = useState(null);
+    const [loading, setLoading] = useState(false);
+    const [refreshing, setRefreshing] = useState(false);
+    const [sellingList, setSellingList] = useState(false);
 
-    const handleMultipleIndexSelect = (index) => {
-        // For multi Tab Selection SegmentedControlTab
-        if (selectedIndices.includes(index)) {
-            console.log(selectedIndices.filter((i) => i !== index));
-            //if included in the selected array then remove
-            setSelectedIndices(selectedIndices.filter((i) => i !== index));
-        } else {
-            //if not included in the selected array then add
-            setSelectedIndices([...selectedIndices, index]);
+    async function fetchData() {
+        setLoading(true);
+        try {
+            let response = await api.getSellingProduct();
+            //console.log('MERA getSellingProduct ==> ',response.result.length)
+            setSellingList(response.result)
+            setLoading(false);
+
+        } catch (error) {
+            setError(error.message);
+            setLoading(false)
         }
-    };
+    }
+
+    async function refreshData() {
+        setRefreshing(true);
+        try {
+            let response = await api.getSellingProduct();
+            //console.log('MERA getSellingProduct ==> ',response.result.length)
+            setSellingList(response.result)
+            setLoading(false);
+
+        } catch (error) {
+            setError(error.message);
+            setLoading(false)
+        }
+    }
 
     const handleCustomIndexSelect = (index) => {
-        //handle tab selection for custom Tab Selection SegmentedControlTab
         setCustomStyleIndex(index);
     };
+
 
     function renderBuyingApp() {
         return (
@@ -57,18 +95,22 @@ function PostedPage1({navigation}) {
 
     function renderSellingApp() {
         return (
-            <View>
-                <Text>
-                    Bán
-                </Text>
+            <View style={{flex:1}}>
+
+                { RenderList(sellingList,refreshing, ()=> refreshData())   }
             </View>
         )
     }
 
+
+    useEffect(() => {
+        fetchData();
+    }, []);
+
     return (
-        <View style={{flex: 1}}>
+        <View style={styles.container}>
             <Header titleText='Sản phẩm' />
-            <View style={styles.container}>
+            <View style={styles.tabContainer}>
 
                 {/* Simple Segmented with Custom Styling*/}
                 <SegmentedControlTab
@@ -104,13 +146,31 @@ function PostedPage1({navigation}) {
 
 export default PostedPage1
 
+function RenderItem(item) {
+    return (
+        <View style={[styles.itemContainer]} >
+            <View style={styles.itemWrapper}>
+                <View style={styles.imageWrapperView}>
+
+                </View>
+                <View style={styles.contentInfoView}>
+                    <Text style={styles.itemTitle} >
+                        {item.productName}
+                    </Text>
+                </View>
+
+            </View>
+        </View>
+    )
+}
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        //justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: 'gray',
-        //padding: 10,
+
+    },
+    tabContainer: {
+        flex: 1,
+        backgroundColor: '#F4F7FB',
     },
     headerText: {
         padding: 8,
@@ -137,6 +197,41 @@ const styles = StyleSheet.create({
     activeTabStyle: {
         //backgroundColor: '#D52C43',
     },
+
+    itemContainer: {
+        height:150,
+    },
+
+    itemWrapper: {
+        flex:1,
+        flexDirection:'row',
+        backgroundColor:'white',
+        marginTop: 4,
+        marginBottom: 4,
+        marginLeft:8,
+        marginRight:8,
+        borderWidth:1,
+        borderRadius:4,
+        //borderColor:'#E8E8E8'
+        borderColor:'#E8E8E8',
+        shadowColor: "black",
+        shadowOffset: {
+            width: 0,
+            height: 0.5,
+        },
+        shadowOpacity: 0.2,
+        shadowRadius: 1,
+
+    },
+    imageWrapperView: {
+        flex:1,
+        backgroundColor:'gray'
+    },
+    contentInfoView: {
+        flex:2
+    }
+
+
 });
 
 

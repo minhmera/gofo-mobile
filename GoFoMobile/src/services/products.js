@@ -15,7 +15,7 @@ export async function getLocation() {
         throw handler(e)
     }
 }
-
+// **************   POST PRODUCTS   **************
 export async function uploadImages(images) {
     console.log('******************** uploadImages ****************')
     try {
@@ -43,7 +43,6 @@ export async function uploadImages(images) {
 
 }
 
-
 export async function sellingPost(data){
     let token = await AsyncStorage.getItem(TOKEN_KEY);
 
@@ -62,7 +61,6 @@ export async function sellingPost(data){
     }
 }
 
-
 export async function buyingPost(data){
     let token = await AsyncStorage.getItem(TOKEN_KEY);
 
@@ -80,3 +78,25 @@ export async function buyingPost(data){
         throw handler(e);
     }
 }
+
+
+
+// **************   GET PRODUCTS   **************
+
+export async function getSellingProduct() {
+    try {
+        console.log('API URL =============================> ', c.GET_SELLING_PRODUCTS)
+        let res = await axios.get(c.GET_SELLING_PRODUCTS);
+        return res.data;
+    } catch (e) {
+        throw handler(e)
+    }
+}
+
+
+
+
+
+
+
+

@@ -16,7 +16,7 @@ export function globalDataReducer(globalState, action) {
     switch (action.type) {
 
         case SET_CATEGORIES:
-            console.log('MERA  globalDataReducer  ',action)
+            console.log('MERA  globalDataReducer  ',action.type)
             return {
                 ...globalState,
                 categories: action.categories

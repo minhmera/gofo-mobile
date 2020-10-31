@@ -16,6 +16,8 @@ export const GET_CATEGORY_LIST = `${API_URL}/categories/getAll`;
 export const UPLOAD_IMAGES = `${API_URL}/image-upload`;
 export const SELLING_POST = `${API_URL}/sellingPost/createOne`;
 export const BUYING_POST = `${API_URL}/buyingPost/createOne`;
+export const GET_BUYING_PRODUCTS = `${API_URL}/buyingPost/getAll`;
+export const GET_SELLING_PRODUCTS = `${API_URL}/sellingPost/getAll`;
 
 
 export const GET_LOCATION = `${API_URL}/getLocation`;
