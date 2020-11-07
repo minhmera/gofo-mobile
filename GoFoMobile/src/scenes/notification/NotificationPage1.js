@@ -1,6 +1,17 @@
-import React from 'react'
-import {View, Text} from 'react-native'
-//import {Text, FAB, List} from 'react-native-paper'
+/* eslint-disable */
+
+import React, {useState, useEffect} from 'react';
+// import all the components we are going to use
+import {
+    SafeAreaView,
+    View,
+    Text,
+    StyleSheet,
+    FlatList,
+    ActivityIndicator,
+} from 'react-native';
+
+
 import Header from '../../components/Header'
 import LocalizationContext from "../../localization/LocalizationContext";
 
@@ -10,17 +21,109 @@ function Notification1({navigation}) {
     const {t, i18n} = React.useContext(LocalizationContext);
     const { globalState, dispatch } = useGlobalDataContext();
     console.log('MERA  globalState ==>  ',globalState)
-    return (
-        <View>
-            <Header titleText='Login'/>
-            <Text>
-                Product Page1  {t('welcome')}
+    const [loading, setLoading] = useState(false);
+    const [dataSource, setDataSource] = useState([]);
+    const [offset, setOffset] = useState(1);
+    const [isListEnd, setIsListEnd] = useState(false);
 
+    useEffect(() => getData(), []);
+
+    const getData = () => {
+        console.log(offset);
+        if (!loading && !isListEnd) {
+            console.log('getData');
+            setLoading(true);
+            // Service to get the data from the server to render
+            fetch('https://aboutreact.herokuapp.com/getpost.php?offset='
+                + offset)
+            // Sending the currect offset with get request
+                .then((response) => response.json())
+                .then((responseJson) => {
+                    // Successful response from the API Call
+                    console.log(responseJson);
+                    if (responseJson.results.length > 0) {
+                        setOffset(offset + 1);
+                        // After the response increasing the offset
+                        setDataSource([...dataSource, ...responseJson.results]);
+                        setLoading(false);
+                    } else {
+                        setIsListEnd(true);
+                        setLoading(false);
+                    }
+                })
+                .catch((error) => {
+                    console.error(error);
+                });
+        }
+    };
+
+    const renderFooter = () => {
+        return (
+            // Footer View with Loader
+            <View style={styles.footer}>
+                {loading ? (
+                    <ActivityIndicator
+                        color="black"
+                        style={{margin: 15}} />
+                ) : null}
+            </View>
+        );
+    };
+
+    const ItemView = ({item}) => {
+        return (
+            // Flat List Item
+            <Text
+                style={styles.itemStyle}
+                onPress={() => getItem(item)}>
+                {item.id}
+                {'.'}
+                {item.title.toUpperCase()}
             </Text>
+        );
+    };
 
-            <Text>{globalState.categories.length}</Text>
-        </View>
-    )
+    const ItemSeparatorView = () => {
+        return (
+            // Flat List Item Separator
+            <View
+                style={{
+                    height: 0.5,
+                    width: '100%',
+                    backgroundColor: '#C8C8C8',
+                }}
+            />
+        );
+    };
+
+    const getItem = (item) => {
+        // Function for click on an item
+        alert('Id : ' + item.id + ' Title : ' + item.title);
+    };
+
+    return (
+        <SafeAreaView style={{flex: 1}}>
+            <FlatList
+                data={dataSource}
+                keyExtractor={(item, index) => index.toString()}
+                ItemSeparatorComponent={ItemSeparatorView}
+                renderItem={ItemView}
+                ListFooterComponent={renderFooter}
+                onEndReached={getData}
+                onEndReachedThreshold={0.5}
+            />
+        </SafeAreaView>
+    );
 }
 
 export default Notification1
+
+
+const styles = StyleSheet.create({
+    footer: {
+        padding: 10,
+        justifyContent: 'center',
+        alignItems: 'center',
+        flexDirection: 'row',
+    },
+});
