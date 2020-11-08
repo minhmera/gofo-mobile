@@ -9,34 +9,7 @@ import {backgroundColor} from "react-native-calendars/src/style";
 import * as api from "../../services/products";
 import {setCategories} from "../../contexts/globalDataContext";
 
-
-function RenderList(data,refreshing,onRefresh) {
-    console.log('MERA RenderList data ==> ', data.length)
-    if (data.length > 0) {
-        return (
-            <View style={{marginTop:8}} >
-                <FlatList
-                    data={data}
-                    renderItem={({item}) =>
-                        RenderItem(item)
-                    }
-
-                    keyExtractor={(item, index) => item._id}
-                    /*refreshControl={
-                        <RefreshControl
-                            refreshing={refreshing}
-                            onRefresh={onRefresh}
-                            tintColor = {GlobalStyle.colour.primaryColor}
-                        />
-                    }*/
-
-                />
-            </View>
-        )
-    }
-}
-
-
+console.disableYellowBox = true;
 
 
 
@@ -47,21 +20,93 @@ function PostedPage1({navigation}) {
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
     const [refreshing, setRefreshing] = useState(false);
-    const [sellingList, setSellingList] = useState(false);
+    const [sellingList, setSellingList] = useState([]);
 
-    async function fetchData() {
-        setLoading(true);
-        try {
-            let response = await api.getSellingProduct();
-            //console.log('MERA getSellingProduct ==> ',response.result.length)
-            setSellingList(response.result)
-            setLoading(false);
 
-        } catch (error) {
-            setError(error.message);
-            setLoading(false)
+    //const [dataSource, setDataSource] = useState([]);
+    const [offset, setOffset] = useState(1);
+    const [isListEnd, setIsListEnd] = useState(false);
+
+    /*async function fetchData() {
+
+        //console.log('MERA ==>  loading: ',loading, '||   isListEnd: ',loading, '||  offset: ',offset)
+        if (!loading && !isListEnd && offset < 30) {
+            setLoading(true)
+            try {
+                let response = await api.getSellingProduct(offset);
+                console.log('MERA getSellingProduct ==> ',response.result.length)
+                setSellingList(response.result)
+                if (response.result.length > 0) {
+                    setOffset(offset + 1);
+                    // After the response increasing the offset
+                    setSellingList([...setSellingList, ...response.result]);
+                    setLoading(false);
+                } else {
+                    setIsListEnd(true);
+                    setLoading(false);
+                }
+
+
+            } catch (error) {
+                setError(error.message);
+                setLoading(false)
+            }
+        }
+
+    }*/
+
+     function fetchData() {
+        //console.log('MERA ==>  loading: ',loading, '||   isListEnd: ',loading, '||  offset: ',offset)
+        if (!loading && !isListEnd) {
+            setLoading(true)
+            api.getSellingProduct2(offset).then((response) => {
+                //setSellingList(response.data.result)
+                if (response.data.result.length > 0) {
+                    console.log('MERA getSellingProduct ==> ',response.data.result.length,'setSellingList ==> ', sellingList.length)
+                    setOffset(offset + 1);
+                    // After the response increasing the offset
+                    setSellingList([...sellingList, ...response.data.result]);
+                    setLoading(false);
+                } else {
+                    setIsListEnd(true);
+                    setLoading(false);
+                }
+
+            });
+        }
+
+    }
+
+    function RenderList(data,refreshing,onRefresh) {
+        //console.log('MERA RenderList data ==> ', data.length)
+        if (data.length > 0) {
+            return (
+                <View style={{marginTop:8}} >
+                    <FlatList
+                        data={data}
+                        renderItem={({item}) =>
+                            RenderItem(item)
+                        }
+
+                        keyExtractor={(item, index) => item._id}
+                        onEndReached={fetchData()}
+                        onEndReachedThreshold={0.5}
+                        /*refreshControl={
+                            <RefreshControl
+                                refreshing={refreshing}
+                                onRefresh={onRefresh}
+                                tintColor = {GlobalStyle.colour.primaryColor}
+                            />
+                        }*/
+
+                    />
+                </View>
+            )
         }
     }
+
+
+
 
     async function refreshData() {
         setRefreshing(true);
@@ -108,7 +153,9 @@ function PostedPage1({navigation}) {
     }, []);
 
     return (
+
         <View style={styles.container}>
+
             <Header titleText='Sản phẩm' />
             <View style={styles.tabContainer}>
 
@@ -163,6 +210,9 @@ function RenderItem(item) {
         </View>
     )
 }
+
+
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,

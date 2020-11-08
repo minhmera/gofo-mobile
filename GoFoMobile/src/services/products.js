@@ -83,17 +83,33 @@ export async function buyingPost(data){
 
 // **************   GET PRODUCTS   **************
 
-export async function getSellingProduct() {
+export async function getSellingProduct(page) {
+    let url = c.GET_SELLING_PRODUCTS
+    url = url.replace('$page',page)
+    url = url.replace('$size',2)
     try {
-        console.log('API URL =============================> ', c.GET_SELLING_PRODUCTS)
-        let res = await axios.get(c.GET_SELLING_PRODUCTS);
+        console.log('API URL =============================> ', url)
+        let res = await axios.get(url);
         return res.data;
     } catch (e) {
         throw handler(e)
     }
 }
 
+export async function getSellingProduct2(page) {
+    let url = c.GET_SELLING_PRODUCTS
+    url = url.replace('$page',page)
+    url = url.replace('$size',1)
 
+    return axios.get(url);
+    // try {
+    //     console.log('API URL =============================> ', url)
+    //     let res = await axios.get(url);
+    //     return res.data;
+    // } catch (e) {
+    //     throw handler(e)
+    // }
+}
 
 
 
