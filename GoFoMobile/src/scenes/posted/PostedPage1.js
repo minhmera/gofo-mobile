@@ -12,7 +12,6 @@ import {setCategories} from "../../contexts/globalDataContext";
 console.disableYellowBox = true;
 
 
-
 function PostedPage1({navigation}) {
     const {t, i18n} = React.useContext(LocalizationContext);
     const [customStyleIndex, setCustomStyleIndex] = useState(0);
@@ -24,52 +23,51 @@ function PostedPage1({navigation}) {
 
 
     //const [dataSource, setDataSource] = useState([]);
-    const [offset, setOffset] = useState(1);
+    const [page, setPage] = useState(1);
     const [isListEnd, setIsListEnd] = useState(false);
 
-    /*async function fetchData() {
 
-        //console.log('MERA ==>  loading: ',loading, '||   isListEnd: ',loading, '||  offset: ',offset)
-        if (!loading && !isListEnd && offset < 30) {
+    function fetchData(isRefresh) {
+        console.log('MERA fetchData ==>  page: ', page, 'isRefresh: ', isRefresh)
+        if (isRefresh == true ) {
             setLoading(true)
-            try {
-                let response = await api.getSellingProduct(offset);
-                console.log('MERA getSellingProduct ==> ',response.result.length)
-                setSellingList(response.result)
-                if (response.result.length > 0) {
-                    setOffset(offset + 1);
-                    // After the response increasing the offset
-                    setSellingList([...setSellingList, ...response.result]);
+            api.getSellingProduct2(1).then((response) => {
+                console.log('MERA length 11: ',response.data.result.length,' : ', sellingList.length)
+                if (response.data.result.length > 0) {
+                    setSellingList(response.data.result)
                     setLoading(false);
+                    setRefreshing(false)
                 } else {
-                    setIsListEnd(true);
+                    //setIsListEnd(true);
                     setLoading(false);
+                    setRefreshing(false)
                 }
 
-
-            } catch (error) {
-                setError(error.message);
-                setLoading(false)
-            }
+            });
         }
 
-    }*/
-
-     function fetchData() {
-        //console.log('MERA ==>  loading: ',loading, '||   isListEnd: ',loading, '||  offset: ',offset)
         if (!loading && !isListEnd) {
+            //console.log('MERA fetchData ********************   ')
             setLoading(true)
-            api.getSellingProduct2(offset).then((response) => {
+            api.getSellingProduct2(page).then((response) => {
                 //setSellingList(response.data.result)
                 if (response.data.result.length > 0) {
-                    console.log('MERA getSellingProduct ==> ',response.data.result.length,'setSellingList ==> ', sellingList.length)
-                    setOffset(offset + 1);
-                    // After the response increasing the offset
-                    setSellingList([...sellingList, ...response.data.result]);
+
+                    setPage(page + 1);
+                    console.log('MERA length 22: ',response.data.result.length,' : ', sellingList.length)
+                    // After the response increasing the page
+                    if (page == 1) {
+                        setSellingList(response.data.result)
+                    } else {
+                        setSellingList([...sellingList, ...response.data.result])
+                    }
+
                     setLoading(false);
+                    setRefreshing(false)
                 } else {
-                    setIsListEnd(true);
+                    //setIsListEnd(true);
                     setLoading(false);
+                    setRefreshing(false)
                 }
 
             });
@@ -77,27 +75,38 @@ function PostedPage1({navigation}) {
 
     }
 
-    function RenderList(data,refreshing,onRefresh) {
+    function refreshData() {
+
+        setLoading(false);
+        setRefreshing(true)
+        setIsListEnd(false)
+        setPage(1);
+        console.log('MERA  refreshData page :',page, '  ' ,refreshing)
+        fetchData(true)
+
+    }
+
+    function RenderList(data) {
         //console.log('MERA RenderList data ==> ', data.length)
         if (data.length > 0) {
             return (
-                <View style={{marginTop:8}} >
+                <View style={{marginTop: 0}}>
                     <FlatList
                         data={data}
                         renderItem={({item}) =>
                             RenderItem(item)
                         }
-
                         keyExtractor={(item, index) => item._id}
-                        onEndReached={fetchData()}
-                        onEndReachedThreshold={0.5}
-                        /*refreshControl={
+                        onEndReached={() => fetchData()}
+                        //onEndReached={() => {console.log('*********  onEndReached  ******  '),fetchData()}}
+                        onEndReachedThreshold={0.01}
+                        refreshControl={
                             <RefreshControl
                                 refreshing={refreshing}
-                                onRefresh={onRefresh}
-                                tintColor = {GlobalStyle.colour.primaryColor}
+                                onRefresh={() => refreshData()}
+                                tintColor={GlobalStyle.colour.primaryColor}
                             />
-                        }*/
+                        }
 
                     />
                 </View>
@@ -105,22 +114,6 @@ function PostedPage1({navigation}) {
         }
     }
 
-
-
-
-    async function refreshData() {
-        setRefreshing(true);
-        try {
-            let response = await api.getSellingProduct();
-            //console.log('MERA getSellingProduct ==> ',response.result.length)
-            setSellingList(response.result)
-            setLoading(false);
-
-        } catch (error) {
-            setError(error.message);
-            setLoading(false)
-        }
-    }
 
     const handleCustomIndexSelect = (index) => {
         setCustomStyleIndex(index);
@@ -140,9 +133,9 @@ function PostedPage1({navigation}) {
 
     function renderSellingApp() {
         return (
-            <View style={{flex:1}}>
+            <View style={{flex: 1}}>
 
-                { RenderList(sellingList,refreshing, ()=> refreshData())   }
+                {RenderList(sellingList)}
             </View>
         )
     }
@@ -156,7 +149,7 @@ function PostedPage1({navigation}) {
 
         <View style={styles.container}>
 
-            <Header titleText='Sản phẩm' />
+            <Header titleText='Sản phẩm'/>
             <View style={styles.tabContainer}>
 
                 {/* Simple Segmented with Custom Styling*/}
@@ -172,9 +165,9 @@ function PostedPage1({navigation}) {
                         borderColor: 'transparent',
                     }}
                     activeTabStyle={{
-                        backgroundColor:GlobalStyle.colour.primaryColor,
-                        borderBottomColor:'white',
-                        borderBottomWidth:2
+                        backgroundColor: GlobalStyle.colour.primaryColor,
+                        borderBottomColor: 'white',
+                        borderBottomWidth: 2
                     }}
                     tabTextStyle={{color: 'white', fontWeight: 'bold'}}
                     activeTabTextStyle={{color: 'white'}}
@@ -195,13 +188,13 @@ export default PostedPage1
 
 function RenderItem(item) {
     return (
-        <View style={[styles.itemContainer]} >
+        <View style={[styles.itemContainer]}>
             <View style={styles.itemWrapper}>
                 <View style={styles.imageWrapperView}>
 
                 </View>
                 <View style={styles.contentInfoView}>
-                    <Text style={styles.itemTitle} >
+                    <Text style={styles.itemTitle}>
                         {item.productName}
                     </Text>
                 </View>
@@ -210,7 +203,6 @@ function RenderItem(item) {
         </View>
     )
 }
-
 
 
 const styles = StyleSheet.create({
@@ -249,21 +241,21 @@ const styles = StyleSheet.create({
     },
 
     itemContainer: {
-        height:150,
+        height: 150,
     },
 
     itemWrapper: {
-        flex:1,
-        flexDirection:'row',
-        backgroundColor:'white',
+        flex: 1,
+        flexDirection: 'row',
+        backgroundColor: 'white',
         marginTop: 4,
         marginBottom: 4,
-        marginLeft:8,
-        marginRight:8,
-        borderWidth:1,
-        borderRadius:4,
+        marginLeft: 8,
+        marginRight: 8,
+        borderWidth: 1,
+        borderRadius: 4,
         //borderColor:'#E8E8E8'
-        borderColor:'#E8E8E8',
+        borderColor: '#E8E8E8',
         shadowColor: "black",
         shadowOffset: {
             width: 0,
@@ -274,11 +266,11 @@ const styles = StyleSheet.create({
 
     },
     imageWrapperView: {
-        flex:1,
-        backgroundColor:'gray'
+        flex: 1,
+        backgroundColor: 'gray'
     },
     contentInfoView: {
-        flex:2
+        flex: 2
     }
 
 

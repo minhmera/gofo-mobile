@@ -98,17 +98,12 @@ export async function getSellingProduct(page) {
 
 export async function getSellingProduct2(page) {
     let url = c.GET_SELLING_PRODUCTS
-    url = url.replace('$page',page)
-    url = url.replace('$size',1)
 
+    url = url.replace('$page',page)
+    url = url.replace('$size',2)
+    //console.log('MERA API ===========> ',page)
     return axios.get(url);
-    // try {
-    //     console.log('API URL =============================> ', url)
-    //     let res = await axios.get(url);
-    //     return res.data;
-    // } catch (e) {
-    //     throw handler(e)
-    // }
+
 }
 
 
