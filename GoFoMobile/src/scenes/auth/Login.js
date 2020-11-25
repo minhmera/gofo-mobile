@@ -15,7 +15,7 @@ import {Button, Input} from 'react-native-elements';
 import AppStyle from '../../style/style';
 import AnimatedLoader from  '../../utils/custom-view/AnimatedLoader'
 import {backgroundColor} from 'react-native-calendars/src/style';
-import {TOKEN_KEY, USER_ID_KEY, USER_KEY} from "../../config/Contants";
+import {TOKEN_KEY, USER_ID_KEY, USER_KEY,USER_NAME_KEY} from "../../config/Contants";
 
 
 async function getTokenKey() {
@@ -54,10 +54,12 @@ export default function Login(props) {
             let response = await api.login(submitObj);
             //await handleLogin(response);
             setLoading(false);
-            console.log('MERA  Log in token  ',response.result.userInfo._id)
+            //console.log('MERA  Log in token  ',response.result.userInfo._id)
+            console.log('MERA  Login Result  ',response.result.userInfo.local.fullName)
             try {
                 let token = await AsyncStorage.setItem(TOKEN_KEY, response.result.token)
                 let id = await AsyncStorage.setItem(USER_ID_KEY, response.result.userInfo._id)
+                let userName = await AsyncStorage.setItem(USER_NAME_KEY, response.result.userInfo.local.fullName)
                 //navigate.setParams({"param":"Value cc "})
                 navigate('App');
                 setLoading(false);

@@ -190,9 +190,9 @@ function RenderItem(item) {
     return (
         <View style={[styles.itemContainer]}>
             <View style={styles.itemWrapper}>
-                <View style={styles.imageWrapperView}>
+                <ImageBackground imageStyle={{ borderRadius: 4 }} source={{uri: item.photoUrls[0]}} style={styles.imageWrapperView}>
 
-                </View>
+                </ImageBackground>
                 <View style={styles.contentInfoView}>
                     <Text style={styles.itemTitle}>
                         {item.productName}
@@ -267,6 +267,8 @@ const styles = StyleSheet.create({
     },
     imageWrapperView: {
         flex: 1,
+        margin: 8,
+        borderRadius: 4,
         backgroundColor: 'gray'
     },
     contentInfoView: {
