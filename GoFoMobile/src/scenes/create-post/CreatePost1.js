@@ -23,7 +23,7 @@ import ModelCalendar from '../../components/ModelCalendar'
 import {ProductCertifications} from '../../config/AppConfig'
 import {useGlobalDataContext, setCategories} from '../../contexts/globalDataContext'
 import AsyncStorage from "@react-native-community/async-storage";
-import {USER_ID_KEY} from "../../config/Contants";
+import {USER_ID_KEY, USER_NAME_KEY} from "../../config/Contants";
 import AnimatedLoader from "../../utils/custom-view/AnimatedLoader";
 
 
@@ -112,6 +112,7 @@ function CreatePost1({navigation}) {
     const [selectedCity, setSelectedCity] = useState(null);
     const [selectedDistrict, setSelectedDistrict] = useState(null);
 
+
     const [selectedCategory, setSelectedCategory] = useState(null);
 
     const [selectedCropTimeDate, setSelectedCropTimeDate ] = useState(null);
@@ -142,13 +143,17 @@ function CreatePost1({navigation}) {
     async function onSubmitSelling(photoUrls) {
 
         let userId = await AsyncStorage.getItem(USER_ID_KEY);
+        let userName = await AsyncStorage.getItem(USER_NAME_KEY);
         let sellingObj = {
             "photoUrls":photoUrls,
             "userId":userId,
+            "fullName":userName,
             "categoryId":selectedCategory.type,
             "productName":productName,
             "provinceId":selectedCity.id,
             "districtId":selectedDistrict.id,
+            "provinceName": selectedCity.name,
+            "districtName": selectedDistrict.name,
             "cropDay": selectedCropTimeDate.format('YYYY-MM-DD'),
             "productCertification": selectedCertification,
             "sellerPhone": phoneNumber
@@ -195,12 +200,16 @@ function CreatePost1({navigation}) {
     async function uploadBuyingProduct() {
         setLoading(true);
         let userId = await AsyncStorage.getItem(USER_ID_KEY);
+        let userName = await AsyncStorage.getItem(USER_NAME_KEY);
         let buyingObj = {
             "userId":userId,
+            "fullName`":userName,
             "categoryId":selectedCategory.type,
             "productName":productName,
             "provinceId":selectedCity.id,
             "districtId":selectedDistrict.id,
+            "provinceName": selectedCity.name,
+            "districtName": selectedDistrict.name,
             "productCertification": selectedCertification,
             "buyerPhone": phoneNumber
         }

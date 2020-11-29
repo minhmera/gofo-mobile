@@ -197,6 +197,12 @@ function RenderItem(item) {
                     <Text style={styles.itemTitle}>
                         {item.productName}
                     </Text>
+                    <Text style={styles.normalText}>
+                       Người bán: {item.fullName}
+                    </Text>
+                    <Text style={styles.normalText}>
+                        Liên hệ: {item.sellerPhone}
+                    </Text>
                 </View>
 
             </View>
@@ -273,6 +279,17 @@ const styles = StyleSheet.create({
     },
     contentInfoView: {
         flex: 2
+    },
+    itemTitle: {
+        color: GlobalStyle.colour.primaryColor,
+        fontSize:15,
+        fontWeight:'500',
+        marginTop:6
+    },
+    normalText: {
+        color: 'black',
+        fontSize:13,
+        marginTop:4
     }
 
 
