@@ -106,6 +106,15 @@ export async function getSellingProduct2(page) {
 
 }
 
+export async function getBuyingProduct(page) {
+    let url = c.GET_BUYING_PRODUCTS
+
+    url = url.replace('$page',page)
+    url = url.replace('$size',2)
+    console.log('MERA API getBuyingProduct ===========> ',url)
+    return axios.get(url);
+
+}
 
 
 

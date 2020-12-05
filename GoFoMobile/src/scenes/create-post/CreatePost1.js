@@ -203,7 +203,7 @@ function CreatePost1({navigation}) {
         let userName = await AsyncStorage.getItem(USER_NAME_KEY);
         let buyingObj = {
             "userId":userId,
-            "fullName`":userName,
+            "fullName":userName,
             "categoryId":selectedCategory.type,
             "productName":productName,
             "provinceId":selectedCity.id,

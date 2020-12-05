@@ -18,13 +18,18 @@ function PostedPage1({navigation}) {
 
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
+    const [loadingBuying, setLoadingBuying] = useState(false);
     const [refreshing, setRefreshing] = useState(false);
+    const [refreshingBuying, setRefreshingBuying] = useState(false);
     const [sellingList, setSellingList] = useState([]);
+    const [buyingList, setBuyingList] = useState([]);
 
 
     //const [dataSource, setDataSource] = useState([]);
     const [page, setPage] = useState(1);
+    const [pageBuying, setPageBuying] = useState(1);
     const [isListEnd, setIsListEnd] = useState(false);
+    const [isListEndBuying, setIsListEndBuying] = useState(false);
 
 
     function fetchData(isRefresh) {
@@ -75,6 +80,54 @@ function PostedPage1({navigation}) {
 
     }
 
+    function fetchDataBuying(isRefresh) {
+        console.log('MERA fetchData ==>  page: ', page, 'isRefresh: ', isRefresh)
+        if (isListEndBuying == true ) {
+            setLoading(true)
+            api.getBuyingProduct(1).then((response) => {
+                console.log('MERA length 11: ',response.data.result.length,' : ', sellingList.length)
+                if (response.data.result.length > 0) {
+                    setBuyingList(response.data.result)
+                    setLoadingBuying(false);
+                    setRefreshingBuying(false)
+                } else {
+                    //setIsListEnd(true);
+                    setLoadingBuying(false);
+                    setRefreshingBuying(false)
+                }
+
+            });
+        }
+
+        if (!loadingBuying && !isListEndBuying) {
+            //console.log('MERA fetchData ********************   ')
+            setLoadingBuying(true)
+            api.getBuyingProduct(pageBuying).then((response) => {
+                //setSellingList(response.data.result)
+                if (response.data.result.length > 0) {
+
+                    setPageBuying(pageBuying + 1);
+                    console.log('MERA length 22: ',response.data.result.length,' : ', sellingList.length)
+                    // After the response increasing the page
+                    if (pageBuying == 1) {
+                        setBuyingList(response.data.result)
+                    } else {
+                        setBuyingList([...buyingList, ...response.data.result])
+                    }
+
+                    setLoadingBuying(false);
+                    setRefreshingBuying(false)
+                } else {
+                    //setIsListEnd(true);
+                    setLoadingBuying(false);
+                    setRefreshingBuying(false)
+                }
+
+            });
+        }
+
+    }
+
     function refreshData() {
 
         setLoading(false);
@@ -85,6 +138,18 @@ function PostedPage1({navigation}) {
         fetchData(true)
 
     }
+
+    function refreshDataBuying() {
+
+        setLoadingBuying(false);
+        setRefreshingBuying(true)
+        setIsListEndBuying(false)
+        setPageBuying(1);
+        console.log('MERA  refreshData page :',page, '  ' ,refreshing)
+        fetchDataBuying(true)
+
+    }
+
 
     function RenderList(data) {
         //console.log('MERA RenderList data ==> ', data.length)
@@ -98,12 +163,38 @@ function PostedPage1({navigation}) {
                         }
                         keyExtractor={(item, index) => item._id}
                         onEndReached={() => fetchData()}
-                        //onEndReached={() => {console.log('*********  onEndReached  ******  '),fetchData()}}
                         onEndReachedThreshold={0.01}
                         refreshControl={
                             <RefreshControl
                                 refreshing={refreshing}
                                 onRefresh={() => refreshData()}
+                                tintColor={GlobalStyle.colour.primaryColor}
+                            />
+                        }
+
+                    />
+                </View>
+            )
+        }
+    }
+
+    function RenderListBuying(data) {
+        //console.log('MERA RenderList data ==> ', data.length)
+        if (data.length > 0) {
+            return (
+                <View style={{marginTop: 0}}>
+                    <FlatList
+                        data={data}
+                        renderItem={({item}) =>
+                            RenderItem(item)
+                        }
+                        keyExtractor={(item, index) => item._id}
+                        onEndReached={() => fetchDataBuying()}
+                        onEndReachedThreshold={0.01}
+                        refreshControl={
+                            <RefreshControl
+                                refreshing={refreshingBuying}
+                                onRefresh={() => refreshDataBuying()}
                                 tintColor={GlobalStyle.colour.primaryColor}
                             />
                         }
@@ -122,11 +213,9 @@ function PostedPage1({navigation}) {
 
     function renderBuyingApp() {
         return (
-            <View>
-                <Text>
-                    Mua
-                </Text>
+            <View style={{flex: 1}}>
 
+                {RenderListBuying(buyingList)}
             </View>
         )
     }
@@ -142,7 +231,7 @@ function PostedPage1({navigation}) {
 
 
     useEffect(() => {
-        fetchData();
+        fetchData(), fetchDataBuying()
     }, []);
 
     return (
@@ -190,9 +279,10 @@ function RenderItem(item) {
     return (
         <View style={[styles.itemContainer]}>
             <View style={styles.itemWrapper}>
-                <ImageBackground imageStyle={{ borderRadius: 4 }} source={{uri: item.photoUrls[0]}} style={styles.imageWrapperView}>
+                {
+                    item.photoUrls != null ? <ImageBackground imageStyle={{ borderRadius: 4 }} source={{uri: item.photoUrls[0]}} style={styles.imageWrapperView}></ImageBackground> : null
+                }
 
-                </ImageBackground>
                 <View style={styles.contentInfoView}>
                     <Text style={styles.itemTitle}>
                         {item.productName}
