@@ -8,34 +8,10 @@ import AnimatedLoader from '../../utils/custom-view/AnimatedLoader';
 import GlobalStyle from '../../style/GlobalStyle'
 
 
-function RenderCategoryList(data,refreshing,onRefresh) {
-    //console.log('RenderCategoryList 22 data ==> ', data)
-    if (data.length > 0) {
-        return (
-            <View style={styles.container}>
-                <FlatList
-                    data={data}
-                    renderItem={({item}) =>
-                            RenderCategoryItem(item)
-                        }
 
-                    keyExtractor={(item, index) => item._id}
-                    refreshControl={
-                        <RefreshControl
-                            refreshing={refreshing}
-                            onRefresh={onRefresh}
-                            tintColor = {GlobalStyle.colour.primaryColor}
-                        />
-                    }
-
-                />
-            </View>
-        )
-    }
-}
 
 //({ route, navigation })
-function ProductPage1({route}) {
+function ProductPage1({navigation}) {
     const {t, i18n} = React.useContext(LocalizationContext);
     //Product Page1  {t('welcome')}
    // console.log("MERA  ProductPage1 param ==>  ",route,' -- ')
@@ -63,6 +39,13 @@ function ProductPage1({route}) {
         }
     }
 
+    function navigateToSellingPost(item) {
+        console.log('MERA navigateToSellingPost   ',navigation)
+        navigation.push('SellingProduct',{categoryItem:item})
+
+        //navigation.navigate('SellingProduct', { name: 'Jane' })
+    }
+
     async function refreshData() {
         setRefreshing(true);
         try {
@@ -82,11 +65,69 @@ function ProductPage1({route}) {
         fetchData();
     }, []);
 
+    function RenderCategoryList(data,refreshing,onRefresh) {
+        if (data.length > 0) {
+            return (
+                <View style={styles.container}>
+                    <FlatList
+                        data={data}
+                        renderItem={({item}) =>
+                            RenderCategoryItem(item)
+                        }
+
+                        keyExtractor={(item, index) => item._id}
+                        refreshControl={
+                            <RefreshControl
+                                refreshing={refreshing}
+                                onRefresh={onRefresh}
+                                tintColor = {GlobalStyle.colour.primaryColor}
+                            />
+                        }
+
+                    />
+                </View>
+            )
+        }
+    }
+
+    function RenderCategoryItem(item) {
+        return (
+            <View style={[styles.itemContainer]} >
+                <ImageBackground source={{uri: item.photoUrl}} style={styles.bgImage}>
+                    <View style={styles.itemContent} onPress = {() => console.log(' pressed on11  ',item.title_vi)}>
+                        <Text style={styles.itemTitle} >
+                            {item.title_vi}
+                        </Text>
+
+
+                        <View style={styles.buttonContainerView}>
+                            <TouchableOpacity
+                                style={[styles.sellButtonView,{marginTop:24}]}
+                                onPress={()=> navigateToSellingPost(item)}
+                            >
+                                <Text style={styles.buttonText}>
+                                    Xem tin bán
+                                </Text>
+                            </TouchableOpacity>
+
+                            <TouchableOpacity style={styles.sellButtonView}>
+                                <Text style={[styles.buttonText]} >
+                                    Xem tin mua
+                                </Text>
+                            </TouchableOpacity>
+
+                        </View>
+                    </View>
+                </ImageBackground>
+
+            </View>
+        )
+    }
+
     return (
 
         <View style={{flex: 1}}>
             <Header titleText='Danh mục sản phẩm'/>
-            {/*{RenderCategoryList(globalState.categories)}*/}
             {RenderCategoryList(globalState.categories,refreshing, ()=> refreshData() )}
 
             <AnimatedLoader
@@ -103,20 +144,6 @@ function ProductPage1({route}) {
     )
 }
 
-function RenderCategoryItem(item) {
-    return (
-        <View style={[styles.itemContainer]} >
-            <ImageBackground source={{uri: item.photoUrl}} style={styles.bgImage}>
-                <TouchableOpacity style={styles.itemContent} onPress = {() => console.log(' pressed on11  ',item.title_vi)}>
-                    <Text style={styles.itemTitle} >
-                        {item.title_vi}
-                    </Text>
-                </TouchableOpacity>
-            </ImageBackground>
-
-        </View>
-    )
-}
 
 
 export default ProductPage1
@@ -130,21 +157,52 @@ const styles = StyleSheet.create({
         flex: 1,
         height:150,
         backgroundColor: 'rgba(0,0,0,0.5)',
-        justifyContent: "center"
+        //justifyContent:'flex-end',
     },
     itemContainer: {
-        height:150,
-    },
-    itemTitle: {
-        color: 'white',
-        textAlign:'center',
-        fontSize:16,
-        fontWeight:'bold',
-
+        height:186,
     },
     bgImage: {
         flex: 1,
         resizeMode: "cover",
         justifyContent: "center",
+    },
+    itemTitle: {
+        flex:1,
+        color: 'white',
+        fontSize:18,
+        paddingLeft:8,
+        paddingTop:8,
+        fontWeight:'bold',
+
+
+    },
+    buttonContainerView: {
+        flex: 1,
+        alignItems:'flex-end',
+
+    },
+
+    sellButtonView: {
+        width:120,
+        height:32,
+        marginRight:4,
+        borderRadius:8,
+        justifyContent: 'center',
+        borderColor:GlobalStyle.colour.primaryColor,
+        //borderWidth:0.5,
+
+
+    },
+
+
+    buttonText: {
+        color: 'white',
+
+        fontSize:14,
+        textAlign:'right',
+        fontWeight:'700',
     }
+
+
 })

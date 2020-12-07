@@ -22,8 +22,6 @@ function Register(props) {
     //const {route} = props.route;
 
     let movies = navigation.getParam('movies');
-
-
     console.log('MERA Register ==>  ', movies);
 
     //1 - DECLARE VARIABLES
