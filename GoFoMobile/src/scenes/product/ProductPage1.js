@@ -40,7 +40,7 @@ function ProductPage1({navigation}) {
     }
 
     function navigateToSellingPost(item) {
-        console.log('MERA navigateToSellingPost   ',navigation)
+        //console.log('MERA navigateToSellingPost   ',navigation)
         navigation.push('SellingProduct',{categoryItem:item})
 
         //navigation.navigate('SellingProduct', { name: 'Jane' })

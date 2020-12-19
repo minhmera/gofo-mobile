@@ -19,5 +19,7 @@ export const BUYING_POST = `${API_URL}/buyingPost/createOne`;
 export const GET_SELLING_PRODUCTS = `${API_URL}/sellingPost/getAll?page=$page&size=$size`;
 export const GET_BUYING_PRODUCTS = `${API_URL}/buyingPost/getAll?page=$page&size=$size`;
 
+export const GET_SELLING_PRODUCTS_BY_CATEGORY = `${API_URL}/sellingPost/getByCategory?categoryId=$categoryId&provinceId=$provinceId&page=$page&size=$size`;
+
 
 export const GET_LOCATION = `${API_URL}/getLocation`;
