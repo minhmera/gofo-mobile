@@ -121,17 +121,32 @@ export async function getSellingByCategory(categoryId,provinceId,page) {
 
     url = url.replace('$categoryId',categoryId)
     if (provinceId !== 0) {
-        console.log("MERA  provinceId != 0 ")
         url = url.replace('$provinceId',provinceId)
     } else {
-        //&provinceId=$provinceId
-        console.log("MERA  provinceId == 0 ")
         url = url.replace('&provinceId=$provinceId','')
     }
 
     url = url.replace('$page',page)
     url = url.replace('$size',2)
     console.log('MERA getSellingByCategory  _______________URL_________ ',url)
+    return axios.get(url);
+
+}
+
+export async function getBuyingByCategory(categoryId,provinceId,page) {
+    let url = c.GET_BUYING_PRODUCTS_BY_CATEGORY
+
+    url = url.replace('$categoryId',categoryId)
+    if (provinceId !== 0) {
+        url = url.replace('$provinceId',provinceId)
+    } else {
+        //&provinceId=$provinceId
+        url = url.replace('&provinceId=$provinceId','')
+    }
+
+    url = url.replace('$page',page)
+    url = url.replace('$size',2)
+    console.log('MERA getBuyingByCategory  _______________URL_________ ',url)
     return axios.get(url);
 
 }

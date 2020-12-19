@@ -2,6 +2,7 @@ import {createStackNavigator} from "react-navigation-stack";
 import ProductPage1 from "../scenes/product/ProductPage1";
 import ProductPage2 from "../scenes/product/ProductPage2";
 import SellingProduct from "../scenes/product/SellingProduct";
+import BuyingProduct from "../scenes/product/BuyingProduct";
 import AuthStack from "./Auth";
 
 
@@ -12,6 +13,9 @@ const ProductStack = createStackNavigator(
         },
         SellingProduct: {
             screen: SellingProduct
+        },
+        BuyingProduct: {
+            screen: BuyingProduct
         },
         ProductPage2: {
             screen: ProductPage2

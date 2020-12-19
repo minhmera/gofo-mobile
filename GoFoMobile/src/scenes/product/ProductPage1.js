@@ -40,10 +40,11 @@ function ProductPage1({navigation}) {
     }
 
     function navigateToSellingPost(item) {
-        //console.log('MERA navigateToSellingPost   ',navigation)
         navigation.push('SellingProduct',{categoryItem:item})
+    }
 
-        //navigation.navigate('SellingProduct', { name: 'Jane' })
+    function navigateToBuyingPost(item) {
+        navigation.push('BuyingProduct',{categoryItem:item})
     }
 
     async function refreshData() {
@@ -110,7 +111,9 @@ function ProductPage1({navigation}) {
                                 </Text>
                             </TouchableOpacity>
 
-                            <TouchableOpacity style={styles.sellButtonView}>
+                            <TouchableOpacity
+                                style={styles.sellButtonView}
+                                onPress={()=> navigateToBuyingPost(item)}>
                                 <Text style={[styles.buttonText]} >
                                     Xem tin mua
                                 </Text>
