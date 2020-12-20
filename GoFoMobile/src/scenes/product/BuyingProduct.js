@@ -56,9 +56,6 @@ function BuyingProduct({navigation}) {
                     }
                     cities.push(cityObj)
                 })
-
-                //console.log("MERA cities  ==>  ",cities)
-
                 setCities(cities)
             }
             //setCities(response.result)
@@ -150,7 +147,7 @@ function BuyingProduct({navigation}) {
 
     }
 
-    function RenderList(data) {
+    function RenderList(navigation,data) {
         //console.log('MERA RenderList data ==> ', data.length)
         if (data.length > 0) {
             return (
@@ -158,7 +155,7 @@ function BuyingProduct({navigation}) {
                     <FlatList
                         data={data}
                         renderItem={({item}) =>
-                            RenderItem(item)
+                            RenderItem(navigation,item)
                         }
                         keyExtractor={(item, index) => item._id}
                         onEndReached={() => fetchData()}
@@ -236,7 +233,7 @@ function BuyingProduct({navigation}) {
                 callBack = {(item)=> cityDropDownCallBack(item)}
             />
             <View style={{flex:1, marginTop:8}}>
-                {RenderList(sellingList)}
+                {RenderList(navigation,sellingList)}
             </View>
 
 
@@ -245,13 +242,18 @@ function BuyingProduct({navigation}) {
     )
 }
 
-export default BuyingProduct
-function RenderItem(item) {
+
+function RenderItem(navigation,item) {
     return (
-        <View style={[styles.itemContainer]}>
+        <TouchableOpacity
+            style={[styles.itemContainer]}
+            onPress={() => navigateToDetail(navigation, item._id)}
+        >
             <View style={styles.itemWrapper}>
                 {
-                    item.photoUrls != null ? <ImageBackground imageStyle={{ borderRadius: 4 }} source={{uri: item.photoUrls[0]}} style={styles.imageWrapperView}></ImageBackground> : null
+                    item.photoUrls != null ?
+                        <ImageBackground imageStyle={{borderRadius: 4}} source={{uri: item.photoUrls[0]}}
+                                         style={styles.imageWrapperView}></ImageBackground> : null
                 }
 
                 <View style={styles.contentInfoView}>
@@ -267,9 +269,15 @@ function RenderItem(item) {
                 </View>
 
             </View>
-        </View>
+        </TouchableOpacity>
     )
 }
+function navigateToDetail(navigation, productId) {
+    console.log("MERA navigateToDetail ==> productId: ",productId)
+    navigation.push('ProductDetail',{productId:productId, type:'BUYING'})
+}
+
+export default BuyingProduct
 
 const styles = StyleSheet.create({
 

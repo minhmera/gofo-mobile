@@ -41,6 +41,7 @@ function ProductPage1({navigation}) {
 
     function navigateToSellingPost(item) {
         navigation.push('SellingProduct',{categoryItem:item})
+        //navigation.navigate('SellingProduct', { name: 'Jane' })
     }
 
     function navigateToBuyingPost(item) {

@@ -3,6 +3,7 @@ import ProductPage1 from "../scenes/product/ProductPage1";
 import ProductPage2 from "../scenes/product/ProductPage2";
 import SellingProduct from "../scenes/product/SellingProduct";
 import BuyingProduct from "../scenes/product/BuyingProduct";
+import ProductDetail from "../scenes/product/ProductDetail";
 import AuthStack from "./Auth";
 
 
@@ -16,6 +17,9 @@ const ProductStack = createStackNavigator(
         },
         BuyingProduct: {
             screen: BuyingProduct
+        },
+        ProductDetail: {
+            screen: ProductDetail
         },
         ProductPage2: {
             screen: ProductPage2
