@@ -9,7 +9,7 @@ import GlobalStyle from "../../style/GlobalStyle";
 import Icon from "react-native-vector-icons/AntDesign";
 import * as api from "../../services/products";
 import ModelList from "../../components/ModelList";
-
+import Carousel from '../../components/Carousel'
 
 function ProductDetail({navigation}) {
     //const {navigate} = props.navigation;
@@ -51,11 +51,20 @@ function ProductDetail({navigation}) {
         console.log('MERA  renderProductImages    ', item)
         let images = item.photoUrls
         let image = images[0]
-        return (
+        /*return (
             <View style={styles.productImageContainer}>
                 <ImageBackground style={styles.productImage} source={{uri: image}}>
 
                 </ImageBackground>
+                <View style={{height: 2, backgroundColor: GlobalStyle.colour.grayColor}}></View>
+            </View>
+        )*/
+
+        return (
+            <View style={styles.productImageContainer}>
+                <Carousel
+                    slideList = { images}
+                />
                 <View style={{height: 2, backgroundColor: GlobalStyle.colour.grayColor}}></View>
             </View>
         )
