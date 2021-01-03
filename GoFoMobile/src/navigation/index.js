@@ -16,7 +16,7 @@ const MainNavigator = createSwitchNavigator(
 
     },
     {
-        initialRouteName: 'Loading',
+        initialRouteName: 'App',
     }
 );
 

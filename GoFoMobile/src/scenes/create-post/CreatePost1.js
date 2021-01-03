@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useCallback,useReducer} from 'react';
+import React, {useEffect, useState, useCallback, useReducer} from 'react';
 import {
     View,
     Image,
@@ -8,10 +8,11 @@ import {
 } from 'react-native';
 import {Input, CheckBox, Button} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/AntDesign';
+
 const moment = require('moment');
 
 import ImagePicker from 'react-native-image-crop-picker';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view'
 
 import Header from '../../components/Header';
 import AppStyle from '../../style/style';
@@ -23,9 +24,9 @@ import ModelCalendar from '../../components/ModelCalendar'
 import {ProductCertifications} from '../../config/AppConfig'
 import {useGlobalDataContext, setCategories} from '../../contexts/globalDataContext'
 import AsyncStorage from "@react-native-community/async-storage";
-import {USER_ID_KEY, USER_NAME_KEY} from "../../config/Contants";
+import {TOKEN_KEY, USER_ID_KEY, USER_NAME_KEY} from "../../config/Contants";
 import AnimatedLoader from "../../utils/custom-view/AnimatedLoader";
-
+import LoginWarningView from '../../components/LogInWarningView'
 
 
 function renderImage(images) {
@@ -50,28 +51,28 @@ function renderImage(images) {
 
 }
 
-function dropdownButton(title,onPress,isError) {
-    console.log('MERA  dropdownButton ',title, ' ---  ',isError)
+function dropdownButton(title, onPress, isError) {
+    console.log('MERA  dropdownButton ', title, ' ---  ', isError)
     let errorStyle = null
     if (isError == true) {
         errorStyle = {
-                borderBottomColor: GlobalStyle.colour.errorColor,
-                color:GlobalStyle.colour.errorColor
+            borderBottomColor: GlobalStyle.colour.errorColor,
+            color: GlobalStyle.colour.errorColor
         }
     }
 
-    return  (
+    return (
         <TouchableOpacity
-            style={[styles.dropdownButton,errorStyle]}
+            style={[styles.dropdownButton, errorStyle]}
             activeOpacity={1}
-            onPress={()=> onPress()}
+            onPress={() => onPress()}
         >
-            <View style={{flex:4}}>
-                <Text style={[styles.dropdownButtonTitle,errorStyle]}>
+            <View style={{flex: 4}}>
+                <Text style={[styles.dropdownButtonTitle, errorStyle]}>
                     {title}
                 </Text>
             </View>
-            <View style={{flex:1,alignItems:'flex-end', marginRight:4}}>
+            <View style={{flex: 1, alignItems: 'flex-end', marginRight: 4}}>
                 <Icon
                     name='right'
                     size={20}
@@ -87,7 +88,7 @@ function dropdownButton(title,onPress,isError) {
 function CreatePost1({navigation}) {
     const {t, i18n} = React.useContext(LocalizationContext);
 
-    const { globalState, dispatch } = useGlobalDataContext();
+    const {globalState, dispatch} = useGlobalDataContext();
 
     let [images, setImages] = useState(null);
     let [isSell, setSellStatus] = useState(true);
@@ -106,8 +107,8 @@ function CreatePost1({navigation}) {
 
     let [isShowCategoryDropdown, setShowCategoryDropdown] = useState(false);
 
-    let [isShowCropTimeCalendar, setShowCropTimeCalendar ] = useState(false);
-    let [isShowCertification, setShowCertification ] = useState(false);
+    let [isShowCropTimeCalendar, setShowCropTimeCalendar] = useState(false);
+    let [isShowCertification, setShowCertification] = useState(false);
 
     const [selectedCity, setSelectedCity] = useState(null);
     const [selectedDistrict, setSelectedDistrict] = useState(null);
@@ -115,15 +116,18 @@ function CreatePost1({navigation}) {
 
     const [selectedCategory, setSelectedCategory] = useState(null);
 
-    const [selectedCropTimeDate, setSelectedCropTimeDate ] = useState(null);
-    const [selectedCertification, setSelectedCertification ] = useState(null);
+    const [selectedCropTimeDate, setSelectedCropTimeDate] = useState(null);
+    const [selectedCertification, setSelectedCertification] = useState(null);
 
     // Error States
 
-    let [isCategoryError, setCategoryErrorState ] = useState(null);
-    let [isCityError, setCityErrorState ] = useState(null);
-    let [isProductNameError, setProductNameError ] = useState(null);
-    let [isPhoneError, setPhoneError ] = useState(null);
+    let [isCategoryError, setCategoryErrorState] = useState(null);
+    let [isCityError, setCityErrorState] = useState(null);
+    let [isProductNameError, setProductNameError] = useState(null);
+    let [isPhoneError, setPhoneError] = useState(null);
+    let [token, setToken] = useState(null);
+
+    //token
 
     async function uploadSellingProduct() {
         setLoading(true);
@@ -132,7 +136,7 @@ function CreatePost1({navigation}) {
             console.log('uploadImage response ==> ', response);
             let imageUrls = response.imageUrls
             let res = await onSubmitSelling(imageUrls)
-            console.log('MERA ==> onSubmit ',res)
+            console.log('MERA ==> onSubmit ', res)
             setLoading(false);
         } catch (e) {
             console.log('Error ', e);
@@ -145,20 +149,20 @@ function CreatePost1({navigation}) {
         let userId = await AsyncStorage.getItem(USER_ID_KEY);
         let userName = await AsyncStorage.getItem(USER_NAME_KEY);
         let sellingObj = {
-            "photoUrls":photoUrls,
-            "userId":userId,
-            "fullName":userName,
-            "categoryId":selectedCategory.type,
-            "productName":productName,
-            "provinceId":selectedCity.id,
-            "districtId":selectedDistrict.id,
+            "photoUrls": photoUrls,
+            "userId": userId,
+            "fullName": userName,
+            "categoryId": selectedCategory.type,
+            "productName": productName,
+            "provinceId": selectedCity.id,
+            "districtId": selectedDistrict.id,
             "provinceName": selectedCity.name,
             "districtName": selectedDistrict.name,
             "cropDay": selectedCropTimeDate.format('YYYY-MM-DD'),
             "productCertification": selectedCertification,
             "sellerPhone": phoneNumber
         }
-        console.log('MERA submit object ',sellingObj)
+        console.log('MERA submit object ', sellingObj)
         try {
             let response = await api.sellingPost(sellingObj);
             console.log('MERA  sellingPost   ', response);
@@ -202,18 +206,18 @@ function CreatePost1({navigation}) {
         let userId = await AsyncStorage.getItem(USER_ID_KEY);
         let userName = await AsyncStorage.getItem(USER_NAME_KEY);
         let buyingObj = {
-            "userId":userId,
-            "fullName":userName,
-            "categoryId":selectedCategory.type,
-            "productName":productName,
-            "provinceId":selectedCity.id,
-            "districtId":selectedDistrict.id,
+            "userId": userId,
+            "fullName": userName,
+            "categoryId": selectedCategory.type,
+            "productName": productName,
+            "provinceId": selectedCity.id,
+            "districtId": selectedDistrict.id,
             "provinceName": selectedCity.name,
             "districtName": selectedDistrict.name,
             "productCertification": selectedCertification,
             "buyerPhone": phoneNumber
         }
-        console.log('MERA submit object ',buyingObj)
+        console.log('MERA submit object ', buyingObj)
         try {
             let response = await api.buyingPost(buyingObj);
             console.log('MERA  sellingPost   ', response);
@@ -263,7 +267,7 @@ function CreatePost1({navigation}) {
             if (response.result) {
                 let locations = response.result
                 setLocations(locations)
-                locations.map((item,index)=> {
+                locations.map((item, index) => {
                     let cityObj = {
                         name: item.name,
                         id: item.id,
@@ -284,11 +288,13 @@ function CreatePost1({navigation}) {
     }
 
     useEffect(() => {
-        fetchData();
+        {
+            fetchData(), getTokenKey()
+        }
     }, []);
 
     function selectedCategoryCallBack(category) {
-        console.log('MERA selected category ',category)
+        console.log('MERA selected category ', category)
         setSelectedCategory(category)
         if (category != null) {
             setCategoryErrorState(false)
@@ -298,7 +304,7 @@ function CreatePost1({navigation}) {
     }
 
     function cityDropDownCallBack(cityObj) {
-        console.log('MERA selected city ',cityObj)
+        console.log('MERA selected city ', cityObj)
         setSelectedCity(cityObj)
         if (cityObj != null) {
             setCityErrorState(false)
@@ -307,9 +313,9 @@ function CreatePost1({navigation}) {
         setSelectedDistrict(null)
         if (cityObj != null) {
             let index = locations.findIndex(x => x.name === cityObj.name)
-            let districtObject  = locations[index].districts
+            let districtObject = locations[index].districts
             let districtList = []
-            districtObject.map((item,index) => {
+            districtObject.map((item, index) => {
                 let districtsObj = {
                     name: item.name,
                     id: item.id
@@ -325,13 +331,13 @@ function CreatePost1({navigation}) {
     }
 
     function districtDropDownCallBack(district) {
-        console.log('MERA selected district ',district)
+        console.log('MERA selected district ', district)
         setSelectedDistrict(district)
         setShowDistrictDropdown(false)
     }
 
     function cropTimeCalendarCallBack(day) {
-        console.log('MERA cropTimeCalendarCallBack ==> ',day)
+        console.log('MERA cropTimeCalendarCallBack ==> ', day)
         let selectedDate = moment(day.dateString);
         //let dateString = selectedDate.format('DD-MM-YYYY')
         //console.log('MERA cropTimeCalendarCallBack ==> ', dateString );
@@ -340,7 +346,7 @@ function CreatePost1({navigation}) {
     }
 
     function certificationCallBack(certification) {
-        console.log('MERA certificationCallBack ==>  ',certification)
+        console.log('MERA certificationCallBack ==>  ', certification)
         setSelectedCertification(certification)
         setShowCertification(false)
     }
@@ -381,185 +387,202 @@ function CreatePost1({navigation}) {
         } else {
             setPhoneError(false)
         }
-        console.log('MERA1  isSellingValid  ==>   ',productName,' < -- >',isProductNameError)
+        console.log('MERA1  isSellingValid  ==>   ', productName, ' < -- >', isProductNameError)
         return isValidAllField
     }
 
-    return (
-        <View style={styles.container}>
-            <Header titleText='Create Post'/>
-            <KeyboardAwareScrollView style={{flex: 1}} keyboardDismissMode = {'interactive'}>
+
+    async function getTokenKey() {
+        let token = await AsyncStorage.getItem(TOKEN_KEY);
+        console.log("MERA getTokenKey11   ==> ", token)
+        setToken(token)
+    }
+
+    if (token === null) {
+        return (
+            <View style={styles.container}>
+                <Header titleText='Create Post'/>
+                <LoginWarningView navigation={navigation}/>
+
+            </View>
+        )
+    } else {
+        return (
+            <View style={styles.container}>
+                <Header titleText='Create Post'/>
+                <KeyboardAwareScrollView style={{flex: 1}} keyboardDismissMode={'interactive'}>
 
 
-                <View style={styles.content}>
-                    <View style={styles.uploadImageView}>
-                        {images != null ?
-                            renderImage(images) :
+                    <View style={styles.content}>
+                        <View style={styles.uploadImageView}>
+                            {images != null ?
+                                renderImage(images) :
+                                <TouchableOpacity
+                                    style={[styles.pickupImageView, {backgroundColor: GlobalStyle.colour.primaryColor}]}
+                                    onPress={selectFile}
+
+                                >
+                                    <Icon
+                                        name='camerao'
+                                        size={36}
+                                        color={'white'}
+                                    />
+                                </TouchableOpacity>
+                            }
+
+
                             <TouchableOpacity
-                                style={[styles.pickupImageView, {backgroundColor: GlobalStyle.colour.primaryColor}]}
-                                onPress={selectFile}
-
+                                style={styles.deleteImageView}
+                                onPress={() => setImages(null)}
                             >
                                 <Icon
-                                    name='camerao'
-                                    size={36}
+                                    name='close'
+                                    size={16}
                                     color={'white'}
                                 />
+
                             </TouchableOpacity>
-                        }
+                        </View>
+                        <View style={styles.inputInfoView}>
+                            <View style={styles.checkBoxView}>
+                                <View style={[styles.checkBoxItem, {marginLeft: 0}]}>
+
+                                    <CheckBox
+                                        size={28}
+                                        checked={isSell}
+                                        checkedColor={GlobalStyle.colour.primaryColor}
+                                        onPress={() => setSellStatus(true)}
+                                        //onPress={()=> console.log('MERA globalCategory  ',globalCategory)}
+
+                                    />
+                                    <Text>
+                                        Rao bán
+                                    </Text>
+                                </View>
+                                <View style={[styles.checkBoxItem, {marginLeft: 0}]}>
+
+                                    <CheckBox
+                                        size={28}
+                                        checked={!isSell}
+                                        checkedColor={GlobalStyle.colour.primaryColor}
+                                        onPress={() => setSellStatus(false)}
+                                    />
+                                    <Text>
+                                        Rao mua
+                                    </Text>
+                                </View>
+
+                            </View>
 
 
-                        <TouchableOpacity
-                            style={styles.deleteImageView}
-                            onPress={() => setImages(null)}
-                        >
-                            <Icon
-                                name='close'
-                                size={16}
-                                color={'white'}
+                            {dropdownButton(selectedCategory === null ? "Phân loại sản phẩm" : selectedCategory.title_vi, () => setShowCategoryDropdown(true), isCategoryError)}
+
+                            <Input
+                                inputStyle={styles.inputStyle}
+                                errorMessage={isProductNameError === true ? 'Vui lòng nhập tên sản phẩm' : ''}
+                                placeholder='Tên sản phẩm'
+                                inputContainerStyle={[styles.basicInput, {borderBottomColor: isProductNameError === true ? GlobalStyle.colour.errorColor : GlobalStyle.colour.grayColor}]}
+                                onChangeText={value => setProductName(value)}
                             />
 
-                        </TouchableOpacity>
-                    </View>
-                    <View style={styles.inputInfoView}>
-                        <View style={styles.checkBoxView}>
-                            <View style={[styles.checkBoxItem,{marginLeft:0}]}>
+                            {dropdownButton(selectedCity === null ? "Choose city" : selectedCity.name, () => setShowCityDropdown(true), isCityError)}
 
-                                <CheckBox
-                                    size={28}
-                                    checked={isSell}
-                                    checkedColor={GlobalStyle.colour.primaryColor}
-                                    onPress={()=> setSellStatus(true)}
-                                    //onPress={()=> console.log('MERA globalCategory  ',globalCategory)}
+                            {dropdownButton(selectedDistrict === null ? "Choose district" : selectedDistrict.name, () => handleShowDistrictDropdown())}
 
-                                />
-                                <Text>
-                                    Rao bán
-                                </Text>
-                            </View>
-                            <View style={[styles.checkBoxItem,{marginLeft:0}]}>
+                            <ModelList
+                                isVisible={isShowCategoryDropdown}
+                                title={'Choose Category'}
+                                style={{height: 300}}
+                                items={globalState.categories}
+                                customField={'title_vi'}
+                                customItemId={'_id'}
+                                callBack={(item) => selectedCategoryCallBack(item)}
+                            />
 
-                                <CheckBox
-                                    size={28}
-                                    checked={!isSell}
-                                    checkedColor={GlobalStyle.colour.primaryColor}
-                                    onPress={()=> setSellStatus(false)}
-                                />
-                                <Text>
-                                    Rao mua
-                                </Text>
-                            </View>
+                            <ModelList
+                                isVisible={isShowCityDropdown}
+                                title={'Choose Your City'}
+                                items={cities}
+                                customField={'name'}
+                                customItemId={'id'}
+                                callBack={(item) => cityDropDownCallBack(item)}
+                            />
 
-                        </View>
+                            <ModelList
+                                isVisible={isShowDistrictDropdown}
+                                title={'Choose Your District'}
+                                style={{height: 400}}
+                                items={districts}
+                                customField={'name'}
+                                customItemId={'id'}
+                                callBack={(item) => districtDropDownCallBack(item)}
+                            />
 
+                            <ModelCalendar
+                                isVisible={isShowCropTimeCalendar}
+                                title={'Select a Crop Day'}
+                                style={{height: 460}}
+                                items={districts}
+                                callBack={(day) => cropTimeCalendarCallBack(day)}
+                            />
 
-                        {dropdownButton(selectedCategory === null ?  "Phân loại sản phẩm" : selectedCategory.title_vi,()=> setShowCategoryDropdown(true), isCategoryError)}
+                            <ModelList
+                                isVisible={isShowCertification}
+                                title={'Chọn tiêu chuẩn'}
+                                style={{height: 180}}
+                                items={ProductCertifications}
+                                callBack={(item) => certificationCallBack(item)}
+                            />
 
-                        <Input
-                            inputStyle={styles.inputStyle}
-                            errorMessage = {isProductNameError === true ?  'Vui lòng nhập tên sản phẩm': ''}
-                            placeholder='Tên sản phẩm'
-                            inputContainerStyle={[styles.basicInput,{borderBottomColor: isProductNameError === true ? GlobalStyle.colour.errorColor : GlobalStyle.colour.grayColor}]}
-                            onChangeText={value => setProductName(value)}
-                        />
+                            {isSell == true ?
 
-                        {dropdownButton(selectedCity === null ?  "Choose city" : selectedCity.name,()=> setShowCityDropdown(true), isCityError)}
+                                dropdownButton(selectedCropTimeDate === null ? "Thời gian thu hoạch" : selectedCropTimeDate.format('DD-MM-YYYY'), () => setShowCropTimeCalendar(true)) : null
 
-                        {dropdownButton(selectedDistrict === null ? "Choose district": selectedDistrict.name,()=> handleShowDistrictDropdown())}
-
-                        <ModelList
-                            isVisible = {isShowCategoryDropdown}
-                            title = {'Choose Category'}
-                            style = {{height:300}}
-                            items = {globalState.categories}
-                            customField = {'title_vi'}
-                            customItemId = {'_id'}
-                            callBack = {(item)=> selectedCategoryCallBack(item)}
-                        />
-
-                        <ModelList
-                            isVisible = {isShowCityDropdown}
-                            title = {'Choose Your City'}
-                            items = {cities}
-                            customField = {'name'}
-                            customItemId = {'id'}
-                            callBack = {(item)=> cityDropDownCallBack(item)}
-                        />
-
-                        <ModelList
-                            isVisible = {isShowDistrictDropdown}
-                            title = {'Choose Your District'}
-                            style = {{height:400}}
-                            items = {districts}
-                            customField = {'name'}
-                            customItemId = {'id'}
-                            callBack = {(item)=> districtDropDownCallBack(item)}
-                        />
-
-                        <ModelCalendar
-                            isVisible = {isShowCropTimeCalendar}
-                            title = {'Select a Crop Day'}
-                            style = {{height:460}}
-                            items = {districts}
-                            callBack = {(day)=> cropTimeCalendarCallBack(day)}
-                        />
-
-                        <ModelList
-                            isVisible = {isShowCertification}
-                            title = {'Chọn tiêu chuẩn'}
-                            style = {{height:180}}
-                            items = {ProductCertifications}
-                            callBack = {(item)=> certificationCallBack(item)}
-                        />
-
-                        {isSell == true ?
-
-                            dropdownButton(selectedCropTimeDate === null ? "Thời gian thu hoạch": selectedCropTimeDate.format('DD-MM-YYYY'),()=> setShowCropTimeCalendar(true)) : null
-
-                        }
-                        {/*{isSell == true ?
+                            }
+                            {/*{isSell == true ?
                             <Input
                                 inputStyle={styles.inputStyle}
                                 placeholder='Sản lượng'
                                 inputContainerStyle={styles.basicInput}
                             /> : null
                         }*/}
-                        {dropdownButton(selectedCertification == null ? "Tiêu chuẩn": selectedCertification,()=> setShowCertification(true))}
+                            {dropdownButton(selectedCertification == null ? "Tiêu chuẩn" : selectedCertification, () => setShowCertification(true))}
 
-                        <Input
-                            inputStyle={styles.inputStyle}
-                            placeholder="Số điện thoại"
-                            errorMessage = {isPhoneError === true ?  'Vui lòng nhập số điện thoại': ''}
-                            inputContainerStyle={styles.basicInput}
-                            inputContainerStyle={[styles.basicInput,{borderBottomColor: isPhoneError === true ? GlobalStyle.colour.errorColor : GlobalStyle.colour.grayColor}]}
-                            keyboardType={'phone-pad'}
-                            onChangeText={value => setPhoneNumber(value)}
-                        />
-                        <View style={styles.bottomView}>
-                            <Button
-                                title="Upload Product"
-                                onPress={()=> submitPost()}
-                                buttonStyle={[AppStyle.commonButton, styles.submitButton,]} //submitButton
-                                containerStyle={styles.buttonContainer}
+                            <Input
+                                inputStyle={styles.inputStyle}
+                                placeholder="Số điện thoại"
+                                errorMessage={isPhoneError === true ? 'Vui lòng nhập số điện thoại' : ''}
+                                inputContainerStyle={styles.basicInput}
+                                inputContainerStyle={[styles.basicInput, {borderBottomColor: isPhoneError === true ? GlobalStyle.colour.errorColor : GlobalStyle.colour.grayColor}]}
+                                keyboardType={'phone-pad'}
+                                onChangeText={value => setPhoneNumber(value)}
                             />
+                            <View style={styles.bottomView}>
+                                <Button
+                                    title="Upload Product"
+                                    onPress={() => submitPost()}
+                                    buttonStyle={[AppStyle.commonButton, styles.submitButton,]} //submitButton
+                                    containerStyle={styles.buttonContainer}
+                                />
+                            </View>
                         </View>
+
                     </View>
+                </KeyboardAwareScrollView>
 
-                </View>
-            </KeyboardAwareScrollView>
-
-            <AnimatedLoader
-                visible={loading}
-                //overlayColor="rgba(215,215,215,0.55)"
-                overlayColor="rgba(0,0,0,0.55)"
-                animationType = 'slide'
-                animationStyle={styles.lottie}
-                animationStyle = {{height: 120, width: 120}}
-                loop = {true}
-                speed={3}
-            />
-        </View>
-    );
+                <AnimatedLoader
+                    visible={loading}
+                    //overlayColor="rgba(215,215,215,0.55)"
+                    overlayColor="rgba(0,0,0,0.55)"
+                    animationType='slide'
+                    animationStyle={styles.lottie}
+                    animationStyle={{height: 120, width: 120}}
+                    loop={true}
+                    speed={3}
+                />
+            </View>
+        );
+    }
 }
 
 const styles = StyleSheet.create({
@@ -624,8 +647,8 @@ const styles = StyleSheet.create({
         borderBottomColor: GlobalStyle.colour.grayColor
     },
     inputStyle: {
-        fontSize:16 ,
-        fontWeight:'400',
+        fontSize: 16,
+        fontWeight: '400',
     },
     checkBoxView: {
         //flexDirection: 'row',
@@ -634,13 +657,13 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'row',
         //justifyContent: 'center',
-        alignItems:'center'
+        alignItems: 'center'
     },
     dropdownButton: {
-        height:50,
-        flexDirection:'row',
+        height: 50,
+        flexDirection: 'row',
         alignItems: 'center',
-        justifyContent:'center',
+        justifyContent: 'center',
 
         marginLeft: 10,
         marginRight: 10,
@@ -649,16 +672,16 @@ const styles = StyleSheet.create({
     },
 
     dropdownItem: {
-        justifyContent:'center',
-        height:40,
+        justifyContent: 'center',
+        height: 40,
         ///backgroundColor:'yellow',
         borderBottomColor: GlobalStyle.colour.grayColor,
         borderBottomWidth: 0.5,
     },
     dropdownList: {
-        flex:1,
-        height:150,
-        backgroundColor:'red'
+        flex: 1,
+        height: 150,
+        backgroundColor: 'red'
     },
     buttonContainer: {
         paddingTop: 40,
@@ -677,12 +700,6 @@ const styles = StyleSheet.create({
         fontWeight: '400',
 
     },
-
-
-
-
-
-
 
 
 });

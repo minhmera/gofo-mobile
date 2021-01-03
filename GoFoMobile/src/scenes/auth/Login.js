@@ -54,7 +54,7 @@ export default function Login(props) {
             let response = await api.login(submitObj);
             //await handleLogin(response);
             setLoading(false);
-            //console.log('MERA  Log in token  ',response.result.userInfo._id)
+            console.log('MERA  Log in token  ',response.result.userInfo._id)
             console.log('MERA  Login Result  ',response.result.userInfo.local.fullName)
             try {
                 let token = await AsyncStorage.setItem(TOKEN_KEY, response.result.token)

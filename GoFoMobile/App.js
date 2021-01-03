@@ -21,7 +21,6 @@ export default function App() {
                             <AppNavigator/>
                         </GlobalDataProvider>
 
-
                 </AuthProvider>
             </LocalizationProvider>
 
