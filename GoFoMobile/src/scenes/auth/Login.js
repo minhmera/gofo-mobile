@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import {StatusBar, StyleSheet, View,Text} from 'react-native';
+import {StatusBar,TextInput,TouchableOpacity, StyleSheet, View,Text} from 'react-native';
 
 import AsyncStorage from '@react-native-community/async-storage'
 
@@ -94,57 +94,48 @@ export default function Login(props) {
     ////'default' | 'light-content' | 'dark-content';
     return (
 
-        <View style={{flex: 1, backgroundColor: '#fff'}}>
+        <View style={styles.container}>
             <StatusBar barStyle="light-content" />
-            <Header titleText='Login' />
-
-
+            {/*<Header titleText='Login' />*/}
             <KeyboardAwareScrollView style={{flex: 1}} keyboardDismissMode = {'on-drag'}>
-                <View style={{flex: 1,marginTop:120}}>
-                    <Input
-                        inputStyle={styles.inputStyle}
-                        inputContainerStyle={styles.basicInput}
-                        //errorStyle={{ color: 'red' }}
-                        placeholder='User name'
-                        //errorMessage={userNameError.text}
-                        onChangeText={text => setUserName(text)}
 
-                    />
-                    <Input
-                        inputStyle={styles.inputStyle}
-                        inputContainerStyle={styles.basicInput}
-                        //errorMessage={passwordError.text}
-                        placeholder='Password'
-                        onChangeText={text => setPassword(text)}
-
-                    />
-
-
-
-
-
-                    <View style={styles.bottomView}>
-                        <Button
-                            title="Đăng Nhập"
-                            onPress={() => onSubmit()}
-                            textStyle = {{fontWeight:'800'}}
-                            buttonStyle={[AppStyle.commonButton, styles.submitButton]} //submitButton
-                            containerStyle={styles.buttonContainer}
+                <View style={styles.loginContainer}>
+                    <Text style={styles.logo}>MP Food</Text>
+                    <View style={styles.inputView} >
+                        <TextInput
+                            style={styles.inputText}
+                            placeholder="Email..."
+                            placeholderTextColor="#B5B5B5"
+                            onChangeText={text => setUserName(text)}
                         />
-
-                        <View style={{flexDirection:'row',paddingTop: 8, alignItems:'center', justifyContent:'center'}}>
-                            <Text>Chưa có tài khoản?</Text>
-                            <Text
-                                style={styles.registerText}
-                                onPress={() => testNavigate()}
-                            >Đăng Ký</Text>
-                        </View>
-
-
-
                     </View>
-                </View>
+                    <View style={styles.inputView} >
+                        <TextInput
+                            secureTextEntry
+                            style={styles.inputText}
+                            placeholder="Password..."
+                            placeholderTextColor="#B5B5B5"
 
+                            onChangeText={text => setPassword(text)}
+                        />
+                    </View>
+                    <TouchableOpacity>
+                        <Text style={styles.forgot}>Forgot Password?</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        style={styles.loginBtn}
+                        onPress={() => onSubmit()}
+                    >
+                        <Text style={styles.loginText}>Đăng nhập</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        onPress={() => testNavigate()}
+                    >
+                        <Text style={styles.loginText}>Đăng ký</Text>
+                    </TouchableOpacity>
+
+
+                </View>
 
                 <AnimatedLoader
                     visible={loading}
@@ -175,6 +166,12 @@ Login.navigationOptions = ({}) => {
 
 
 const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: '#003248',
+        //backgroundColor:GlobalStyle.colour.primaryColor,
+    },
+
     lottie: {
         width: 100,
         height: 100
@@ -206,7 +203,61 @@ const styles = StyleSheet.create({
         paddingLeft: 4,
         color:GlobalStyle.colour.primaryColor,
         fontWeight:'600'
-    }
+    },
+
+    loginContainer: {
+        flex: 1,
+        marginTop: 120,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    logo:{
+        fontWeight:"bold",
+        fontSize:50,
+        //color:"#fb5b5a",
+        color:'white',
+        marginBottom:40
+    },
+    inputView:{
+        width:"80%",
+        //backgroundColor:"#465881",
+        borderWidth:0.5,
+        borderColor:'white',
+        borderRadius:25,
+        height:50,
+        marginBottom:20,
+        justifyContent:"center",
+        padding:20
+    },
+    inputText:{
+        fontSize:14,
+        height:50,
+        color:'white'
+    },
+    forgot:{
+        color:"white",
+        fontSize:11
+    },
+    loginBtn:{
+        width:"80%",
+        //backgroundColor:"#fb5b5a",
+        backgroundColor:GlobalStyle.colour.primaryColor,
+        borderRadius:25,
+        height:50,
+        alignItems:"center",
+        justifyContent:"center",
+        marginTop:40,
+        marginBottom:10
+    },
+    loginText:{
+        fontWeight:'700',
+        color:"white"
+    },
+
+    signUpText: {
+        fontWeight:'700',
+       color:GlobalStyle.colour.primaryColor,
+    },
 
 });
 
