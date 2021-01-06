@@ -19,10 +19,10 @@ function LoginWarningView({navigation}) {
 
     return (
         <View style={styles.container}>
-            <Text style={{textAlign:'center'}} >
+            <Text style={{textAlign:'center',margin:16}} >
                 Vui lòng đăng nhập để sử dụng chức năng này
             </Text>
-            <Text style={{marginTop:8,textAlign:'center'}} >
+            <Text style={{margin:16,textAlign:'center'}} >
                 Nếu bạn chưa có tài khoảng vui lòng đăng ký thành viên
             </Text>
 
@@ -55,13 +55,19 @@ export default LoginWarningView
 
 const styles = StyleSheet.create({
     container: {
-        marginTop:82
+        marginTop:108,
+        marginLeft:16,
+        marginRight:16,
+        borderRadius:8,
+        borderColor: GlobalStyle.colour.primaryColor,
+        borderWidth:1
     },
 
     buttonView: {
         flexDirection:'row',
         height:32,
         marginTop:48,
+        marginBottom:48,
         justifyContent:'center',
     },
 
