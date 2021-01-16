@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {StatusBar, TextInput, TouchableOpacity, StyleSheet, View, Text,ImageBackground} from 'react-native';
+import {StatusBar, TextInput, TouchableOpacity, StyleSheet, View, Text, ImageBackground} from 'react-native';
 
 import AsyncStorage from '@react-native-community/async-storage'
 
@@ -95,66 +95,67 @@ export default function Login(props) {
     return (
 
         <ImageBackground
-            source={require('../../resources/backGround/bg1.png')}
-            style={styles.container}>
+            style={styles.container}
+            source={{uri: 'https://drscdn.500px.org/photo/212672423/q%3D80_m%3D2000_k%3D1/v2?sig=c9fd062b0dedfdddb0466365d92b195adec52f91efabe3b88a76a738ffbc0b98'}}
+        >
             <StatusBar barStyle="light-content"/>
 
             <View style={styles.dimView}>
-            <KeyboardAwareScrollView style={{flex: 1}} keyboardDismissMode={'on-drag'}>
+                <KeyboardAwareScrollView style={{flex: 1}} keyboardDismissMode={'on-drag'}>
 
-                <View style={styles.loginContainer}>
-                    <Text style={styles.logo}>MP Food</Text>
-                    <View style={styles.inputView}>
-                        <Input
-                            inputStyle={styles.inputText}
-                            inputContainerStyle={[styles.inputContainer, userNameError.style]}
-                            placeholderTextColor={GlobalStyle.colour.grayColor2}
-                            placeholder='Tên đăng nhập...'
-                            onChangeText={text => setUserName(text)}
+                    <View style={styles.loginContainer}>
+                        <Text style={styles.logo}>MP Food</Text>
+                        <View style={styles.inputView}>
+                            <Input
+                                inputStyle={styles.inputText}
+                                inputContainerStyle={[styles.inputContainer, userNameError.style]}
+                                placeholderTextColor={GlobalStyle.colour.grayColor2}
+                                placeholder='Tên đăng nhập...'
+                                onChangeText={text => setUserName(text)}
 
-                        />
+                            />
+                        </View>
+                        <View style={styles.inputView}>
+                            <Input
+                                inputStyle={styles.inputText}
+                                inputContainerStyle={[styles.inputContainer, userNameError.style]}
+                                placeholderTextColor={GlobalStyle.colour.grayColor2}
+                                placeholder="Mật khẩu..."
+                                onChangeText={text => setPassword(text)}
+
+                            />
+                        </View>
+                        <TouchableOpacity>
+                            <Text style={styles.forgot}>Quên mật khẩu?</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            style={styles.loginBtn}
+                            onPress={() => onSubmit()}
+                        >
+                            <Text style={styles.loginText}>Đăng nhập</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            onPress={() => testNavigate()}
+                        >
+                            <Text style={styles.signUpText}>Đăng ký</Text>
+                        </TouchableOpacity>
+
+
                     </View>
-                    <View style={styles.inputView}>
-                        <Input
-                            inputStyle={styles.inputText}
-                            inputContainerStyle={[styles.inputContainer, userNameError.style]}
-                            placeholderTextColor={GlobalStyle.colour.grayColor2}
-                            placeholder="Mật khẩu..."
-                            onChangeText={text => setPassword(text)}
 
-                        />
-                    </View>
-                    <TouchableOpacity>
-                        <Text style={styles.forgot}>Quên mật khẩu?</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        style={styles.loginBtn}
-                        onPress={() => onSubmit()}
-                    >
-                        <Text style={styles.loginText}>Đăng nhập</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        onPress={() => testNavigate()}
-                    >
-                        <Text style={styles.signUpText}>Đăng ký</Text>
-                    </TouchableOpacity>
+                    <AnimatedLoader
+                        visible={loading}
+                        //overlayColor="rgba(215,215,215,0.55)"
+                        overlayColor="rgba(0,0,0,0.55)"
+                        animationType='slide'
+                        animationStyle={styles.lottie}
+                        //animationStyle = {{height: 200, width: 200}}
+                        loop={true}
+                        speed={1}
+                    />
 
 
-                </View>
-
-                <AnimatedLoader
-                    visible={loading}
-                    //overlayColor="rgba(215,215,215,0.55)"
-                    overlayColor="rgba(0,0,0,0.55)"
-                    animationType='slide'
-                    animationStyle={styles.lottie}
-                    //animationStyle = {{height: 200, width: 200}}
-                    loop={true}
-                    speed={1}
-                />
-
-
-            </KeyboardAwareScrollView>
+                </KeyboardAwareScrollView>
             </View>
         </ImageBackground>
 
@@ -176,7 +177,7 @@ const styles = StyleSheet.create({
     },
     dimView: {
         flex: 1,
-        backgroundColor: 'rgba(0,0,0,0.55)',
+        backgroundColor: 'rgba(0,0,0,0.7)',
     },
 
     lottie: {
@@ -221,7 +222,7 @@ const styles = StyleSheet.create({
     logo: {
         fontWeight: "bold",
         fontSize: 50,
-        color:"white",
+        color: "white",
         //color: GlobalStyle.colour.primaryColor,
         marginBottom: 40
     },
@@ -270,7 +271,7 @@ const styles = StyleSheet.create({
     },
 
     inputContainer: {
-        borderBottomWidth:0
+        borderBottomWidth: 0
     },
 
 });

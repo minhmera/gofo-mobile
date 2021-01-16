@@ -1,5 +1,16 @@
 import React, {useState} from 'react';
-import {StatusBar, Alert, View, ScrollView, StyleSheet, TextInput, Text, TouchableOpacity,ImageBackground} from 'react-native';
+import {
+    StatusBar,
+    Alert,
+    View,
+    ScrollView,
+    StyleSheet,
+    TextInput,
+    Text,
+    TouchableOpacity,
+    ImageBackground,
+    Image
+} from 'react-native';
 
 import * as api from '../../services/auth';
 
@@ -14,7 +25,6 @@ import {Button, Input} from 'react-native-elements';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 import Icon from 'react-native-vector-icons/AntDesign';
-
 
 //https://medium.com/react-native-development/easily-build-forms-in-react-native-9006fcd2a73b
 function Register(props) {
@@ -106,59 +116,63 @@ function Register(props) {
 
         <ImageBackground
             style={{flex: 1, backgroundColor: '#fff'}}
-            source={require('../../resources/backGround/bg1.png')}
+            //source={require('../../resources/backGround/bg1.png')}
+            source={{uri: 'https://dongxanh.s3.us-east-2.amazonaws.com/app_resource/bg_01.jpg'}}
         >
+            <View style={styles.dimView}>
+                <StatusBar barStyle="light-content"/>
+                <Header titleText='Đăng Ký Tài Khoảng' navigation={navigation}/>
 
-            <StatusBar barStyle="light-content"/>
-            <Header titleText='Register' navigation={navigation}/>
 
+                <KeyboardAwareScrollView style={{flex: 1}} keyboardDismissMode={'on-drag'}>
+                    <View style={styles.loginContainer}>
+                        {/*<Text style={styles.registerText}>Đăng Ký Tài Khoảng</Text>*/}
 
-            <KeyboardAwareScrollView style={{flex: 1}} keyboardDismissMode={'on-drag'}>
-                <View style={styles.loginContainer}>
-                    <View style={styles.inputView}>
-                        <Input
-                            inputStyle={styles.inputStyle}
-                            inputContainerStyle={[styles.inputContainer, userNameError.style]}
-                            placeholderTextColor={GlobalStyle.colour.grayColor2}
-                            //errorStyle={{ color: 'red' }}
-                            //placeholderTextColor = {'red'}
-                            placeholder='Tên đăng nhập...'
-                            //errorMessage={userNameError.text}
-                            onChangeText={text => setUserName(text)}
-                        />
+                        <View style={styles.inputView}>
+                            <Input
+                                inputStyle={styles.inputStyle}
+                                inputContainerStyle={[styles.inputContainer, userNameError.style]}
+                                placeholderTextColor={GlobalStyle.colour.grayColor2}
+                                //errorStyle={{ color: 'red' }}
+                                //placeholderTextColor = {'red'}
+                                placeholder='Tên đăng nhập...'
+                                //errorMessage={userNameError.text}
+                                onChangeText={text => setUserName(text)}
+                            />
+                        </View>
+                        <View style={styles.inputView}>
+                            <Input
+                                inputStyle={styles.inputStyle}
+                                inputContainerStyle={[styles.inputContainer, passwordError.style]}
+                                placeholderTextColor={GlobalStyle.colour.grayColor2}
+                                errorMessage={passwordError.text}
+                                placeholder='Mật khẩu...'
+                                onChangeText={text => setPassword(text)}
+
+                            />
+                        </View>
+                        <View style={styles.inputView}>
+                            <Input
+                                inputStyle={styles.inputStyle}
+                                inputContainerStyle={[styles.inputContainer, confirmPassError.style]}
+                                errorMessage={confirmPassError.text}
+                                placeholder='Confirm Password'
+                                placeholderTextColor={GlobalStyle.colour.grayColor2}
+                                onChangeText={text => setConfirmPass(text)}
+
+                            />
+                        </View>
+
+                        <TouchableOpacity
+                            style={styles.loginBtn}
+                            onPress={() => onSubmit()}
+                        >
+                            <Text style={styles.loginText}>Đăng ký</Text>
+                        </TouchableOpacity>
+
                     </View>
-                    <View style={styles.inputView}>
-                        <Input
-                            inputStyle={styles.inputStyle}
-                            inputContainerStyle={[ styles.inputContainer,passwordError.style]}
-                            placeholderTextColor={GlobalStyle.colour.grayColor2}
-                            errorMessage={passwordError.text}
-                            placeholder='Mật khẩu...'
-                            onChangeText={text => setPassword(text)}
-
-                        />
-                    </View>
-                    <View style={styles.inputView}>
-                        <Input
-                            inputStyle={styles.inputStyle}
-                            inputContainerStyle={[styles.inputContainer, confirmPassError.style]}
-                            errorMessage={confirmPassError.text}
-                            placeholder='Confirm Password'
-                            placeholderTextColor={GlobalStyle.colour.grayColor2}
-                            onChangeText={text => setConfirmPass(text)}
-
-                        />
-                    </View>
-
-                    <TouchableOpacity
-                        style={styles.loginBtn}
-                        onPress={() => onSubmit()}
-                    >
-                        <Text style={styles.loginText}>Đăng ký</Text>
-                    </TouchableOpacity>
-
-                </View>
-            </KeyboardAwareScrollView>
+                </KeyboardAwareScrollView>
+            </View>
         </ImageBackground>
 
     );
@@ -173,9 +187,19 @@ export default Register;
 const styles = StyleSheet.create({
     loginContainer: {
         flex: 1,
-        marginTop: 120,
+        marginTop: 60,
         alignItems: 'center',
         justifyContent: 'center',
+    },
+    registerText: {
+        fontSize: 28,
+        color: 'white',
+        fontWeight:'600',
+        marginBottom: 40
+    },
+    dimView: {
+        flex: 1,
+        backgroundColor: 'rgba(0,0,0,0.7)',
     },
     buttonContainer: {
         paddingTop: 40,
@@ -188,20 +212,21 @@ const styles = StyleSheet.create({
 
     },
     inputStyle: {
-        fontSize: 16,
+        fontSize: 18,
+        color: 'white',
         //paddingTop: 18,
         height: 58,
         fontWeight: '400',
     },
     inputContainer: {
-        borderBottomWidth:0
+        borderBottomWidth: 0
     },
 
     inputView: {
         width: "80%",
         //backgroundColor:"#465881",
         borderWidth: 1,
-        borderColor: GlobalStyle.colour.primaryColor,
+        borderColor: 'white',
         borderRadius: 25,
         height: 50,
         marginBottom: 20,
