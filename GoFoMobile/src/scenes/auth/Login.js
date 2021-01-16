@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {StatusBar, TextInput, TouchableOpacity, StyleSheet, View, Text} from 'react-native';
+import {StatusBar, TextInput, TouchableOpacity, StyleSheet, View, Text,ImageBackground} from 'react-native';
 
 import AsyncStorage from '@react-native-community/async-storage'
 
@@ -94,33 +94,38 @@ export default function Login(props) {
     ////'default' | 'light-content' | 'dark-content';
     return (
 
-        <View style={styles.container}>
+        <ImageBackground
+            source={require('../../resources/backGround/bg1.png')}
+            style={styles.container}>
             <StatusBar barStyle="light-content"/>
-            {/*<Header titleText='Login' />*/}
+
+            <View style={styles.dimView}>
             <KeyboardAwareScrollView style={{flex: 1}} keyboardDismissMode={'on-drag'}>
 
                 <View style={styles.loginContainer}>
                     <Text style={styles.logo}>MP Food</Text>
                     <View style={styles.inputView}>
-                        <TextInput
-                            style={styles.inputText}
-                            placeholder="Tên đăng nhập..."
+                        <Input
+                            inputStyle={styles.inputText}
+                            inputContainerStyle={[styles.inputContainer, userNameError.style]}
                             placeholderTextColor={GlobalStyle.colour.grayColor2}
+                            placeholder='Tên đăng nhập...'
                             onChangeText={text => setUserName(text)}
+
                         />
                     </View>
                     <View style={styles.inputView}>
-                        <TextInput
-                            secureTextEntry
-                            style={styles.inputText}
-                            placeholder="Mật khẩu..."
+                        <Input
+                            inputStyle={styles.inputText}
+                            inputContainerStyle={[styles.inputContainer, userNameError.style]}
                             placeholderTextColor={GlobalStyle.colour.grayColor2}
-
+                            placeholder="Mật khẩu..."
                             onChangeText={text => setPassword(text)}
+
                         />
                     </View>
                     <TouchableOpacity>
-                        <Text style={styles.forgot}>Forgot Password?</Text>
+                        <Text style={styles.forgot}>Quên mật khẩu?</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
                         style={styles.loginBtn}
@@ -150,7 +155,8 @@ export default function Login(props) {
 
 
             </KeyboardAwareScrollView>
-        </View>
+            </View>
+        </ImageBackground>
 
     );
 
@@ -166,8 +172,11 @@ Login.navigationOptions = ({}) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: 'white',
-        //backgroundColor:GlobalStyle.colour.primaryColor,
+
+    },
+    dimView: {
+        flex: 1,
+        backgroundColor: 'rgba(0,0,0,0.55)',
     },
 
     lottie: {
@@ -205,22 +214,22 @@ const styles = StyleSheet.create({
 
     loginContainer: {
         flex: 1,
-        marginTop: 120,
+        marginTop: 160,
         alignItems: 'center',
         justifyContent: 'center',
     },
     logo: {
         fontWeight: "bold",
         fontSize: 50,
-        //color:"#fb5b5a",
-        color: GlobalStyle.colour.primaryColor,
+        color:"white",
+        //color: GlobalStyle.colour.primaryColor,
         marginBottom: 40
     },
     inputView: {
         width: "80%",
         //backgroundColor:"#465881",
         borderWidth: 1,
-        borderColor: GlobalStyle.colour.primaryColor,
+        borderColor: 'white',
         borderRadius: 25,
         height: 50,
         marginBottom: 20,
@@ -228,13 +237,13 @@ const styles = StyleSheet.create({
         padding: 20
     },
     inputText: {
-        fontSize: 14,
+        fontSize: 18,
         height: 50,
-        color: GlobalStyle.colour.primaryColor
+        color: 'white'
     },
     forgot: {
         fontWeight: '600',
-        color: GlobalStyle.colour.primaryColor,
+        color: 'white',
         fontSize: 13
     },
     loginBtn: {
@@ -257,7 +266,11 @@ const styles = StyleSheet.create({
     signUpText: {
         fontSize: 16,
         fontWeight: '700',
-        color: GlobalStyle.colour.primaryColor,
+        color: 'white',
+    },
+
+    inputContainer: {
+        borderBottomWidth:0
     },
 
 });

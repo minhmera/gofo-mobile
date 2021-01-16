@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {StatusBar, Alert, View, ScrollView, StyleSheet, TextInput, Text, TouchableOpacity} from 'react-native';
+import {StatusBar, Alert, View, ScrollView, StyleSheet, TextInput, Text, TouchableOpacity,ImageBackground} from 'react-native';
 
 import * as api from '../../services/auth';
 
@@ -104,7 +104,11 @@ function Register(props) {
 
     return (
 
-        <View style={{flex: 1, backgroundColor: '#fff'}}>
+        <ImageBackground
+            style={{flex: 1, backgroundColor: '#fff'}}
+            source={require('../../resources/backGround/bg1.png')}
+        >
+
             <StatusBar barStyle="light-content"/>
             <Header titleText='Register' navigation={navigation}/>
 
@@ -113,28 +117,23 @@ function Register(props) {
                 <View style={styles.loginContainer}>
                     <View style={styles.inputView}>
                         <Input
-
-                            inputStyle={styles.inputText}
+                            inputStyle={styles.inputStyle}
                             inputContainerStyle={[styles.inputContainer, userNameError.style]}
                             placeholderTextColor={GlobalStyle.colour.grayColor2}
-
                             //errorStyle={{ color: 'red' }}
                             //placeholderTextColor = {'red'}
-                            placeholder='Tên đăng nhập'
-
+                            placeholder='Tên đăng nhập...'
                             //errorMessage={userNameError.text}
                             onChangeText={text => setUserName(text)}
-
                         />
                     </View>
                     <View style={styles.inputView}>
                         <Input
                             inputStyle={styles.inputStyle}
                             inputContainerStyle={[ styles.inputContainer,passwordError.style]}
-
-                            errorMessage={passwordError.text}
-                            placeholder='Password'
                             placeholderTextColor={GlobalStyle.colour.grayColor2}
+                            errorMessage={passwordError.text}
+                            placeholder='Mật khẩu...'
                             onChangeText={text => setPassword(text)}
 
                         />
@@ -160,7 +159,7 @@ function Register(props) {
 
                 </View>
             </KeyboardAwareScrollView>
-        </View>
+        </ImageBackground>
 
     );
 };
