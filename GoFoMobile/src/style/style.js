@@ -40,10 +40,38 @@ const AppStyle = StyleSheet.create({
         fontSize: 20,
         textAlign: 'center'
     },
-    commonButton: {
+    commonButton_1: {
         borderRadius:10,
 
-    }
+    },
+    inputStyle: {
+        fontSize: 16,
+        color: 'white',
+
+        height: 58,
+        fontWeight: '400',
+    },
+
+    inputView: {
+        width: "80%",
+        borderWidth: 1,
+        borderColor: 'white',
+        borderRadius: 25,
+        height: 50,
+        marginBottom: 20,
+        justifyContent: "center",
+        padding: 20
+    },
+
+    commonButton: {
+        width: "80%",
+        backgroundColor: GlobalStyle.colour.primaryColor,
+        borderRadius: 25,
+        height: 50,
+        alignItems: "center",
+        justifyContent: "center",
+
+    },
 });
 
 module.exports = AppStyle

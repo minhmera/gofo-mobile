@@ -561,7 +561,7 @@ function CreatePost1({navigation}) {
                                 <Button
                                     title="Upload Product"
                                     onPress={() => submitPost()}
-                                    buttonStyle={[AppStyle.commonButton, styles.submitButton,]} //submitButton
+                                    buttonStyle={[AppStyle.commonButton_1, styles.submitButton,]} //submitButton
                                     containerStyle={styles.buttonContainer}
                                 />
                             </View>

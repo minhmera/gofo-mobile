@@ -9,7 +9,8 @@ import {
     Text,
     TouchableOpacity,
     ImageBackground,
-    Image
+    Image,
+    Dimensions
 } from 'react-native';
 
 import * as api from '../../services/auth';
@@ -25,6 +26,11 @@ import {Button, Input} from 'react-native-elements';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 import Icon from 'react-native-vector-icons/AntDesign';
+import AnimatedLoader from "../../utils/custom-view/AnimatedLoader";
+import LottieView from 'lottie-react-native';
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
+
 
 //https://medium.com/react-native-development/easily-build-forms-in-react-native-9006fcd2a73b
 function Register(props) {
@@ -51,38 +57,57 @@ function Register(props) {
         let isValidAllFiled = true
         if (userName == "") {
             isValidAllFiled = false
-            setUserNameError({style: {borderBottomColor: 'red'}, text: 'User nam can not be empty'})
+            setUserNameError({style:{borderColor:'red'},text:'Vui lòng nhập tên đăng nhập'})
         } else {
-            isValidAllFiled = true
-            setUserNameError({style: {}, text: ''})
+            setUserNameError({style: {marginTop: 0}, text: ''})
         }
 
         if (password == "") {
             isValidAllFiled = false
-            setPasswordError({style: {borderBottomColor: 'red'}, text: 'Password can not be empty'})
+            setPasswordError({style: {borderColor: 'red', marginTop: 10}, text: 'Vui lòng nhập mật khẩu'})
 
         } else if (password.length < 8) {
-            setPasswordError({style: {borderBottomColor: 'red'}, text: 'Password must be more than 8 char '})
+            setPasswordError({style: {borderColor: 'red', marginTop: 10}, text: 'Mật khẩu phải có ít nhất 8 kí tự'})
         } else {
-            isValidAllFiled = true
-            setPasswordError({style: {}, text: ''})
+            setPasswordError({style: {marginTop: 0}, text: ''})
 
         }
 
         if (confirmPass != password) {
             isValidAllFiled = false
-            setConfirmPassError({style: {borderBottomColor: 'red'}, text: 'Confirm password is diff with password'})
+            setConfirmPassError({style: {borderColor: 'red',marginTop: 10}, text: 'Mật khẩu không trùng khớp'})
 
         } else {
-            isValidAllFiled = true
-            setConfirmPassError({style: {}, text: ''})
+            //setConfirmPassError({style: {borderColor: 'red',marginTop: 10}, text: 'Confirm password is diff with password'})
+            setConfirmPassError({style: {marginTop: 0}, text: ''})
 
         }
         return isValidAllFiled
     }
 
+    function renderLoadingView(isShow) {
+        if (isShow === false) {
+            return  null
+        }
+
+        return (
+            <View style={styles.dimLoadingView}>
+                <View style={{width:150, height:150}}>
+                    <LottieView
+                        source = {require('../../utils/custom-view/LoadingJSON/spinning-circle.json')}
+                        autoPlay={true}
+                        speed={1}
+                    >
+                    </LottieView>
+                </View>
+
+            </View>
+        )
+    }
+
     async function onSubmit() {
         console.log('MERA Register value: ', isValidAllField());
+
         if (isValidAllField() === false) {
             return
         }
@@ -93,86 +118,110 @@ function Register(props) {
 
         }
 
+        console.log('MERA  registerObj   ', registerObj);
+        setLoading(true);
         try {
             let response = await api.register(registerObj);
-            console.log('MERA  Register   ', response);
+            console.log('MERA  Register Res ', response);
             setLoading(false);
-            Alert.alert(
-                'Registration Successful',
-                response.message,
 
-                [
-                    {text: 'OK'}, //  {text: 'OK', onPress: () => navigation.replace("Login")}
-                ],
-                {cancelable: false},
-            );
+            if (response ) {
+                setLoading(false);
+                console.log('MERA RES  ',response.result.message)
+                if (response.result.success === true ){
+                    console.log('MERA RES 11  ',response.result.message)
+                    Alert.alert(
+                        'Đăng kí tài khoảng thành công',
+                        response.message,
+
+                        [
+                            {text: 'Xin mời bạn đăng nhập để để tiếp tục', onPress: () => navigation.replace("Login")}
+                        ],
+                        {cancelable: false},
+                    );
+                } else {
+                    console.log('MERA RES 22  ',response.result.message)
+                    let errorText = response.result.message
+
+
+                    Alert.alert(errorText)
+                }
+
+            }
+
+
         } catch (error) {
             setError(error.message);
             setLoading(false);
         }
-    }
 
+    }
     return (
 
         <ImageBackground
-            style={{flex: 1, backgroundColor: '#fff'}}
-            //source={require('../../resources/backGround/bg1.png')}
+            style={styles.container}
             source={{uri: 'https://dongxanh.s3.us-east-2.amazonaws.com/app_resource/bg_01.jpg'}}
         >
+
             <View style={styles.dimView}>
+
                 <StatusBar barStyle="light-content"/>
                 <Header titleText='Đăng Ký Tài Khoảng' navigation={navigation}/>
-
-
                 <KeyboardAwareScrollView style={{flex: 1}} keyboardDismissMode={'on-drag'}>
                     <View style={styles.loginContainer}>
-                        {/*<Text style={styles.registerText}>Đăng Ký Tài Khoảng</Text>*/}
 
-                        <View style={styles.inputView}>
+                        <View style={[AppStyle.inputView, userNameError.style]}>
                             <Input
-                                inputStyle={styles.inputStyle}
-                                inputContainerStyle={[styles.inputContainer, userNameError.style]}
+                                inputStyle={[AppStyle.inputStyle]}
+                                inputContainerStyle={[styles.inputContainer]}
                                 placeholderTextColor={GlobalStyle.colour.grayColor2}
-                                //errorStyle={{ color: 'red' }}
-                                //placeholderTextColor = {'red'}
                                 placeholder='Tên đăng nhập...'
-                                //errorMessage={userNameError.text}
+                                errorMessage={userNameError.text}
+                                errorStyle={{marginTop:4}}
                                 onChangeText={text => setUserName(text)}
                             />
                         </View>
-                        <View style={styles.inputView}>
+
+                        <View style={[AppStyle.inputView, passwordError.style ]}>
                             <Input
-                                inputStyle={styles.inputStyle}
-                                inputContainerStyle={[styles.inputContainer, passwordError.style]}
+                                inputStyle={[AppStyle.inputStyle]}
+                                inputContainerStyle={[styles.inputContainer]}
                                 placeholderTextColor={GlobalStyle.colour.grayColor2}
                                 errorMessage={passwordError.text}
+                                errorStyle={{marginTop:4}}
                                 placeholder='Mật khẩu...'
                                 onChangeText={text => setPassword(text)}
 
                             />
                         </View>
-                        <View style={styles.inputView}>
+                        <View style={[AppStyle.inputView,confirmPassError.style]}>
                             <Input
-                                inputStyle={styles.inputStyle}
-                                inputContainerStyle={[styles.inputContainer, confirmPassError.style]}
+                                inputStyle={AppStyle.inputStyle}
+                                inputContainerStyle={[styles.inputContainer]}
                                 errorMessage={confirmPassError.text}
-                                placeholder='Confirm Password'
+                                errorStyle={{marginTop:4}}
+                                placeholder='Xác nhận mật khẩu... '
                                 placeholderTextColor={GlobalStyle.colour.grayColor2}
+
                                 onChangeText={text => setConfirmPass(text)}
 
                             />
                         </View>
 
                         <TouchableOpacity
-                            style={styles.loginBtn}
+                            style={[AppStyle.commonButton,{marginTop:20}]}
                             onPress={() => onSubmit()}
                         >
                             <Text style={styles.loginText}>Đăng ký</Text>
                         </TouchableOpacity>
 
+
                     </View>
                 </KeyboardAwareScrollView>
+
             </View>
+
+            {renderLoadingView(loading)}
         </ImageBackground>
 
     );
@@ -185,6 +234,18 @@ export default Register;
 //onPress={() => navigation.goBack()}
 
 const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+    },
+    dimLoadingView: {
+        height: windowHeight,
+        width:windowWidth,
+        //top:200,
+        position:'absolute',
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: 'rgba(0,0,0,0.7)',
+    },
     loginContainer: {
         flex: 1,
         marginTop: 60,
@@ -197,6 +258,7 @@ const styles = StyleSheet.create({
         fontWeight:'600',
         marginBottom: 40
     },
+
     dimView: {
         flex: 1,
         backgroundColor: 'rgba(0,0,0,0.7)',
@@ -211,43 +273,9 @@ const styles = StyleSheet.create({
         height: 48,
 
     },
-    inputStyle: {
-        fontSize: 18,
-        color: 'white',
-        //paddingTop: 18,
-        height: 58,
-        fontWeight: '400',
-    },
+
     inputContainer: {
         borderBottomWidth: 0
-    },
-
-    inputView: {
-        width: "80%",
-        //backgroundColor:"#465881",
-        borderWidth: 1,
-        borderColor: 'white',
-        borderRadius: 25,
-        height: 50,
-        marginBottom: 20,
-        justifyContent: "center",
-        padding: 20
-    },
-    inputText: {
-        fontSize: 14,
-        height: 50,
-        color: GlobalStyle.colour.primaryColor
-    },
-    loginBtn: {
-        width: "80%",
-        //backgroundColor:"#fb5b5a",
-        backgroundColor: GlobalStyle.colour.primaryColor,
-        borderRadius: 25,
-        height: 50,
-        alignItems: "center",
-        justifyContent: "center",
-        marginTop: 40,
-        marginBottom: 10
     },
     loginText: {
         fontSize: 16,

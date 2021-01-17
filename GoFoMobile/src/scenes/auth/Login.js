@@ -105,9 +105,9 @@ export default function Login(props) {
 
                     <View style={styles.loginContainer}>
                         <Text style={styles.logo}>MP Food</Text>
-                        <View style={styles.inputView}>
+                        <View style={AppStyle.inputView}>
                             <Input
-                                inputStyle={styles.inputText}
+                                inputStyle={AppStyle.inputStyle}
                                 inputContainerStyle={[styles.inputContainer, userNameError.style]}
                                 placeholderTextColor={GlobalStyle.colour.grayColor2}
                                 placeholder='Tên đăng nhập...'
@@ -115,9 +115,9 @@ export default function Login(props) {
 
                             />
                         </View>
-                        <View style={styles.inputView}>
+                        <View style={AppStyle.inputView}>
                             <Input
-                                inputStyle={styles.inputText}
+                                inputStyle={AppStyle.inputStyle}
                                 inputContainerStyle={[styles.inputContainer, userNameError.style]}
                                 placeholderTextColor={GlobalStyle.colour.grayColor2}
                                 placeholder="Mật khẩu..."
@@ -129,7 +129,7 @@ export default function Login(props) {
                             <Text style={styles.forgot}>Quên mật khẩu?</Text>
                         </TouchableOpacity>
                         <TouchableOpacity
-                            style={styles.loginBtn}
+                            style={[AppStyle.commonButton,{marginTop:20, marginBottom:20}]}
                             onPress={() => onSubmit()}
                         >
                             <Text style={styles.loginText}>Đăng nhập</Text>
@@ -246,17 +246,6 @@ const styles = StyleSheet.create({
         fontWeight: '600',
         color: 'white',
         fontSize: 13
-    },
-    loginBtn: {
-        width: "80%",
-        //backgroundColor:"#fb5b5a",
-        backgroundColor: GlobalStyle.colour.primaryColor,
-        borderRadius: 25,
-        height: 50,
-        alignItems: "center",
-        justifyContent: "center",
-        marginTop: 40,
-        marginBottom: 10
     },
     loginText: {
         fontSize: 16,
