@@ -16,6 +16,7 @@ import AppStyle from '../../style/style';
 import AnimatedLoader from '../../utils/custom-view/AnimatedLoader'
 import {backgroundColor} from 'react-native-calendars/src/style';
 import {TOKEN_KEY, USER_ID_KEY, USER_KEY, USER_NAME_KEY} from "../../config/Contants";
+import Icon from "react-native-vector-icons/AntDesign";
 
 
 async function getTokenKey() {
@@ -43,7 +44,7 @@ export default function Login(props) {
 
     const [password, setPassword] = useState('');
     const [passwordError, setPasswordError] = useState({});
-
+    const [onPassSecure, setPassSecure] = useState(false)
 
     async function onSubmit() {
         let submitObj = {username: userName, password: password}
@@ -113,6 +114,7 @@ export default function Login(props) {
                                 placeholder='Tên đăng nhập...'
                                 onChangeText={text => setUserName(text)}
 
+
                             />
                         </View>
                         <View style={AppStyle.inputView}>
@@ -122,7 +124,16 @@ export default function Login(props) {
                                 placeholderTextColor={GlobalStyle.colour.grayColor2}
                                 placeholder="Mật khẩu..."
                                 onChangeText={text => setPassword(text)}
-
+                                secureTextEntry={onPassSecure}
+                                rightIcon={
+                                    <Icon
+                                        name='eye'
+                                        size={24}
+                                        color={'white'}
+                                        onPress={()=> setPassSecure(!onPassSecure)}
+                                    />
+                                }
+                                rightIconContainerStyle = {{width:80,marginRight:-30}}
                             />
                         </View>
                         <TouchableOpacity>

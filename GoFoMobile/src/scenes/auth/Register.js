@@ -31,7 +31,6 @@ import LottieView from 'lottie-react-native';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
-
 //https://medium.com/react-native-development/easily-build-forms-in-react-native-9006fcd2a73b
 function Register(props) {
     const {navigation} = props;
@@ -52,6 +51,9 @@ function Register(props) {
 
     const [confirmPass, setConfirmPass] = useState('');
     const [confirmPassError, setConfirmPassError] = useState({});
+
+    const [onPassSecure, setPassSecure] = useState(false)
+    const [onConfirmPassSecure, setConfirmPassSecure] = useState(false)
 
     function isValidAllField() {
         let isValidAllFiled = true
@@ -92,7 +94,7 @@ function Register(props) {
 
         return (
             <View style={styles.dimLoadingView}>
-                <View style={{width:150, height:150}}>
+                <View style={{width:100, height:100}}>
                     <LottieView
                         source = {require('../../utils/custom-view/LoadingJSON/spinning-circle.json')}
                         autoPlay={true}
@@ -156,6 +158,11 @@ function Register(props) {
         }
 
     }
+
+    function setConfirmPassPress() {
+        console.log('MERA  onConfirmPassSecure==> ', onConfirmPassSecure)
+        setConfirmPassSecure(!onConfirmPassSecure)
+    }
     return (
 
         <ImageBackground
@@ -191,6 +198,17 @@ function Register(props) {
                                 errorStyle={{marginTop:4}}
                                 placeholder='Mật khẩu...'
                                 onChangeText={text => setPassword(text)}
+                                secureTextEntry={onPassSecure}
+
+                                rightIcon={
+                                    <Icon
+                                        name='eye'
+                                        size={24}
+                                        color={'white'}
+                                        onPress={()=> setPassSecure(!onPassSecure)}
+                                    />
+                                }
+                                rightIconContainerStyle = {{width:80,marginRight:-30}}
 
                             />
                         </View>
@@ -202,9 +220,18 @@ function Register(props) {
                                 errorStyle={{marginTop:4}}
                                 placeholder='Xác nhận mật khẩu... '
                                 placeholderTextColor={GlobalStyle.colour.grayColor2}
-
+                                secureTextEntry={onConfirmPassSecure}
                                 onChangeText={text => setConfirmPass(text)}
 
+                                rightIcon={
+                                    <Icon
+                                        name='eye'
+                                        size={24}
+                                        color={'white'}
+                                        onPress={()=> setConfirmPassPress(!onPassSecure)}
+                                    />
+                                }
+                                rightIconContainerStyle = {{width:80,marginRight:-30}}
                             />
                         </View>
 
@@ -222,6 +249,7 @@ function Register(props) {
             </View>
 
             {renderLoadingView(loading)}
+
         </ImageBackground>
 
     );
