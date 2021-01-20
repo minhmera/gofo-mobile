@@ -45,7 +45,7 @@ export default function Login(props) {
     const [password, setPassword] = useState('');
     const [passwordError, setPasswordError] = useState({});
     const [onPassSecure, setPassSecure] = useState(false)
-    const [isLoginPressed, setLoginPressed] = useState(false)
+    const [isDisableResButton, setDisableResButton] = useState(false)
 
     async function onSubmit() {
         let submitObj = {username: userName, password: password}
@@ -83,15 +83,14 @@ export default function Login(props) {
     }
 
     function testNavigate() {
-        console.log('MERA isLoginPressed ',isLoginPressed)
-       /* if (isLoginPressed === false) {
-            navigation.push('Register', {movies: {name: 'Lucy'}})
-            setLoginPressed(true)
-        } else {
-            setLoginPressed(false)
-        }*/
+        console.log('MERA isLoginPressed ')
 
-        navigation.push('Register', {movies: {name: 'Lucy'}})
+
+        setDisableResButton(true)
+        setTimeout(() => {
+           setDisableResButton(false)
+            navigation.push('Register', {movies: {name: 'Lucy'}})
+        }, 200);
 
     }
 
@@ -152,6 +151,7 @@ export default function Login(props) {
                         </TouchableOpacity>
                         <TouchableOpacity
                             onPress={() => testNavigate()}
+                            disabled={isDisableResButton}
                         >
                             <Text style={styles.signUpText}>Đăng ký</Text>
                         </TouchableOpacity>
