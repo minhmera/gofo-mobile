@@ -45,6 +45,7 @@ export default function Login(props) {
     const [password, setPassword] = useState('');
     const [passwordError, setPasswordError] = useState({});
     const [onPassSecure, setPassSecure] = useState(false)
+    const [isLoginPressed, setLoginPressed] = useState(false)
 
     async function onSubmit() {
         let submitObj = {username: userName, password: password}
@@ -82,12 +83,16 @@ export default function Login(props) {
     }
 
     function testNavigate() {
-        //navigation.navigate('Register');
-        //navigation.setParams({ name: 'Lucy' })
+        console.log('MERA isLoginPressed ',isLoginPressed)
+       /* if (isLoginPressed === false) {
+            navigation.push('Register', {movies: {name: 'Lucy'}})
+            setLoginPressed(true)
+        } else {
+            setLoginPressed(false)
+        }*/
 
-        navigation.push('Register', {
-            movies: {name: 'Lucy'}
-        })
+        navigation.push('Register', {movies: {name: 'Lucy'}})
+
     }
 
     const {token} = AsyncStorage.getItem(TOKEN_KEY)
