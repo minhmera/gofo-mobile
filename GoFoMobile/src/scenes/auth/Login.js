@@ -47,7 +47,35 @@ export default function Login(props) {
     const [onPassSecure, setPassSecure] = useState(false)
     const [isDisableResButton, setDisableResButton] = useState(false)
 
+    function isValidAllField() {
+        let isValidAllFiled = true
+        if (userName == "") {
+            isValidAllFiled = false
+            setUserNameError({style:{borderColor:'red'},text:'Vui lòng nhập tên đăng nhập'})
+        } else {
+            setUserNameError({style: {marginTop: 0}, text: ''})
+        }
+
+        if (password == "") {
+            isValidAllFiled = false
+            setPasswordError({style: {borderColor: 'red', marginTop: 10}, text: 'Vui lòng nhập mật khẩu'})
+
+        } else if (password.length < 8) {
+            setPasswordError({style: {borderColor: 'red', marginTop: 10}, text: 'Mật khẩu phải có ít nhất 8 kí tự'})
+        } else {
+            setPasswordError({style: {marginTop: 0}, text: ''})
+
+        }
+
+        return isValidAllFiled
+    }
+
     async function onSubmit() {
+        if (isValidAllField() === false) {
+            return
+        }
+
+
         let submitObj = {username: userName, password: password}
         console.log("MERA  onSubmit  ==> ", USER_ID_KEY);
         setLoading(true);
@@ -71,11 +99,6 @@ export default function Login(props) {
                 console.log('AsyncStorage Error 1 ', error)
             }
 
-
-            //check if username is null
-            // let username = (response.user.username !== null);
-            // if (username) navigate('App');
-            // else navigation.replace('Username');
         } catch (error) {
             setError(error.message);
             setLoading(false)
@@ -110,18 +133,22 @@ export default function Login(props) {
 
                     <View style={styles.loginContainer}>
                         <Text style={styles.logo}>MP Food</Text>
-                        <View style={AppStyle.inputView}>
+                        <View style={[AppStyle.inputView, userNameError.style]}>
                             <Input
                                 inputStyle={AppStyle.inputStyle}
                                 inputContainerStyle={[styles.inputContainer, userNameError.style]}
                                 placeholderTextColor={GlobalStyle.colour.grayColor2}
                                 placeholder='Tên đăng nhập...'
+
+                                errorMessage={userNameError.text}
+                                errorStyle={{marginTop:4}}
+
                                 onChangeText={text => setUserName(text)}
 
 
                             />
                         </View>
-                        <View style={AppStyle.inputView}>
+                        <View style={[AppStyle.inputView, passwordError.style ]}>
                             <Input
                                 inputStyle={AppStyle.inputStyle}
                                 inputContainerStyle={[styles.inputContainer, userNameError.style]}
@@ -129,6 +156,11 @@ export default function Login(props) {
                                 placeholder="Mật khẩu..."
                                 onChangeText={text => setPassword(text)}
                                 secureTextEntry={onPassSecure}
+
+                                errorMessage={passwordError.text}
+                                errorStyle={{marginTop:4}}
+
+
                                 rightIcon={
                                     <Icon
                                         name='eye'
