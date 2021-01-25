@@ -189,6 +189,21 @@ function Register(props) {
                             />
                         </View>
 
+
+
+                        <View style={[AppStyle.inputView, userNameError.style]}>
+                            <Input
+                                inputStyle={[AppStyle.inputStyle]}
+                                inputContainerStyle={[styles.inputContainer]}
+                                placeholderTextColor={GlobalStyle.colour.grayColor2}
+                                placeholder='Số điện thoại ...'
+                                errorMessage={userNameError.text}
+                                errorStyle={{marginTop:4}}
+                                //onChangeText={text => setUserName(text)}
+                                keyboardType={'number-pad'}
+                            />
+                        </View>
+
                         <View style={[AppStyle.inputView, passwordError.style ]}>
                             <Input
                                 inputStyle={[AppStyle.inputStyle]}
@@ -235,6 +250,12 @@ function Register(props) {
                             />
                         </View>
 
+                        <Text style={{fontSize:20, color:'red'}}>
+                            * Xin lưu ý
+                        </Text>
+                        <Text style={{fontSize:16, color:'red', textAlign:'center'}} >
+                            Vui lòng sử dụng số điện thoại thật để đăng ký tài khoảng.
+                        </Text>
                         <TouchableOpacity
                             style={[AppStyle.commonButton,{marginTop:20}]}
                             onPress={() => onSubmit()}

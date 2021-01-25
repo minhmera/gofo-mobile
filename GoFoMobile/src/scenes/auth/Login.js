@@ -117,6 +117,14 @@ export default function Login(props) {
 
     }
 
+    function navigateToForgot() {
+        console.log('MERA navigateToForgot ')
+
+        setTimeout(() => {
+            navigation.push('ForgotPassword', {movies: {name: 'Lucy'}})
+        }, 200);
+    }
+
     const {token} = AsyncStorage.getItem(TOKEN_KEY)
     console.log('MERA AAsyncStorage token ==>  ', token)
     ////'default' | 'light-content' | 'dark-content';
@@ -172,7 +180,9 @@ export default function Login(props) {
                                 rightIconContainerStyle = {{width:80,marginRight:-30}}
                             />
                         </View>
-                        <TouchableOpacity>
+                        <TouchableOpacity
+                            onPress={() => navigateToForgot() }
+                        >
                             <Text style={styles.forgot}>Quên mật khẩu?</Text>
                         </TouchableOpacity>
                         <TouchableOpacity
