@@ -1,8 +1,8 @@
 import React from 'react';
-import { StyleSheet, View, Modal, ViewPropTypes } from 'react-native';
+import {StyleSheet, View, Modal, ViewPropTypes, TouchableOpacity} from 'react-native';
 import PropTypes from 'prop-types';
 //import {LottieAnimation, LottieView }  from 'lottie-react-native';
-import LottieView  from 'lottie-react-native';
+import LottieView from 'lottie-react-native';
 
 export default class AnimatedLoader extends React.PureComponent {
     static defaultProps = {
@@ -23,9 +23,15 @@ export default class AnimatedLoader extends React.PureComponent {
         animationStyle: ViewPropTypes.style,
         speed: PropTypes.number,
         loop: PropTypes.bool,
+        onForceClose: PropTypes.func
     };
 
     animation = React.createRef();
+
+    constructor(props) {
+        super(props);
+
+    }
 
     componentDidMount() {
         if (this.animation.current) {
@@ -33,8 +39,9 @@ export default class AnimatedLoader extends React.PureComponent {
         }
     }
 
+
     componentDidUpdate(prevProps) {
-        const { visible } = this.props;
+        const {visible} = this.props;
         if (visible !== prevProps.visible) {
             if (this.animation.current) {
                 this.animation.current.play();
@@ -43,45 +50,41 @@ export default class AnimatedLoader extends React.PureComponent {
     }
 
     _renderLottie = () => {
-        const { source, animationStyle, speed, loop } = this.props;
+        const {source, animationStyle, speed, loop} = this.props;
         return (
-           /* <LottieAnimation
+
+            <LottieView
                 ref={this.animation}
                 source={source}
                 loop={loop}
                 speed={speed}
                 style={[styles.animationStyle, animationStyle]}
-            />*/
-
-
-
-        <LottieView
-            ref={this.animation}
-            source={source}
-            loop={loop}
-            speed={speed}
-            style={[styles.animationStyle, animationStyle]}
-        >
-        </LottieView>
+            >
+            </LottieView>
 
 
         );
     };
 
     render() {
-        const { visible, overlayColor, animationType } = this.props;
-
+        const {visible ,overlayColor, animationType, onForceClose} = this.props;
         return (
             <Modal
                 transparent
                 visible={visible}
                 animationType={animationType}
                 supportedOrientations={['portrait']}
-                onRequestClose={() => {}}
+
             >
-                <View style={[styles.container, { backgroundColor: overlayColor }]}>
+                <TouchableOpacity
+                    activeOpacity={1}
+                    style={[styles.container, {backgroundColor: overlayColor}]}
+                    //onPress={()=> this.setState({visible:false})}
+                    onPress={onForceClose}
+                >
+
                     <View>{this._renderLottie()}</View>
-                </View>
+                </TouchableOpacity>
             </Modal>
         );
     }

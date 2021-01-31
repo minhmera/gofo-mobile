@@ -37,7 +37,7 @@ function Register(props) {
     //const {route} = props.route;
 
     let movies = navigation.getParam('movies');
-    console.log('MERA Register ==>  ', movies);
+    //console.log('MERA Register ==>  ', movies);
 
     //1 - DECLARE VARIABLES
     const [error, setError] = useState(null);
@@ -46,22 +46,33 @@ function Register(props) {
     const [userName, setUserName] = useState('');
     const [userNameError, setUserNameError] = useState({});
 
+    const [phoneNumber, setPhoneNumber] = useState('');
+    const [phoneNumberError, setPhoneNumberError] = useState({});
+
     const [password, setPassword] = useState('');
     const [passwordError, setPasswordError] = useState({});
 
     const [confirmPass, setConfirmPass] = useState('');
     const [confirmPassError, setConfirmPassError] = useState({});
 
-    const [onPassSecure, setPassSecure] = useState(false)
-    const [onConfirmPassSecure, setConfirmPassSecure] = useState(false)
+    const [onPassSecure, setPassSecure] = useState(true)
+    const [onConfirmPassSecure, setConfirmPassSecure] = useState(true)
 
     function isValidAllField() {
         let isValidAllFiled = true
+
         if (userName == "") {
             isValidAllFiled = false
             setUserNameError({style:{borderColor:'red'},text:'Vui lòng nhập tên đăng nhập'})
         } else {
             setUserNameError({style: {marginTop: 0}, text: ''})
+        }
+
+        if (phoneNumber == "") {
+            isValidAllFiled = false
+            setPhoneNumberError({style:{borderColor:'red'},text:'Vui lòng nhập số điện thoại'})
+        } else {
+            setPhoneNumberError({style: {marginTop: 0}, text: ''})
         }
 
         if (password == "") {
@@ -80,7 +91,6 @@ function Register(props) {
             setConfirmPassError({style: {borderColor: 'red',marginTop: 10}, text: 'Mật khẩu không trùng khớp'})
 
         } else {
-            //setConfirmPassError({style: {borderColor: 'red',marginTop: 10}, text: 'Confirm password is diff with password'})
             setConfirmPassError({style: {marginTop: 0}, text: ''})
 
         }
@@ -159,6 +169,40 @@ function Register(props) {
 
     }
 
+
+    function onUsernameChange(username) {
+
+        const re = /^[A-Za-z0-9]+$/;
+       // const re = /^[0-9\b]+$/;
+        ///^[A-Z]+$/i
+        ///^[a-zA-Z]+$/
+
+        console.log('isValid username1 ==>   ',re.test(username))
+        if (username === '' || re.test(username)) {
+            setUserName(username)
+        }
+
+    }
+
+    function onPhoneChange(phone) {
+        const re = /^[0-9\b]+$/;
+        console.log('isValid phone ==>   ',re.test(phone))
+        if (phone === '' || re.test(phone)) {
+            setPhoneNumber(phone)
+        }
+    }
+
+    function onPasswordChange(password) {
+        const re = /^[A-Za-z0-9]+$/;
+        console.log('isValid pass ==>   ',re.test(password))
+        if (password === '' || re.test(password)) {
+            setPassword(password)
+        }
+    }
+
+
+
+
     function setConfirmPassPress() {
         console.log('MERA  onConfirmPassSecure==> ', onConfirmPassSecure)
         setConfirmPassSecure(!onConfirmPassSecure)
@@ -185,22 +229,27 @@ function Register(props) {
                                 placeholder='Tên đăng nhập...'
                                 errorMessage={userNameError.text}
                                 errorStyle={{marginTop:4}}
-                                onChangeText={text => setUserName(text)}
+                                onChangeText={text => onUsernameChange(text)}
+                                value={userName}
+                                maxLength={16}
+
                             />
                         </View>
 
 
 
-                        <View style={[AppStyle.inputView, userNameError.style]}>
+                        <View style={[AppStyle.inputView, phoneNumberError.style]}>
                             <Input
                                 inputStyle={[AppStyle.inputStyle]}
                                 inputContainerStyle={[styles.inputContainer]}
                                 placeholderTextColor={GlobalStyle.colour.grayColor2}
                                 placeholder='Số điện thoại ...'
-                                errorMessage={userNameError.text}
+                                errorMessage={phoneNumberError.text}
                                 errorStyle={{marginTop:4}}
-                                //onChangeText={text => setUserName(text)}
+                                onChangeText={text => onPhoneChange(text)}
                                 keyboardType={'number-pad'}
+                                maxLength={16}
+
                             />
                         </View>
 
@@ -212,7 +261,9 @@ function Register(props) {
                                 errorMessage={passwordError.text}
                                 errorStyle={{marginTop:4}}
                                 placeholder='Mật khẩu...'
-                                onChangeText={text => setPassword(text)}
+                                maxLength={16}
+                                value={password}
+                                onChangeText={text => onPasswordChange(text)}
                                 secureTextEntry={onPassSecure}
 
                                 rightIcon={
@@ -234,6 +285,7 @@ function Register(props) {
                                 errorMessage={confirmPassError.text}
                                 errorStyle={{marginTop:4}}
                                 placeholder='Xác nhận mật khẩu... '
+                                maxLength={16}
                                 placeholderTextColor={GlobalStyle.colour.grayColor2}
                                 secureTextEntry={onConfirmPassSecure}
                                 onChangeText={text => setConfirmPass(text)}
@@ -333,54 +385,3 @@ const styles = StyleSheet.create({
     },
 });
 
-
-/*
-return (
-
-    <View style={{flex: 1, backgroundColor: '#fff'}}>
-        <StatusBar barStyle="light-content" />
-        <Header titleText='Register' navigation={navigation}/>
-
-
-        <KeyboardAwareScrollView style={{flex: 1}} keyboardDismissMode = {'on-drag'}>
-            <View style={{flex: 1,marginTop:120,marginLeft:32, marginRight:32}}>
-                <Input
-                    inputStyle={styles.inputStyle}
-                    inputContainerStyle={[styles.basicInput,userNameError.style]}
-                    //errorStyle={{ color: 'red' }}
-                    placeholder='User name'
-                    errorMessage={userNameError.text}
-                    onChangeText={text => setUserName(text)}
-
-                />
-                <Input
-                    inputStyle={styles.inputStyle}
-                    inputContainerStyle={[styles.basicInput,passwordError.style]}
-                    errorMessage={passwordError.text}
-                    placeholder='Password'
-                    onChangeText={text => setPassword(text)}
-
-                />
-                <Input
-                    inputStyle={styles.inputStyle}
-                    inputContainerStyle={[styles.basicInput,confirmPassError.style]}
-                    errorMessage={confirmPassError.text}
-                    placeholder='Confirm Password'
-                    onChangeText={text => setConfirmPass(text)}
-
-                />
-
-
-                <View style={styles.bottomView}>
-                    <Button
-                        title="Đăng Ký"
-                        onPress={(state) => onSubmit(state)}
-                        buttonStyle={[AppStyle.commonButton, styles.submitButton]} //submitButton
-                        containerStyle={styles.buttonContainer}
-                    />
-                </View>
-            </View>
-        </KeyboardAwareScrollView>
-    </View>
-
-);*/

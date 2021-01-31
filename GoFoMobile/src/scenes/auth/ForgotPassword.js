@@ -46,13 +46,6 @@ function ForgotPassword(props) {
     const [userName, setUserName] = useState('');
     const [userNameError, setUserNameError] = useState({});
 
-    const [password, setPassword] = useState('');
-    const [passwordError, setPasswordError] = useState({});
-
-    const [confirmPass, setConfirmPass] = useState('');
-    const [confirmPassError, setConfirmPassError] = useState({});
-
-    const [onPassSecure, setPassSecure] = useState(false)
     const [onConfirmPassSecure, setConfirmPassSecure] = useState(false)
 
     function isValidAllField() {
@@ -64,26 +57,7 @@ function ForgotPassword(props) {
             setUserNameError({style: {marginTop: 0}, text: ''})
         }
 
-        if (password == "") {
-            isValidAllFiled = false
-            setPasswordError({style: {borderColor: 'red', marginTop: 10}, text: 'Vui lòng nhập mật khẩu'})
 
-        } else if (password.length < 8) {
-            setPasswordError({style: {borderColor: 'red', marginTop: 10}, text: 'Mật khẩu phải có ít nhất 8 kí tự'})
-        } else {
-            setPasswordError({style: {marginTop: 0}, text: ''})
-
-        }
-
-        if (confirmPass != password) {
-            isValidAllFiled = false
-            setConfirmPassError({style: {borderColor: 'red',marginTop: 10}, text: 'Mật khẩu không trùng khớp'})
-
-        } else {
-            //setConfirmPassError({style: {borderColor: 'red',marginTop: 10}, text: 'Confirm password is diff with password'})
-            setConfirmPassError({style: {marginTop: 0}, text: ''})
-
-        }
         return isValidAllFiled
     }
 
@@ -114,41 +88,29 @@ function ForgotPassword(props) {
             return
         }
 
-        let registerObj = {
-            "username": userName,
-            "password": password,
-
-        }
-
-        console.log('MERA  registerObj   ', registerObj);
+        console.log('MERA  userName   ', userName);
         setLoading(true);
         try {
-            let response = await api.register(registerObj);
+            let response = await api.genNewPass(userName);
             console.log('MERA  Register Res ', response);
             setLoading(false);
 
             if (response ) {
                 setLoading(false);
-                console.log('MERA RES  ',response.result.message)
-                if (response.result.success === true ){
-                    console.log('MERA RES 11  ',response.result.message)
-                    Alert.alert(
-                        'Đăng kí tài khoảng thành công',
-                        response.message,
-
-                        [
-                            {text: 'Xin mời bạn đăng nhập để để tiếp tục', onPress: () => navigation.replace("Login")}
-                        ],
-                        {cancelable: false},
-                    );
-                } else {
-                    console.log('MERA RES 22  ',response.result.message)
-                    let errorText = response.result.message
+                console.log('MERA RES  ',response)
+                Alert.alert(
+                    'Khôi phục mật khẩu thành công',
+                    "Mật khẩu mới của bạn là " + response.newPass,
+                    // [
+                    //     {text: 'Xin mời bạn đăng nhập để để tiếp tục', onPress: () => navigation.replace("Login")}
+                    // ],
+                    {cancelable: false},
+                );
 
 
-                    Alert.alert(errorText)
-                }
-
+            } else {
+                console.log('MERA RES Error  ',response)
+                Alert.alert('Tên đăng nhập không tồn tại')
             }
 
 
@@ -159,10 +121,6 @@ function ForgotPassword(props) {
 
     }
 
-    function setConfirmPassPress() {
-        console.log('MERA  onConfirmPassSecure==> ', onConfirmPassSecure)
-        setConfirmPassSecure(!onConfirmPassSecure)
-    }
     return (
 
         <ImageBackground

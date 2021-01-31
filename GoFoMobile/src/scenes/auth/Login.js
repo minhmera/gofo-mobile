@@ -44,7 +44,7 @@ export default function Login(props) {
 
     const [password, setPassword] = useState('');
     const [passwordError, setPasswordError] = useState({});
-    const [onPassSecure, setPassSecure] = useState(false)
+    const [onPassSecure, setPassSecure] = useState(true)
     const [isDisableResButton, setDisableResButton] = useState(false)
 
     function isValidAllField() {
@@ -71,6 +71,7 @@ export default function Login(props) {
     }
 
     async function onSubmit() {
+        console.log('MERA Login submit ')
         if (isValidAllField() === false) {
             return
         }
@@ -210,6 +211,7 @@ export default function Login(props) {
                         //animationStyle = {{height: 200, width: 200}}
                         loop={true}
                         speed={1}
+                        onForceClose={()=> setLoading(false)}
                     />
 
 

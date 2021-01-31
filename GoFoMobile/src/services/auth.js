@@ -12,6 +12,17 @@ export async function register(data){
     }
 }
 
+export async function genNewPass(username){
+    try{
+        let url = c.GENERATE_NEW_PASSWORD
+        url = url.replace('$username',username)
+        let res = await axios.get(url);
+        return res.data;
+    }catch (e) {
+        throw handler(e)
+    }
+}
+
 export async function login(data){
     try{
         let res = await axios.post(c.LOGIN, data);
