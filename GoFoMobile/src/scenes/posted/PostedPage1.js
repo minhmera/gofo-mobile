@@ -33,7 +33,7 @@ function PostedPage1({navigation}) {
 
 
     function fetchData(isRefresh) {
-        console.log('MERA fetchData ==>  page: ', page, 'isRefresh: ', isRefresh)
+        console.log('MERA fetchData ==>  page: ', page, 'isRefresh: ', isRefresh, 'loading ==> ' ,loading, 'isListEnd ==> ' ,isListEnd)
         if (isRefresh == true ) {
             setLoading(true)
             api.getSellingProduct2(1).then((response) => {
@@ -51,10 +51,10 @@ function PostedPage1({navigation}) {
             });
         }
 
-        if (!loading && !isListEnd) {
-            //console.log('MERA fetchData ********************   ')
+        if ((!loading && !isListEnd)) {
             setLoading(true)
             api.getSellingProduct2(page).then((response) => {
+                console.log('MERA  getSellingProduct2 response ', response)
                 //setSellingList(response.data.result)
                 if (response.data.result.length > 0) {
 
@@ -81,7 +81,7 @@ function PostedPage1({navigation}) {
     }
 
     function fetchDataBuying(isRefresh) {
-        console.log('MERA fetchData ==>  page: ', page, 'isRefresh: ', isRefresh)
+        console.log('MERA fetchData buying ==>  page: ', page, 'isRefresh: ', isRefresh)
         if (isListEndBuying == true ) {
             setLoading(true)
             api.getBuyingProduct(1).then((response) => {
@@ -100,7 +100,6 @@ function PostedPage1({navigation}) {
         }
 
         if (!loadingBuying && !isListEndBuying) {
-            //console.log('MERA fetchData ********************   ')
             setLoadingBuying(true)
             api.getBuyingProduct(pageBuying).then((response) => {
                 //setSellingList(response.data.result)
@@ -152,7 +151,7 @@ function PostedPage1({navigation}) {
 
 
     function RenderList(data) {
-        //console.log('MERA RenderList data ==> ', data.length)
+        console.log('MERA RenderList data ==> ', data.length)
         if (data.length > 0) {
             return (
                 <View style={{marginTop: 0}}>
@@ -223,7 +222,6 @@ function PostedPage1({navigation}) {
     function renderSellingApp() {
         return (
             <View style={{flex: 1}}>
-
                 {RenderList(sellingList)}
             </View>
         )

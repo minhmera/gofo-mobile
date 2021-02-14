@@ -19,7 +19,7 @@ const TabStack = createBottomTabNavigator({
         screen: ProductStack,
 
         navigationOptions: () => ({
-            title: 'Home',
+            title: 'Trang chủ',
             tabBarOptions: {
                 activeTintColor: GlobalStyle.colour.primaryColor,
                 inactiveTintColor: GlobalStyle.colour.inActiveColor,
@@ -38,7 +38,7 @@ const TabStack = createBottomTabNavigator({
     Posted: {
         screen: PostedStack,
         navigationOptions: () => ({
-            title: 'Posted',
+            title: 'Tin mới',
             tabBarOptions: {
                 activeTintColor: GlobalStyle.colour.primaryColor,
                 inactiveTintColor: GlobalStyle.colour.inActiveColor,
@@ -76,14 +76,14 @@ const TabStack = createBottomTabNavigator({
     Notification: {
         screen: NotificationStack,
         navigationOptions: () => ({
-            title: 'Notification',
+            title: 'Tìm kiếm',
             tabBarOptions: {
                 activeTintColor: GlobalStyle.colour.primaryColor,
                 inactiveTintColor: GlobalStyle.colour.inActiveColor,
             },
             tabBarIcon: ({tintColor}) =>
                 <Icon
-                    name='bells'
+                    name='search1'
                     size={24}
                     color={tintColor}
                 />
@@ -93,7 +93,7 @@ const TabStack = createBottomTabNavigator({
     Profile: {
         screen: ProfileStack,
         navigationOptions: () => ({
-            title: 'Profile',
+            title: 'Cá nhân',
             tabBarOptions: {
                 activeTintColor: GlobalStyle.colour.primaryColor,
                 inactiveTintColor: GlobalStyle.colour.inActiveColor,
@@ -103,6 +103,7 @@ const TabStack = createBottomTabNavigator({
                     name='user'
                     size={24}
                     color={tintColor}
+
                 />
         })
     },
