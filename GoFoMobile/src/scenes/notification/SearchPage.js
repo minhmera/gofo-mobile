@@ -15,23 +15,65 @@ import {
 } from 'react-native';
 import { SearchBar } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/EvilIcons';
-
+import AsyncStorage from '@react-native-community/async-storage'
 import Header from '../../components/Header'
 import LocalizationContext from "../../localization/LocalizationContext";
 
 import {useGlobalDataContext, setCategories} from '../../contexts/globalDataContext'
 import GlobalStyle from "../../style/GlobalStyle";
-
+import {SEARCH_HISTORY_KEY, TOKEN_KEY} from "../../config/Contants";
 function SearchPage({navigation}) {
     const {t, i18n} = React.useContext(LocalizationContext);
     const { globalState, dispatch } = useGlobalDataContext();
-    console.log('MERA  globalState ==>  ',globalState)
+    //console.log('MERA  globalState ==>  ',globalState)
     const [searchText, setSearchText] = useState('');
 
-    const [historySearch, setHistorySearch] = useState(['Nhãn','Vãi','Sầu riêng']);
+    const [historySearch, setHistorySearch] = useState([]);
+
+    function onEnterSearch(searchText) {
 
 
+        let storageArray = [...historySearch]
+        console.log('MERA Enter to search ',searchText, ' historySearch ==>  ',historySearch,' storageArray ==> ',storageArray)
+        if (storageArray.length === 0) {
+            storageArray.push(searchText);
+        } else {
+            if(storageArray.indexOf(searchText) === -1) {
+                storageArray.push(searchText);
 
+            }
+        }
+        setHistorySearch(storageArray)
+        console.log('MERA new history search ==>  ',storageArray);
+        AsyncStorage.setItem(SEARCH_HISTORY_KEY,JSON.stringify(storageArray))
+            .then(json => console.log('MERA new history search 22  ==>  ',historySearch))
+    }
+
+    function getHistorySearchList() {
+        AsyncStorage.getItem(SEARCH_HISTORY_KEY)
+            .then(req => JSON.parse(req))
+            .then(json => {
+                if (json === null) {
+                    setHistorySearch([])
+                } else {
+                    setHistorySearch(json)
+                }
+                console.log('MERA getHistorySearchList 2 => ',json)
+            })
+            .catch(error => console.log('error!'));
+
+    }
+
+    function removeSearchHistory() {
+        AsyncStorage.removeItem(SEARCH_HISTORY_KEY)
+        setHistorySearch([])
+    }
+
+    useEffect(() => {
+        {
+            getHistorySearchList()
+        }
+    }, []);
 
     return (
         <TouchableOpacity
@@ -54,7 +96,7 @@ function SearchPage({navigation}) {
                     inputContainerStyle={{backgroundColor: 'transparent'}}
                     inputStyle={{backgroundColor: 'transparent'}}
                     returnKeyType='search'
-                    onSubmitEditing={(text) => console.log(' enter to search =>', searchText)}
+                    onSubmitEditing={(text) => onEnterSearch(searchText)}
 
                 />
             </View>
@@ -63,13 +105,17 @@ function SearchPage({navigation}) {
                     <View style={{flex:1}}>
                         <Text style={styles.historyTitleText}>Lịch sử tìm kiếm</Text>
                     </View>
-                    <View style={{flex:1}}>
+                    <TouchableOpacity
+                        activeOpacity={1}
+                        style={{flex:1}}
+                        onPress={()=> removeSearchHistory()}
+                    >
                         <Icon
                             style={{textAlign:'right'}}
                             name={'trash'}
                             size={28}
                         />
-                    </View>
+                    </TouchableOpacity>
 
                 </View>
 
@@ -78,19 +124,17 @@ function SearchPage({navigation}) {
                     renderItem={({item}) =>
                         renderHistoryItem(item)
                     }
+                    extraData={historySearch}
                     keyExtractor={(item, index) => item}
                 />
 
             </View>
 
-
-
-
-
         </TouchableOpacity>
     );
 
     function renderHistoryItem(item) {
+        console.log('MERA historySearch **==> ',historySearch)
         return (
             <View style={styles.historyItem}>
                 <Text>{item}</Text>

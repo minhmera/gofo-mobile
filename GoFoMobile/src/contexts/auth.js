@@ -1,5 +1,6 @@
 import React, {useContext, useMemo, useReducer} from 'react';
-import {AsyncStorage} from "react-native";
+//import {AsyncStorage} from "react-native";
+import AsyncStorage from '@react-native-community/async-storage'
 import axios from "axios";
 
 //IMPORT REDUCER, INITIAL STATE AND ACTION TYPES
