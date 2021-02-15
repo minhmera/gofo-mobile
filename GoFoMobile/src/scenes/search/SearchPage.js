@@ -69,6 +69,11 @@ function SearchPage({navigation}) {
         setHistorySearch([])
     }
 
+    function navigateToResult(text) {
+        navigation.push('SearchResultPage',{searchText:text})
+    }
+
+
     useEffect(() => {
         {
             getHistorySearchList()
@@ -136,9 +141,14 @@ function SearchPage({navigation}) {
     function renderHistoryItem(item) {
         console.log('MERA historySearch **==> ',historySearch)
         return (
-            <View style={styles.historyItem}>
+            <TouchableOpacity
+                activeOpacity={1}
+                style={styles.historyItem}
+                onPress={()=> navigateToResult(item)}
+
+            >
                 <Text>{item}</Text>
-            </View>
+            </TouchableOpacity>
         )
 
     }

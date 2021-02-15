@@ -21,6 +21,7 @@ export const GET_SELLING_PRODUCTS = `${API_URL}/sellingPost/getAll?page=$page&si
 export const GET_BUYING_PRODUCTS = `${API_URL}/buyingPost/getAll?page=$page&size=$size`;
 
 export const GET_SELLING_PRODUCTS_BY_CATEGORY = `${API_URL}/sellingPost/getByCategory?categoryId=$categoryId&provinceId=$provinceId&page=$page&size=$size`;
+export const SEARCH_SELLING_PRODUCT = `${API_URL}/sellingPost/searchSellingPost?productName=$productName&page=$page&size=$size`;
 export const GET_BUYING_PRODUCTS_BY_CATEGORY = `${API_URL}/buyingPost/getByCategory?categoryId=$categoryId&provinceId=$provinceId&page=$page&size=$size`;
 
 export const GET_SELLING_PRODUCT_DETAIL = `${API_URL}/sellingPost/$productId`;

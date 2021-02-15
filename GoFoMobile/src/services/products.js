@@ -133,6 +133,17 @@ export async function getSellingByCategory(categoryId,provinceId,page) {
 
 }
 
+export async function searchSellingProduct(productName,page) {
+    let url = c.SEARCH_SELLING_PRODUCT
+    url = url.replace('$productName',productName)
+    url = url.replace('$page',page)
+    url = url.replace('$size',2)
+    console.log('MERA searchSellingProduct  _______________URL_________ ',url)
+    return axios.get(url);
+
+}
+
+
 export async function getBuyingByCategory(categoryId,provinceId,page) {
     let url = c.GET_BUYING_PRODUCTS_BY_CATEGORY
 
