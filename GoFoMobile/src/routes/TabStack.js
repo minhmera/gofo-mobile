@@ -2,6 +2,7 @@ import {createBottomTabNavigator} from "react-navigation-tabs";
 import {View} from "react-native";
 import AppStyle from "../style/style";
 import Icon from 'react-native-vector-icons/AntDesign'
+import IconSimpleLine from 'react-native-vector-icons/SimpleLineIcons'
 
 import React from "react";
 
@@ -99,7 +100,7 @@ const TabStack = createBottomTabNavigator({
                 inactiveTintColor: GlobalStyle.colour.inActiveColor,
             },
             tabBarIcon: ({tintColor}) =>
-                <Icon
+                <IconSimpleLine
                     name='user'
                     size={24}
                     color={tintColor}

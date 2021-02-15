@@ -11,9 +11,10 @@ import {
     TextInput,
     TouchableOpacity,
     ActivityIndicator,
-    Keyboard
+    Keyboard, RefreshControl
 } from 'react-native';
 import { SearchBar } from 'react-native-elements';
+import Icon from 'react-native-vector-icons/EvilIcons';
 
 import Header from '../../components/Header'
 import LocalizationContext from "../../localization/LocalizationContext";
@@ -26,6 +27,9 @@ function SearchPage({navigation}) {
     const { globalState, dispatch } = useGlobalDataContext();
     console.log('MERA  globalState ==>  ',globalState)
     const [searchText, setSearchText] = useState('');
+
+    const [historySearch, setHistorySearch] = useState(['Nhãn','Vãi','Sầu riêng']);
+
 
 
 
@@ -52,11 +56,48 @@ function SearchPage({navigation}) {
                     returnKeyType='search'
                     onSubmitEditing={(text) => console.log(' enter to search =>', searchText)}
 
-
                 />
             </View>
+            <View style={styles.body}>
+                <View style={styles.historyTitleView}>
+                    <View style={{flex:1}}>
+                        <Text style={styles.historyTitleText}>Lịch sử tìm kiếm</Text>
+                    </View>
+                    <View style={{flex:1}}>
+                        <Icon
+                            style={{textAlign:'right'}}
+                            name={'trash'}
+                            size={28}
+                        />
+                    </View>
+
+                </View>
+
+                <FlatList
+                    data={historySearch}
+                    renderItem={({item}) =>
+                        renderHistoryItem(item)
+                    }
+                    keyExtractor={(item, index) => item}
+                />
+
+            </View>
+
+
+
+
+
         </TouchableOpacity>
     );
+
+    function renderHistoryItem(item) {
+        return (
+            <View style={styles.historyItem}>
+                <Text>{item}</Text>
+            </View>
+        )
+
+    }
 }
 
 export default SearchPage
@@ -79,8 +120,8 @@ const styles = StyleSheet.create({
         height:38,
         borderRadius:6,
         marginTop:20,
-        marginLeft:12,
-        marginRight:12,
+        marginLeft:16,
+        marginRight:16,
         backgroundColor:'white',
         borderColor:'#D2CECE',
         borderWidth: 1
@@ -97,11 +138,27 @@ const styles = StyleSheet.create({
         borderBottomColor: 'transparent',
         borderTopColor: 'transparent'
     },
-    leftSearchIcon: {
-        backgroundColor: 'blue',
+    body: {
+        marginTop: 16,
+        marginLeft: 16,
+        marginRight: 16
+    },
+    historyTitleView: {
+        height:32,
+        flexDirection:'row'
+    },
+    historyTitleText: {
+        fontSize:16,
+        fontWeight:'500',
+        paddingTop:6
+    },
 
-        marginLeft:-8
-
+    historyItem: {
+        height:32,
+        justifyContent:'center',
+        //borderStyle:'dashed',
+        borderBottomWidth:0.5,
+        borderBottomColor: '#DEDDDD'
 
     }
 });
