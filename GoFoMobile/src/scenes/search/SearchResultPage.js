@@ -23,6 +23,7 @@ import {useGlobalDataContext, setCategories} from '../../contexts/globalDataCont
 import GlobalStyle from "../../style/GlobalStyle";
 import {SEARCH_HISTORY_KEY, TOKEN_KEY} from "../../config/Contants";
 import * as api from "../../services/products";
+import AnimatedLoader from "../../utils/custom-view/AnimatedLoader";
 
 
 
@@ -152,6 +153,7 @@ function SearchResultPage({navigation}) {
     }, []);
 
     return (
+
         <View
             style={styles.container}
         >
@@ -161,7 +163,19 @@ function SearchResultPage({navigation}) {
             <View style={{flex:1, marginTop:8, justifyContent:'center', alignItems:'center'}}>
                 {RenderList(navigation,sellingList)}
             </View>
+
+            <AnimatedLoader
+                visible={!isSearched}
+                //overlayColor="rgba(215,215,215,0.55)"
+                overlayColor="rgba(0,0,0,0.55)"
+                animationType = 'slide'
+                animationStyle={styles.lottie}
+                animationStyle = {{height: 80, width: 80}}
+                loop = {true}
+                speed={3}
+            />
         </View>
+
     );
 
 

@@ -148,7 +148,7 @@ function SearchPage({navigation}) {
                 onPress={()=> navigateToResult(item)}
 
             >
-                <Text>{item}</Text>
+                <Text style={{fontSize:16}}>{item}</Text>
             </TouchableOpacity>
         )
 
