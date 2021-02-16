@@ -24,7 +24,7 @@ import GlobalStyle from "../../style/GlobalStyle";
 import {SEARCH_HISTORY_KEY, TOKEN_KEY} from "../../config/Contants";
 import * as api from "../../services/products";
 import AnimatedLoader from "../../utils/custom-view/AnimatedLoader";
-
+import ProductItem from '../../components/ProductItem'
 
 
 function SearchResultPage({navigation}) {
@@ -114,7 +114,7 @@ function SearchResultPage({navigation}) {
                         style={{flex:1}}
                         data={data}
                         renderItem={({item}) =>
-                            RenderItem(navigation,item)
+                            RenderItem(item,navigation)
                         }
                         keyExtractor={(item, index) => item._id}
                         onEndReached={() => fetchData()}
@@ -183,35 +183,19 @@ function SearchResultPage({navigation}) {
 
 export default SearchResultPage
 
-function RenderItem(navigation,item) {
+function RenderItem(item,navigation) {
     return (
-        <TouchableOpacity
-            style={[styles.itemContainer]}
-            onPress={()=> navigateToDetail(navigation, item._id)}
-
-        >
-            <View style={styles.itemWrapper}>
-                {
-                    item.photoUrls != null ? <ImageBackground imageStyle={{ borderRadius: 4 }} source={{uri: item.photoUrls[0]}} style={styles.imageWrapperView}></ImageBackground> : null
-                }
-
-                <View style={styles.contentInfoView}>
-                    <Text style={styles.itemTitle}>
-                        {item.productName}
-                    </Text>
-                    <Text style={styles.normalText}>
-                        Người bán: {item.fullName}
-                    </Text>
-                    <Text style={styles.normalText}>
-                        Liên hệ: {item.sellerPhone}
-                    </Text>
-                </View>
-
-            </View>
-        </TouchableOpacity>
+        <ProductItem
+            item = {item}
+            onPress = {(item1) => navigateToDetail(navigation,item._id)}
+        />
     )
 }
 
+function navigateToDetail(navigation, productId) {
+    console.log("MERA navigateToDetail ==> productId: ",productId)
+    navigation.push('ProductDetail',{productId:productId, type:'SELLING'})
+}
 
 const styles = StyleSheet.create({
     container: {
