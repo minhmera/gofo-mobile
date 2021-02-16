@@ -1,58 +1,165 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 
 import {Text, FAB, List} from 'react-native-paper'
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import Header from '../../components/Header'
 import AsyncStorage from '@react-native-community/async-storage';
 import {TOKEN_KEY, USER_NAME_KEY} from "../../config/Contants";
 import GlobalStyle from "../../style/GlobalStyle";
 import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
-
+import Icon from 'react-native-vector-icons/AntDesign';
 
 function ProfilePage1({navigation}) {
     //const {navigate} = props.navigation;
+
+    let [token, setToken] = useState(null);
+    let [userName, setUserName] = useState(null);
+
+
     async function logout() {
-        AsyncStorage.clear()
-        let token = await AsyncStorage.getItem(TOKEN_KEY);
-        console.log("MERA ProfilePage1  props1   ==> ", token)
-        navigation.navigate('Auth')
+        console.log(' ********** Log out  ***************')
+        //AsyncStorage.clear()
+        //navigation.navigate('Auth')
+
+
     }
 
-    async function testFunc() {
+
+
+    async function getUserInfo() {
+        let token = await AsyncStorage.getItem(TOKEN_KEY);
         let userName = await AsyncStorage.getItem(USER_NAME_KEY);
-        console.log('MERA ==> userName  ', userName)
+        setToken(token)
+        setUserName(userName)
+
+        console.log("MERA getUserInfo   ==> token: ", token,'userName ==>  ', userName)
     }
+
+    function renderUserName() {
+        if (userName === null) {
+            return (
+                <TouchableOpacity>
+                    <Text>Đăng Nhập</Text>
+                </TouchableOpacity>
+            )
+        } else {
+            return (
+                <View style={styles.userNameView}>
+                    <Text style={styles.userNameText}>
+                        {userName}
+                    </Text>
+                </View>
+
+            )
+        }
+    }
+
+    function onTestPress() {
+        console.log('MERA onTestPress')
+    }
+
+    function renderBody() {
+        if (userName === null) {
+            return null
+        } else {
+            return (
+                <View style={styles.body}>
+                    <KeyboardAwareScrollView  keyboardDismissMode={'on-drag'}>
+                        {renderItem('Thay đổi thông tin cá nhân','setting',()=> onTestPress())}
+                        {renderItem('Bài đã đăng','book',()=> onTestPress())}
+                        {renderItem('Cộng đồng','team',()=> onTestPress())}
+                        {renderItem('Đăng xuất','logout',()=> logout())}
+
+                    </KeyboardAwareScrollView>
+                </View>
+            )
+        }
+    }
+
+    useEffect(() => {
+        {
+            getUserInfo()
+        }
+    }, []);
 
     return (
         <View style={styles.container}>
             <View style={styles.header}>
-
+                {renderUserName()}
+            </View>
+            {renderBody()}
+            <View style={{marginBottom:12,alignItems:'center'}}>
+                <Text style = {{color: GlobalStyle.colour.grayColor}}>Phiên bản 0.35</Text>
+            </View>
+            <View style={styles.bottom}>
+                <Text>Thông tin nhà phát triển</Text>
+                <Text>Nhật Minh</Text>
+                <Text>Liên hệ: 0976999864 - nhatminhn900@gmail.com</Text>
             </View>
 
-
-                <View style={styles.body}>
-                    <KeyboardAwareScrollView  keyboardDismissMode={'on-drag'}>
-                        <View>
-                            <Text> aaa 1 </Text>
-                        </View>
-                    </KeyboardAwareScrollView>
-                </View>
-
         </View>
+    )
+}
+
+function renderItem(name,iconName, func) {
+    return(
+        <TouchableOpacity
+            activeOpacity={1}
+            style={styles.itemView}
+            onPress={func}
+        >
+            <Icon
+                name = {iconName}
+                size = {24}
+                color={GlobalStyle.colour.primaryColor}
+            />
+            <Text style = {styles.itemTitle}>
+                {name}
+            </Text>
+
+        </TouchableOpacity>
     )
 }
 
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1
+        flex: 1,
+        backgroundColor: 'white'
     },
     header: {
         flex: 1,
         backgroundColor: GlobalStyle.colour.primaryColor
     },
     body: {
-        flex: 4
+        flex: 3,
+        marginTop:20,
+        marginLeft:16,
+    },
+    bottom: {
+        flex: 1,
+        backgroundColor:GlobalStyle.colour.grayBackground
+    },
+    userNameView: {
+        flex: 1,
+        justifyContent:'flex-end'
+    },
+    userNameText: {
+        color:'white',
+        marginBottom:20,
+        marginLeft:16,
+        fontSize:24,
+        fontWeight:'bold'
+    },
+    itemView: {
+        height:60,
+        flexDirection:'row',
+        alignItems: 'center'
+    },
+    itemTitle: {
+        fontSize: 16,
+        marginLeft:8,
+
     }
 })
 
