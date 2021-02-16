@@ -31,23 +31,13 @@ function SearchResultPage({navigation}) {
     let searchText = navigation.getParam('searchText');
     console.log('MERA searchText ==>  ',searchText)
 
-    const [locations, setLocations] = useState({});
-    const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
-    const [selectedCity, setSelectedCity] = useState(null);
-    let [isShowCityDropdown, setShowCityDropdown] = useState(false);
-    const [cities, setCities] = useState({});
-
     const [page, setPage] = useState(1);
-    const [loadingBuying, setLoadingBuying] = useState(false);
     const [refreshing, setRefreshing] = useState(false);
-    const [refreshingBuying, setRefreshingBuying] = useState(false);
     const [sellingList, setSellingList] = useState([]);
-    const [buyingList, setBuyingList] = useState([]);
-
-    const  [provinceId, setProvinceId] = useState(0);
 
     const [isListEnd, setIsListEnd] = useState(false);
+    const [isSearched, setIsSearched] = useState(false);
 
     function fetchData(isRefresh) {
 
@@ -56,6 +46,7 @@ function SearchResultPage({navigation}) {
             setLoading(true)
             api.searchSellingProduct(searchText,1).then((response) => {
                 //console.log('MERA length 11: ',response.data.result.length,' : ', sellingList.length)
+                setIsSearched(true)
                 if (response.data.result.length > 0) {
                     setSellingList(response.data.result)
                     setLoading(false);
@@ -73,6 +64,7 @@ function SearchResultPage({navigation}) {
                 setLoading(true)
                 api.searchSellingProduct(searchText,page).then((response) => {
                     //setSellingList(response.data.result)
+                    setIsSearched(true)
                     console.log('MERA LOAD MORE Lenght:  ',response.data.result.length,' =====:===== ', sellingList.length)
                     if (response.data.result.length > 0) {
 
@@ -113,10 +105,10 @@ function SearchResultPage({navigation}) {
     }
 
     function RenderList(navigation,data) {
-        //console.log('MERA RenderList data ==> ', data.length)
+        console.log('MERA RenderList data1 ==> ', data.length)
         if (data.length > 0) {
             return (
-                <View style={{flex:1,marginTop: 0}}>
+                <View style={{flex:1, width:'100%',marginTop: 0}}>
                     <FlatList
                         style={{flex:1}}
                         data={data}
@@ -138,6 +130,21 @@ function SearchResultPage({navigation}) {
                 </View>
             )
         }
+
+    }
+
+    function renderLabelText() {
+        console.log('MERA loading ==>', loading,'isSearched ==> ',isSearched)
+        if (isSearched === true) {
+            if (sellingList.length === 0) {
+                return (<Text style={styles.notFoundText}> Không tìm thấy kết quả </Text>)
+            } else {
+                return (<Text style={styles.searchResultTitle}>Kết quả tìm kiếm cho '{searchText}'</Text>)
+            }
+        } else {
+            return null
+        }
+
     }
 
     useEffect(() => {
@@ -149,8 +156,9 @@ function SearchResultPage({navigation}) {
             style={styles.container}
         >
             <Header titleText='Tìm kiếm' navigation={navigation} />
-            <Text style={styles.searchResultTitle}>Kết quả tìm kiếm cho '{searchText}'</Text>
-            <View style={{flex:1, marginTop:8}}>
+            {renderLabelText()}
+
+            <View style={{flex:1, marginTop:8, justifyContent:'center', alignItems:'center'}}>
                 {RenderList(navigation,sellingList)}
             </View>
         </View>
@@ -289,5 +297,11 @@ const styles = StyleSheet.create({
         color: 'black',
         fontSize:13,
         marginTop:4
+    },
+    notFoundText: {
+        fontSize:18,
+        fontWeight:'500',
+        textAlign: 'center',
+        marginTop:40
     }
 });

@@ -47,6 +47,7 @@ function SearchPage({navigation}) {
         console.log('MERA new history search ==>  ',storageArray);
         AsyncStorage.setItem(SEARCH_HISTORY_KEY,JSON.stringify(storageArray))
             .then(json => console.log('MERA new history search 22  ==>  ',historySearch))
+        navigateToResult(searchText)
     }
 
     function getHistorySearchList() {
@@ -208,7 +209,7 @@ const styles = StyleSheet.create({
     },
 
     historyItem: {
-        height:32,
+        height:44,
         justifyContent:'center',
         //borderStyle:'dashed',
         borderBottomWidth:0.5,
