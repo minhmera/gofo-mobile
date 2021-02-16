@@ -45,8 +45,8 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'row',
         backgroundColor: 'white',
-        marginTop: 4,
-        marginBottom: 4,
+        marginTop: 2,
+        marginBottom: 2,
         marginLeft: 8,
         marginRight: 8,
         borderWidth: 1,
@@ -54,12 +54,12 @@ const styles = StyleSheet.create({
         //borderColor:'#E8E8E8'
         borderColor: '#E8E8E8',
         shadowColor: "black",
-        shadowOffset: {
-            width: 0,
-            height: 0.5,
-        },
-        shadowOpacity: 0.2,
-        shadowRadius: 1,
+        // shadowOffset: {
+        //     width: 0,
+        //     height: 0.25,
+        // },
+        //shadowOpacity: 0.2,
+        //shadowRadius: 0.5,
 
     },
     imageWrapperView: {
@@ -72,10 +72,16 @@ const styles = StyleSheet.create({
         flex: 2
     },
     itemTitle: {
-        color: GlobalStyle.colour.primaryColor,
-        fontSize:15,
+        //color: GlobalStyle.colour.primaryColor,
+        fontSize:16,
         fontWeight:'500',
-        marginTop:6
+        marginTop:6,
+        color: '#3C3C3D'
+
+    },
+    normalText: {
+        color:'#6B6B6B',
+        marginTop:4
     }
 })
 

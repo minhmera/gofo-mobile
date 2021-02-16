@@ -200,7 +200,7 @@ function navigateToDetail(navigation, productId) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: 'white',
+        backgroundColor: GlobalStyle.colour.grayBackground,
     },
     searchResultTitle: {
         fontSize:16,
