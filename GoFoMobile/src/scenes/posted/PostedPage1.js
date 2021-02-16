@@ -8,6 +8,7 @@ import AppStyle from '../../style/style';
 import {backgroundColor} from "react-native-calendars/src/style";
 import * as api from "../../services/products";
 import {setCategories} from "../../contexts/globalDataContext";
+import ProductItem from "../../components/ProductItem";
 
 console.disableYellowBox = true;
 
@@ -158,7 +159,7 @@ function PostedPage1({navigation}) {
                     <FlatList
                         data={data}
                         renderItem={({item}) =>
-                            RenderItem(item)
+                            RenderItem(navigation,item)
                         }
                         keyExtractor={(item, index) => item._id}
                         onEndReached={() => fetchData()}
@@ -273,31 +274,19 @@ function PostedPage1({navigation}) {
 
 export default PostedPage1
 
-function RenderItem(item) {
+function RenderItem(navigation,item) {
     return (
-        <View style={[styles.itemContainer]}>
-            <View style={styles.itemWrapper}>
-                {
-                    item.photoUrls != null ? <ImageBackground imageStyle={{ borderRadius: 4 }} source={{uri: item.photoUrls[0]}} style={styles.imageWrapperView}></ImageBackground> : null
-                }
-
-                <View style={styles.contentInfoView}>
-                    <Text style={styles.itemTitle}>
-                        {item.productName}
-                    </Text>
-                    <Text style={styles.normalText}>
-                       Người bán: {item.fullName}
-                    </Text>
-                    <Text style={styles.normalText}>
-                        Liên hệ: {item.sellerPhone}
-                    </Text>
-                </View>
-
-            </View>
-        </View>
+        <ProductItem
+            item = {item}
+            onPress = {() => navigateToDetail(navigation,item._id)}
+        />
     )
 }
 
+function navigateToDetail(navigation, productId) {
+    console.log("MERA navigateToDetail ==> productId: ",productId)
+    navigation.push('ProductDetail',{productId:productId, type:'SELLING'})
+}
 
 const styles = StyleSheet.create({
     container: {

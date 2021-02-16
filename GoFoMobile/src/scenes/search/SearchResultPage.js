@@ -187,7 +187,7 @@ function RenderItem(item,navigation) {
     return (
         <ProductItem
             item = {item}
-            onPress = {(item1) => navigateToDetail(navigation,item._id)}
+            onPress = {() => navigateToDetail(navigation,item._id)}
         />
     )
 }

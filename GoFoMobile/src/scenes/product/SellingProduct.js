@@ -10,6 +10,7 @@ import GlobalStyle from "../../style/GlobalStyle";
 import Icon from "react-native-vector-icons/AntDesign";
 import * as api from "../../services/products";
 import ModelList from "../../components/ModelList";
+import ProductItem from "../../components/ProductItem";
 
 
 function SellingProduct({navigation}) {
@@ -245,30 +246,10 @@ function SellingProduct({navigation}) {
 
 function RenderItem(navigation,item) {
     return (
-        <TouchableOpacity
-            style={[styles.itemContainer]}
-            onPress={()=> navigateToDetail(navigation, item._id)}
-
-        >
-            <View style={styles.itemWrapper}>
-                {
-                    item.photoUrls != null ? <ImageBackground imageStyle={{ borderRadius: 4 }} source={{uri: item.photoUrls[0]}} style={styles.imageWrapperView}></ImageBackground> : null
-                }
-
-                <View style={styles.contentInfoView}>
-                    <Text style={styles.itemTitle}>
-                        {item.productName}
-                    </Text>
-                    <Text style={styles.normalText}>
-                        Người bán: {item.fullName}
-                    </Text>
-                    <Text style={styles.normalText}>
-                        Liên hệ: {item.sellerPhone}
-                    </Text>
-                </View>
-
-            </View>
-        </TouchableOpacity>
+        <ProductItem
+            item = {item}
+            onPress = {() => navigateToDetail(navigation,item._id)}
+        />
     )
 }
 
