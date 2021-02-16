@@ -18,7 +18,6 @@ import * as api from '../../services/auth';
 import CTA from '../../components/CTA';
 import {ErrorText} from '../../components/Shared';
 import Header from '../../components/Header';
-import ProductPage1 from '../product/ProductPage1';
 import t from 'tcomb-form-native';
 import AppStyle from '../../style/style';
 import GlobalStyle from '../../style/GlobalStyle';

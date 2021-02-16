@@ -11,10 +11,10 @@ import GlobalStyle from '../../style/GlobalStyle'
 
 
 //({ route, navigation })
-function ProductPage1({navigation}) {
+function CategoryPage({navigation}) {
     const {t, i18n} = React.useContext(LocalizationContext);
     //Product Page1  {t('welcome')}
-   // console.log("MERA  ProductPage1 param ==>  ",route,' -- ')
+   // console.log("MERA  CategoryPage param ==>  ",route,' -- ')
 
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
@@ -150,7 +150,7 @@ function ProductPage1({navigation}) {
 
 
 
-export default ProductPage1
+export default CategoryPage
 
 
 const styles = StyleSheet.create({
