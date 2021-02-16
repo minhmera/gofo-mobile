@@ -9,7 +9,7 @@ import React from "react";
 import ProductStack from './Product'
 import PostedStack from './Posted'
 import CreateNewPostStack from './CreateNewPost'
-import NotificationStack from './Notification'
+import SearchingStack from './Searching'
 import ProfileStack from './Profile'
 import GlobalStyle from "../style/GlobalStyle";
 
@@ -75,7 +75,7 @@ const TabStack = createBottomTabNavigator({
         })
     },
     Notification: {
-        screen: NotificationStack,
+        screen: SearchingStack,
         navigationOptions: () => ({
             title: 'Tìm kiếm',
             tabBarOptions: {

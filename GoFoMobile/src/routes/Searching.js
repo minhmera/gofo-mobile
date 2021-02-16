@@ -5,7 +5,7 @@ import AuthStack from "./Auth";
 import ProductDetail from "../scenes/product/ProductDetail";
 
 
-const NotificationStack = createStackNavigator(
+const SearchingStack = createStackNavigator(
     {
         SearchPage: {
             screen: SearchPage
@@ -23,4 +23,4 @@ const NotificationStack = createStackNavigator(
 )
 
 
-export default NotificationStack;
+export default SearchingStack;
