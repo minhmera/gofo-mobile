@@ -5,9 +5,15 @@ import Icon from 'react-native-vector-icons/AntDesign';
 
 import GlobalStyle from "../style/GlobalStyle";
 
+import moment from "moment";
+
 
 function ProductItem({item, onPress}) {
-    console.log('MERA ProductItem  ',item)
+    //console.log('MERA ProductItem  ',moment(item.createDate).format("YYYY-MM-DDThh:mm:ssZ"))
+    let fortmatString = 'DD/MM/YYYYTHH:mm'
+    console.log('MERA ProductItem time  ',moment(item.createDate).locale('vi').format(fortmatString), ' --- ',item.createDate)
+    let time = moment(item.createDate).format(fortmatString)
+    let timeString = time.replace('T',' - ')
     return (
         <TouchableOpacity
             style={[styles.itemContainer]}
@@ -28,6 +34,9 @@ function ProductItem({item, onPress}) {
                     </Text>
                     <Text style={styles.normalText}>
                         Liên hệ: {item.sellerPhone}
+                    </Text>
+                    <Text style={styles.normalText}>
+                        Ngày đăng: {timeString}
                     </Text>
                 </View>
 

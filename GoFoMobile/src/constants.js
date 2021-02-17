@@ -1,8 +1,8 @@
 import React from 'react';
 
 //API URL
-//export const API_URL = 'https://mesannodejsapiwithverification.herokuapp.com/api';
 export const API_URL = 'https://morning-crag-89761.herokuapp.com';
+//export const API_URL = 'http://192.168.1.16:3000';
 
 //API End Points
 export const REGISTER = `${API_URL}/auth/signup`;
@@ -21,6 +21,7 @@ export const GET_SELLING_PRODUCTS = `${API_URL}/sellingPost/getAll?page=$page&si
 export const GET_BUYING_PRODUCTS = `${API_URL}/buyingPost/getAll?page=$page&size=$size`;
 
 export const GET_SELLING_PRODUCTS_BY_CATEGORY = `${API_URL}/sellingPost/getByCategory?categoryId=$categoryId&provinceId=$provinceId&page=$page&size=$size`;
+export const GET_SELLING_PRODUCTS_BY_USER = `${API_URL}/sellingPost/getByUser?page=$page&size=$size`;
 export const SEARCH_SELLING_PRODUCT = `${API_URL}/sellingPost/searchSellingPost?productName=$productName&page=$page&size=$size`;
 export const GET_BUYING_PRODUCTS_BY_CATEGORY = `${API_URL}/buyingPost/getByCategory?categoryId=$categoryId&provinceId=$provinceId&page=$page&size=$size`;
 

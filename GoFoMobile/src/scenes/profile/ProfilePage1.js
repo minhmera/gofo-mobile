@@ -4,7 +4,7 @@ import {Text, FAB, List} from 'react-native-paper'
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import Header from '../../components/Header'
 import AsyncStorage from '@react-native-community/async-storage';
-import {TOKEN_KEY, USER_NAME_KEY} from "../../config/Contants";
+import {TOKEN_KEY, USER_ID_KEY, USER_NAME_KEY} from "../../config/Contants";
 import GlobalStyle from "../../style/GlobalStyle";
 import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
 import Icon from 'react-native-vector-icons/AntDesign';
@@ -14,6 +14,7 @@ function ProfilePage1({navigation}) {
 
     let [token, setToken] = useState(null);
     let [userName, setUserName] = useState(null);
+    let [userId, setUserId] = useState(null);
 
 
     async function logout() {
@@ -24,12 +25,20 @@ function ProfilePage1({navigation}) {
 
     }
 
+    function navigateSellingPost() {
+        navigation.push('SellingByUser',{userId:userId})
+    }
+
+
 
 
     async function getUserInfo() {
         let token = await AsyncStorage.getItem(TOKEN_KEY);
         let userName = await AsyncStorage.getItem(USER_NAME_KEY);
+        let userId = await AsyncStorage.getItem(USER_ID_KEY);
+        console.log('MERA Token ==> ',token)
         setToken(token)
+        setUserId(userId)
         setUserName(userName)
 
         console.log("MERA getUserInfo   ==> token: ", token,'userName ==>  ', userName)
@@ -66,7 +75,8 @@ function ProfilePage1({navigation}) {
                 <View style={styles.body}>
                     <KeyboardAwareScrollView  keyboardDismissMode={'on-drag'}>
                         {renderItem('Thay đổi thông tin cá nhân','setting',()=> onTestPress())}
-                        {renderItem('Bài đã đăng','book',()=> onTestPress())}
+                        {renderItem('Tin mua đã đăng','book',()=> onTestPress())}
+                        {renderItem('Tin bán đã đăng','export',()=> navigateSellingPost())}
                         {renderItem('Cộng đồng','team',()=> onTestPress())}
                         {renderItem('Đăng xuất','logout',()=> logout())}
 

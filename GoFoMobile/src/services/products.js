@@ -133,6 +133,22 @@ export async function getSellingByCategory(categoryId,provinceId,page) {
 
 }
 
+export async function getSellingByUser(userId,page) {
+    let url = c.GET_SELLING_PRODUCTS_BY_USER
+
+    url = url.replace('$page',page)
+    url = url.replace('$size',2)
+    console.log('MERA getSellingByUser 11 _______________URL_________ ',url, 'userId ==> ',userId)
+    return axios.get(url, { params: { userId: userId} })
+
+    // return axios({
+    //     method: 'get',
+    //     url: url,
+    //     //params: {userId: userId}
+    // })
+
+}
+
 export async function searchSellingProduct(productName,page) {
     let url = c.SEARCH_SELLING_PRODUCT
     url = url.replace('$productName',productName)

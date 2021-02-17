@@ -1,6 +1,6 @@
 import {createStackNavigator} from "react-navigation-stack";
 import ProfilePage1 from "../scenes/profile/ProfilePage1";
-import ProfilePage2 from "../scenes/profile/ProfilePage2";
+import SellingByUser from "../scenes/profile/SellingByUserPage";
 
 
 
@@ -12,8 +12,8 @@ const ProfileStack = createStackNavigator(
             screen: ProfilePage1
 
         },
-        ProfilePage2: {
-            screen: ProfilePage2
+        SellingByUser: {
+            screen: SellingByUser
         },
     },{
         headerMode: 'none',
@@ -21,6 +21,7 @@ const ProfileStack = createStackNavigator(
     }
 )
 
+//SellingByUser
 
 
 export default ProfileStack;
