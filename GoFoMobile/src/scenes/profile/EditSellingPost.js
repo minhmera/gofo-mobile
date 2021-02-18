@@ -34,6 +34,10 @@ function renderImage(images) {
 
     return images.map((item, index) => {
         console.log('index ', index, 'item11 ', item.path);
+        let  imageUrl = item.path
+        if (item.path === undefined) {
+            imageUrl = item
+        }
         return (
             <View
                 style={styles.pickupImageView}
@@ -41,7 +45,8 @@ function renderImage(images) {
             >
                 <Image
                     style={styles.imageItem}
-                    source={{uri: item.path}}
+                    //source={{uri: item.path}}
+                    source={{uri: imageUrl}}
                 />
 
 
@@ -87,19 +92,48 @@ function dropdownButton(title, onPress, isError) {
 //Product Page1  {t('welcome')}
 function EditSellingPost({navigation}) {
     const {t, i18n} = React.useContext(LocalizationContext);
-    let item = navigation.getParam('item');
+    let navItem = navigation.getParam('item');
+    const {globalState, dispatch} = useGlobalDataContext();
 
-    console.log('MERA EditSellingPost  ========> ',item)
+    console.log('MERA EditSellingPost  item ========> ',navItem)
+    //console.log('MERA EditSellingPost  categories ========> ',globalState.categories)
 
-    let defaultCategoryObj = {
-        //title_vi: item
+
+
+
+    function setDefaultData(navItem,globalState) {
+        globalState.categories.map((item, index) => {
+            if (navItem.categoryId === item.type ) {
+                console.log('item ==>  ',item,' at ', index)
+                setSelectedCategory(item)
+            }
+        })
+        setProductName(navItem.productName)
+        let cityObj = { name: navItem.provinceName, id: navItem.provinceId }
+        let distObj = { name: navItem.districtName, id: navItem.districtId }
+
+        setSelectedDistrict(distObj)
+        setSelectedCity(cityObj)
+
+        let formatString = 'YYYY-MM-DD'
+        let cropDate = moment(navItem.cropDay).format(formatString)
+        setSelectedCropTimeDate(moment(cropDate))
+        setSelectedCertification(navItem.productCertification)
+        setPhoneNumber(navItem.sellerPhone)
+        setImages(navItem.photoUrls)
+        console.log('selectedCropTimeDate ==>  ',cropDate)
+        //'2021-02-19'
+        //selectedCropTimeDate.format('DD-MM-YYYY')
+
     }
 
 
-    const {globalState, dispatch} = useGlobalDataContext();
+
+
+
 
     let [images, setImages] = useState(null);
-    let [isSell, setSellStatus] = useState(true);
+    let [defaultImages, setDefaultImages] = useState(null);
 
     const [productName, setProductName] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
@@ -140,9 +174,16 @@ function EditSellingPost({navigation}) {
     async function uploadSellingProduct() {
         setLoading(true);
         try {
-            let response = await api.uploadImages(images);
-            console.log('uploadImage response ==> ', response);
-            let imageUrls = response.imageUrls
+            let imageUrls = []
+            if (images.length > 0) {
+                if (images[0].path !== undefined) {
+                    let response = await api.uploadImages(images);
+                    console.log('uploadImage response ==> ', response);
+                    imageUrls = response.imageUrls
+                }
+            }
+
+
             let res = await onSubmitSelling(imageUrls)
             console.log('MERA ==> onSubmit ', res)
             setLoading(false);
@@ -157,7 +198,7 @@ function EditSellingPost({navigation}) {
         let userId = await AsyncStorage.getItem(USER_ID_KEY);
         let userName = await AsyncStorage.getItem(USER_NAME_KEY);
         let sellingObj = {
-            "photoUrls": photoUrls,
+            //"photoUrls": photoUrls,
             "userId": userId,
             "fullName": userName,
             "categoryId": selectedCategory.type,
@@ -170,10 +211,14 @@ function EditSellingPost({navigation}) {
             "productCertification": selectedCertification,
             "sellerPhone": phoneNumber
         }
+        if (photoUrls.length > 0) {
+            sellingObj.photoUrls = photoUrls
+        }
+
         console.log('MERA submit object ', sellingObj)
         try {
-            let response = await api.sellingPost(sellingObj);
-            console.log('MERA  sellingPost   ', response);
+            let response = await api.editSellingPost(sellingObj,navItem._id);
+            console.log('MERA ------------------------ sellingPost response ----------------   ', response);
 
             Alert.alert(
                 'Posting Successful',
@@ -249,7 +294,7 @@ function EditSellingPost({navigation}) {
 
     useEffect(() => {
         {
-            fetchData(), getTokenKey()
+            fetchData(), getTokenKey() , setDefaultData(navItem,globalState)
         }
     }, []);
 
@@ -297,8 +342,9 @@ function EditSellingPost({navigation}) {
     }
 
     function cropTimeCalendarCallBack(day) {
-        console.log('MERA cropTimeCalendarCallBack ==> ', day)
+
         let selectedDate = moment(day.dateString);
+        console.log('MERA cropTimeCalendarCallBack ==> ', day.dateString)
         //let dateString = selectedDate.format('DD-MM-YYYY')
         //console.log('MERA cropTimeCalendarCallBack ==> ', dateString );
         setSelectedCropTimeDate(selectedDate)
@@ -407,6 +453,7 @@ function EditSellingPost({navigation}) {
                                 placeholder='Tên sản phẩm'
                                 inputContainerStyle={[styles.basicInput, {borderBottomColor: isProductNameError === true ? GlobalStyle.colour.errorColor : GlobalStyle.colour.grayColor}]}
                                 onChangeText={value => setProductName(value)}
+                                value = {productName}
                             />
 
                             {dropdownButton(selectedCity === null ? "Choose city" : selectedCity.name, () => setShowCityDropdown(true), isCityError)}
@@ -460,7 +507,7 @@ function EditSellingPost({navigation}) {
 
                             {
 
-                                dropdownButton(selectedCropTimeDate === null ? "Thời gian thu hoạch" : selectedCropTimeDate.format('DD-MM-YYYY'), () => setShowCropTimeCalendar(true))
+                                dropdownButton(selectedCropTimeDate === null ? "Thời gian thu hoạch" : selectedCropTimeDate.format('DD/MM/YYYY'), () => setShowCropTimeCalendar(true))
 
                             }
 
@@ -474,6 +521,7 @@ function EditSellingPost({navigation}) {
                                 inputContainerStyle={[styles.basicInput, {borderBottomColor: isPhoneError === true ? GlobalStyle.colour.errorColor : GlobalStyle.colour.grayColor}]}
                                 keyboardType={'phone-pad'}
                                 onChangeText={value => setPhoneNumber(value)}
+                                value= {phoneNumber}
                             />
                             <View style={styles.bottomView}>
                                 <Button
@@ -488,7 +536,7 @@ function EditSellingPost({navigation}) {
                     </View>
                 </KeyboardAwareScrollView>
 
-                <AnimatedLoader
+                {/*<AnimatedLoader
                     visible={loading}
                     //overlayColor="rgba(215,215,215,0.55)"
                     overlayColor="rgba(0,0,0,0.55)"
@@ -497,7 +545,7 @@ function EditSellingPost({navigation}) {
                     animationStyle={{height: 120, width: 120}}
                     loop={true}
                     speed={3}
-                />
+                />*/}
             </View>
         );
 
