@@ -8,7 +8,7 @@ import GlobalStyle from "../style/GlobalStyle";
 import moment from "moment";
 
 
-function ProductItem({item, onPress}) {
+function EditingProductItem({item, onEdit, onDelete}) {
     //console.log('MERA ProductItem  ',moment(item.createDate).format("YYYY-MM-DDThh:mm:ssZ"))
     let fortmatString = 'DD/MM/YYYYTHH:mm'
     let time = moment(item.createDate).format(fortmatString)
@@ -16,7 +16,7 @@ function ProductItem({item, onPress}) {
     return (
         <TouchableOpacity
             style={[styles.itemContainer]}
-            onPress={()=> onPress(item)}
+
 
         >
             <View style={styles.itemWrapper}>
@@ -28,18 +28,32 @@ function ProductItem({item, onPress}) {
                     <Text style={styles.itemTitle}>
                         {item.productName}
                     </Text>
+
                     <Text style={styles.normalText}>
-                        Người bán: {item.fullName}
+                        Ngày đăng:
                     </Text>
                     <Text style={styles.normalText}>
-                        Liên hệ: {item.sellerPhone}
+                        {timeString}
                     </Text>
-                    <Text style={styles.normalText}>
-                        Ngày đăng: {timeString}
-                    </Text>
+                </View>
+                <View style={styles.editingButtonView}>
+                    <TouchableOpacity
+                        style={[styles.editButton,{backgroundColor:GlobalStyle.colour.grayBackground, marginTop:8}]}
+                        onPress={()=> onDelete(item)}
+                    >
+                        <Text style={styles.editButtonTitle}>Xoá</Text>
+                    </TouchableOpacity>
+                    <View style={{ height:1, backgroundColor:GlobalStyle.colour.primaryColor}}></View>
+                    <TouchableOpacity
+                        style={[styles.editButton,{backgroundColor:GlobalStyle.colour.grayBackground, marginBottom:8}]}
+                        onPress={()=> onEdit(item)}
+                    >
+                        <Text style={styles.editButtonTitle}>Sửa</Text>
+                    </TouchableOpacity>
                 </View>
 
             </View>
+
         </TouchableOpacity>
     )
 }
@@ -62,22 +76,17 @@ const styles = StyleSheet.create({
         //borderColor:'#E8E8E8'
         borderColor: '#E8E8E8',
         shadowColor: "black",
-        // shadowOffset: {
-        //     width: 0,
-        //     height: 0.25,
-        // },
-        //shadowOpacity: 0.2,
-        //shadowRadius: 0.5,
+
 
     },
     imageWrapperView: {
-        flex: 1,
+        flex: 2,
         margin: 8,
         borderRadius: 4,
         backgroundColor: 'gray'
     },
     contentInfoView: {
-        flex: 2
+        flex: 3
     },
     itemTitle: {
         //color: GlobalStyle.colour.primaryColor,
@@ -90,7 +99,23 @@ const styles = StyleSheet.create({
     normalText: {
         color:'#6B6B6B',
         marginTop:4
+    },
+    editingButtonView: {
+        flex:0.75,
+
+
+    },
+    editButton: {
+        flex:1,
+        justifyContent:'center',
+        alignItems:'center'
+        //borderRadius:4,
+    },
+    editButtonTitle: {
+        fontSize: 15,
+        fontWeight: '500'
     }
+
 })
 
-export default ProductItem
+export default EditingProductItem

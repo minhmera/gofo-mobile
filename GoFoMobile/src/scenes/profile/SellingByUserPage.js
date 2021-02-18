@@ -10,7 +10,7 @@ import GlobalStyle from "../../style/GlobalStyle";
 import Icon from "react-native-vector-icons/AntDesign";
 import * as api from "../../services/products";
 import ModelList from "../../components/ModelList";
-import ProductItem from "../../components/ProductItem";
+import EditingProductItem from "../../components/EditingProductItem";
 
 
 function SellingByUser({navigation}) {
@@ -186,8 +186,8 @@ function SellingByUser({navigation}) {
     }, []);
     return (
         <View style={styles.container}>
-            <Header titleText='Selling List' navigation={navigation}/>
-           
+            <Header titleText='Sản phẩm đang bán' navigation={navigation}/>
+
             <View style={{flex:1, marginTop:8}}>
                 {RenderList(navigation,sellingList)}
             </View>
@@ -201,16 +201,16 @@ function SellingByUser({navigation}) {
 
 function RenderItem(navigation,item) {
     return (
-        <ProductItem
+        <EditingProductItem
             item = {item}
-            onPress = {() => navigateToDetail(navigation,item._id)}
+            onEdit = {(pressItem) => navigateToEdit(navigation,item)}
         />
     )
 }
 
-function navigateToDetail(navigation, productId) {
-    console.log("MERA navigateToDetail ==> productId: ",productId)
-    navigation.push('ProductDetail',{productId:productId, type:'SELLING'})
+function navigateToEdit(navigation, item) {
+    console.log("MERA navigateToDetail ==> productId: ",item)
+    navigation.push('EditSellingPost',{item:item, type:'SELLING'})
 }
 
 export default SellingByUser
