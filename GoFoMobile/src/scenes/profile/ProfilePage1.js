@@ -63,8 +63,14 @@ function ProfilePage1({navigation}) {
         }
     }
 
-    function onTestPress() {
+    function onChangeUserInfo() {
         console.log('MERA onTestPress')
+        navigation.push('EditUserInfo')
+    }
+
+    function onChangePassword() {
+        console.log('MERA onTestPress')
+        navigation.push('ChangePassword')
     }
 
     function renderBody() {
@@ -74,10 +80,11 @@ function ProfilePage1({navigation}) {
             return (
                 <View style={styles.body}>
                     <KeyboardAwareScrollView  keyboardDismissMode={'on-drag'}>
-                        {renderItem('Thay đổi thông tin cá nhân','setting',()=> onTestPress())}
-                        {renderItem('Tin mua đã đăng','book',()=> onTestPress())}
+                        {renderItem('Thay đổi thông tin cá nhân','setting',()=> onChangeUserInfo())}
+                        {renderItem('Thay đổi mật khẩu','setting',()=> onChangePassword())}
+                        {renderItem('Tin mua đã đăng','book',()=> onChangeUserInfo())}
                         {renderItem('Tin bán đã đăng','export',()=> navigateSellingPost())}
-                        {renderItem('Cộng đồng','team',()=> onTestPress())}
+                        {renderItem('Cộng đồng','team',()=> onChangeUserInfo())}
                         {renderItem('Đăng xuất','logout',()=> logout())}
 
                     </KeyboardAwareScrollView>

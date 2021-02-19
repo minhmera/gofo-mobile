@@ -25,10 +25,7 @@ import {ProductCertifications} from '../../config/AppConfig'
 import {useGlobalDataContext, setCategories} from '../../contexts/globalDataContext'
 import AsyncStorage from "@react-native-community/async-storage";
 import {TOKEN_KEY, USER_ID_KEY, USER_NAME_KEY} from "../../config/Contants";
-import AnimatedLoader from "../../utils/custom-view/AnimatedLoader";
-import LoginWarningView from '../../components/LogInWarningView'
-
-
+import LoadingPage from '../../components/LoadingPage'
 function renderImage(images) {
     //let arrImages = ['a','b','c']
 
@@ -407,7 +404,7 @@ function EditSellingPost({navigation}) {
 
         return (
             <View style={styles.container}>
-                <Header navigation={navigation} titleText='Create Post'/>
+                <Header navigation={navigation} titleText='Chỉnh Sửa Sản Phẩm'/>
                 <KeyboardAwareScrollView style={{flex: 1}} keyboardDismissMode={'interactive'}>
 
 
@@ -525,7 +522,7 @@ function EditSellingPost({navigation}) {
                             />
                             <View style={styles.bottomView}>
                                 <Button
-                                    title="Upload Product"
+                                    title="Sửa"
                                     onPress={() => submitPost()}
                                     buttonStyle={[AppStyle.commonButton_1, styles.submitButton,]} //submitButton
                                     containerStyle={styles.buttonContainer}
@@ -534,18 +531,13 @@ function EditSellingPost({navigation}) {
                         </View>
 
                     </View>
+
                 </KeyboardAwareScrollView>
 
-                {/*<AnimatedLoader
-                    visible={loading}
-                    //overlayColor="rgba(215,215,215,0.55)"
-                    overlayColor="rgba(0,0,0,0.55)"
-                    animationType='slide'
-                    animationStyle={styles.lottie}
-                    animationStyle={{height: 120, width: 120}}
-                    loop={true}
-                    speed={3}
-                />*/}
+                <LoadingPage
+                    isShow={loading}
+                />
+
             </View>
         );
 

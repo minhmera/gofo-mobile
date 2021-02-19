@@ -2,6 +2,8 @@ import {createStackNavigator} from "react-navigation-stack";
 import ProfilePage1 from "../scenes/profile/ProfilePage1";
 import SellingByUser from "../scenes/profile/SellingByUserPage";
 import EditSellingPost from "../scenes/profile/EditSellingPost";
+import EditUserInfo from "../scenes/profile/EditUserInfo";
+import ChangePassword from "../scenes/profile/ChangePassword";
 
 
 
@@ -19,6 +21,12 @@ const ProfileStack = createStackNavigator(
         EditSellingPost: {
             screen: EditSellingPost
         },
+        EditUserInfo: {
+            screen: EditUserInfo
+        },
+        ChangePassword: {
+            screen: ChangePassword
+        }
     },{
         headerMode: 'none',
         initialRouteName: 'ProfilePage1',
