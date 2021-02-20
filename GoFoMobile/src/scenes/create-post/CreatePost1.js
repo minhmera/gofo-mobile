@@ -27,6 +27,7 @@ import AsyncStorage from "@react-native-community/async-storage";
 import {TOKEN_KEY, USER_ID_KEY, USER_NAME_KEY} from "../../config/Contants";
 import AnimatedLoader from "../../utils/custom-view/AnimatedLoader";
 import LoginWarningView from '../../components/LogInWarningView'
+import CommonButton from "../../components/CommonButton";
 
 
 function renderImage(images) {
@@ -74,8 +75,8 @@ function dropdownButton(title, onPress, isError) {
             </View>
             <View style={{flex: 1, alignItems: 'flex-end', marginRight: 4}}>
                 <Icon
-                    name='right'
-                    size={20}
+                    name='caretdown'
+                    size={10}
                     color={errorStyle ? 'red' : 'black'}
                 />
             </View>
@@ -304,6 +305,10 @@ function CreatePost1({navigation}) {
     }
 
     function cityDropDownCallBack(cityObj) {
+        if (cityObj === null) {
+            setShowCityDropdown(false)
+            return
+        }
         console.log('MERA selected city ', cityObj)
         setSelectedCity(cityObj)
         if (cityObj != null) {
@@ -485,9 +490,9 @@ function CreatePost1({navigation}) {
                                 onChangeText={value => setProductName(value)}
                             />
 
-                            {dropdownButton(selectedCity === null ? "Choose city" : selectedCity.name, () => setShowCityDropdown(true), isCityError)}
+                            {dropdownButton(selectedCity === null ? "Chọn Tỉnh/Thành phố" : selectedCity.name, () => setShowCityDropdown(true), isCityError)}
 
-                            {dropdownButton(selectedDistrict === null ? "Choose district" : selectedDistrict.name, () => handleShowDistrictDropdown())}
+                            {dropdownButton(selectedDistrict === null ? "Chọn Quận/Huyện" : selectedDistrict.name, () => handleShowDistrictDropdown())}
 
                             <ModelList
                                 isVisible={isShowCategoryDropdown}
@@ -501,7 +506,7 @@ function CreatePost1({navigation}) {
 
                             <ModelList
                                 isVisible={isShowCityDropdown}
-                                title={'Choose Your City'}
+                                title={'Chọn Tỉnh/Thành phố'}
                                 items={cities}
                                 customField={'name'}
                                 customItemId={'id'}
@@ -510,7 +515,7 @@ function CreatePost1({navigation}) {
 
                             <ModelList
                                 isVisible={isShowDistrictDropdown}
-                                title={'Choose Your District'}
+                                title={'Chọn Quận/Huyện'}
                                 style={{height: 400}}
                                 items={districts}
                                 customField={'name'}
@@ -520,7 +525,7 @@ function CreatePost1({navigation}) {
 
                             <ModelCalendar
                                 isVisible={isShowCropTimeCalendar}
-                                title={'Select a Crop Day'}
+                                title={'Chọn ngày thu hoạch'}
                                 style={{height: 460}}
                                 items={districts}
                                 callBack={(day) => cropTimeCalendarCallBack(day)}
@@ -558,13 +563,20 @@ function CreatePost1({navigation}) {
                                 onChangeText={value => setPhoneNumber(value)}
                             />
                             <View style={styles.bottomView}>
-                                <Button
+                               {/* <Button
                                     title="Upload Product"
                                     onPress={() => submitPost()}
                                     buttonStyle={[AppStyle.commonButton_1, styles.submitButton,]} //submitButton
                                     containerStyle={styles.buttonContainer}
+                                />*/}
+                                <CommonButton
+                                    title={'OK'}
+                                    customStyle={{marginTop:32}}
+                                    textStyle={{fontSize:18}}
+                                    onPress={()=> submitPost()}
                                 />
                             </View>
+
                         </View>
 
                     </View>
@@ -689,6 +701,7 @@ const styles = StyleSheet.create({
     },
     bottomView: {
         height: 160,
+        alignItems:'center'
     },
     submitButton: {
         backgroundColor: GlobalStyle.colour.primaryColor,

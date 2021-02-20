@@ -6,7 +6,7 @@ const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
 
-function CommonButton({title,customStyle,onPress}) {
+function CommonButton({title,textStyle,customStyle,onPress}) {
     console.log(' -------------  LoadingPage ----------------------')
 
 
@@ -15,7 +15,7 @@ function CommonButton({title,customStyle,onPress}) {
             style={[AppStyle.commonButton,customStyle]}
             onPress={() => onPress()}
         >
-            <Text style={styles.loginText}>{title}</Text>
+            <Text style={[styles.loginText,textStyle]}>{title}</Text>
         </TouchableOpacity>
     )
 }

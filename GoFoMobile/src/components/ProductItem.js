@@ -6,13 +6,26 @@ import Icon from 'react-native-vector-icons/AntDesign';
 import GlobalStyle from "../style/GlobalStyle";
 
 import moment from "moment";
+import {func} from "prop-types";
 
 
 function ProductItem({item, onPress}) {
-    //console.log('MERA ProductItem  ',moment(item.createDate).format("YYYY-MM-DDThh:mm:ssZ"))
     let fortmatString = 'DD/MM/YYYYTHH:mm'
-    let time = moment(item.createDate).format(fortmatString)
-    let timeString = time.replace('T',' - ')
+    let timeString = ""
+    if (item.createDate != undefined){
+        let time = moment(item.createDate).format(fortmatString)
+        timeString = time.replace('T',' - ')
+    }
+
+    function renderImage() {
+        console.log('ProductItem photoUrls ==>  ',item)
+        /*if (item.photoUrls !== undefined){
+            return  <ImageBackground imageStyle={{ borderRadius: 4 }} source={{uri: item.photoUrls[0]}} style={styles.imageWrapperView}></ImageBackground>
+        } else {
+            return null
+        }*/
+    }
+
     return (
         <TouchableOpacity
             style={[styles.itemContainer]}
@@ -22,6 +35,7 @@ function ProductItem({item, onPress}) {
             <View style={styles.itemWrapper}>
                 {
                     item.photoUrls != null ? <ImageBackground imageStyle={{ borderRadius: 4 }} source={{uri: item.photoUrls[0]}} style={styles.imageWrapperView}></ImageBackground> : null
+                    //renderImage()
                 }
 
                 <View style={styles.contentInfoView}>
@@ -77,7 +91,8 @@ const styles = StyleSheet.create({
         backgroundColor: 'gray'
     },
     contentInfoView: {
-        flex: 2
+        flex: 2,
+        marginLeft: 8,
     },
     itemTitle: {
         //color: GlobalStyle.colour.primaryColor,

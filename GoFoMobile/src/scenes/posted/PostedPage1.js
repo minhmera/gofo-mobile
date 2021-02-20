@@ -186,7 +186,7 @@ function PostedPage1({navigation}) {
                     <FlatList
                         data={data}
                         renderItem={({item}) =>
-                            RenderItem(item)
+                            RenderItem(navigation,item)
                         }
                         keyExtractor={(item, index) => item._id}
                         onEndReached={() => fetchDataBuying()}
@@ -255,10 +255,11 @@ function PostedPage1({navigation}) {
                     activeTabStyle={{
                         backgroundColor: GlobalStyle.colour.primaryColor,
                         borderBottomColor: 'white',
-                        borderBottomWidth: 2
+                        borderBottomWidth: 4,
+
                     }}
-                    tabTextStyle={{color: 'white', fontWeight: 'bold'}}
-                    activeTabTextStyle={{color: 'white'}}
+                    tabTextStyle={{color: GlobalStyle.colour.grayColor}}
+                    activeTabTextStyle={{color:'white',fontWeight: 'bold'}}
                 />
                 {customStyleIndex === 0 && (
                     renderSellingApp()

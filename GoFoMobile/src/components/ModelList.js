@@ -11,11 +11,18 @@ import Modal, { SlideAnimation, ModalContent } from 'react-native-modal';
 function ModelList({isVisible, title, items, customField, customItemId, style, callBack}) {
     //console.log('MERA ModelList 11 ==> ', items);
 
-    function RenderCategoryItem(item, customField) {
+    function RenderCategoryItem(item,index, customField) {
+        console.log('MERA ModelList 11 ==> item: ', items.length,'--------  index:',index);
+        let lastItemStyle = {}
+        if (index === items.length - 1) {
+            lastItemStyle = {
+                borderBottomWidth: 0
+            }
+        }
         if (customField === undefined) {
             return (
                 <TouchableOpacity
-                    style={styles.dropdownItem}
+                    style={[styles.dropdownItem,lastItemStyle]}
                     key={item}
                     onPress={() => callBack(item)}
                 >
@@ -25,10 +32,9 @@ function ModelList({isVisible, title, items, customField, customItemId, style, c
                 </TouchableOpacity>
             );
         } else {
-            //console.log('MERA ModelList ==> RenderCategoryItem  ', item, '|| 22  customField ==> ', customField, 'item.customField ', item.title_vi);
             return (
                 <TouchableOpacity
-                    style={styles.dropdownItem}
+                    style={[styles.dropdownItem,lastItemStyle]}
                     key={item[`${customItemId}`]}
                     onPress={() => callBack(item)}
                 >
@@ -48,8 +54,8 @@ function ModelList({isVisible, title, items, customField, customItemId, style, c
                 <View style={{flex: 1, marginLeft: 10, marginRight: 10, marginTop: 10}}>
                     <FlatList
                         data={items}
-                        renderItem={({item}) =>
-                            RenderCategoryItem(item, customField)
+                        renderItem={({item,index}) =>
+                            RenderCategoryItem(item,index, customField)
                         }
 
                         keyExtractor={(item, index) => customField === undefined ? item : item[`${customItemId}`]}
@@ -72,7 +78,7 @@ function ModelList({isVisible, title, items, customField, customItemId, style, c
         >
             <TouchableOpacity style={styles.container} activeOpacity = {1} onPress={() => callBack(null)} >
                 <TouchableOpacity style={[styles.dropDownContainer, customStyle]} activeOpacity={1}
-                                  onPress={() => callBack('')}>
+                                  onPress={() => callBack(null)}>
                     <Text style={styles.dropdownTitle}>{title}</Text>
                     {renderDropdown(items, customField)}
 
