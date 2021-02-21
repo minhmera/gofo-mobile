@@ -28,6 +28,7 @@ import {TOKEN_KEY, USER_ID_KEY, USER_NAME_KEY} from "../../config/Contants";
 import AnimatedLoader from "../../utils/custom-view/AnimatedLoader";
 import LoginWarningView from '../../components/LogInWarningView'
 import CommonButton from "../../components/CommonButton";
+import LoadingPage from "../../components/LoadingPage";
 
 
 function renderImage(images) {
@@ -169,7 +170,7 @@ function CreatePost1({navigation}) {
             console.log('MERA  sellingPost   ', response);
 
             Alert.alert(
-                'Posting Successful',
+                'Đăng sản phẩm thành công',
                 response.message,
 
                 [
@@ -406,7 +407,7 @@ function CreatePost1({navigation}) {
     if (token === null) {
         return (
             <View style={styles.container}>
-                <Header titleText='Create Post'/>
+                <Header titleText='Đăng Sản Phẩm'/>
                 <LoginWarningView navigation={navigation}/>
 
             </View>
@@ -414,8 +415,8 @@ function CreatePost1({navigation}) {
     } else {
         return (
             <View style={styles.container}>
-                <Header titleText='Create Post'/>
-                <KeyboardAwareScrollView style={{flex: 1}} keyboardDismissMode={'interactive'}>
+                <Header titleText='Đăng Sản Phẩm'/>
+                <KeyboardAwareScrollView style={{flex: 1}} keyboardDismissMode={'on-drag'}>
 
 
                     <View style={styles.content}>
@@ -582,15 +583,8 @@ function CreatePost1({navigation}) {
                     </View>
                 </KeyboardAwareScrollView>
 
-                <AnimatedLoader
-                    visible={loading}
-                    //overlayColor="rgba(215,215,215,0.55)"
-                    overlayColor="rgba(0,0,0,0.55)"
-                    animationType='slide'
-                    animationStyle={styles.lottie}
-                    animationStyle={{height: 120, width: 120}}
-                    loop={true}
-                    speed={3}
+                <LoadingPage
+                    isShow={loading}
                 />
             </View>
         );

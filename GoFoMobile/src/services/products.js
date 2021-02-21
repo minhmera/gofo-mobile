@@ -158,14 +158,16 @@ export async function getSellingByUser(userId,page) {
 
     url = url.replace('$page',page)
     url = url.replace('$size',2)
-    console.log('MERA getSellingByUser 11 _______________URL_________ ',url, 'userId ==> ',userId)
-    return axios.get(url, { params: { userId: userId} })
+    console.log('MERA getSellingByUser 11 POST _______________URL_________ ',url, 'userId ==> ',userId)
+    let token = await AsyncStorage.getItem(TOKEN_KEY);
+    let axiosConfig = {
+        headers: {
+            'Authorization': token,
+        }
+    };
+    let postData = { userId: userId}
+    return axios.post(url,postData,axiosConfig)
 
-    // return axios({
-    //     method: 'get',
-    //     url: url,
-    //     //params: {userId: userId}
-    // })
 
 }
 

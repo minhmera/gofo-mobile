@@ -19,8 +19,8 @@ function ProfilePage1({navigation}) {
 
     async function logout() {
         console.log(' ********** Log out  ***************')
-        //AsyncStorage.clear()
-        //navigation.navigate('Auth')
+        AsyncStorage.clear()
+        navigation.navigate('Auth')
 
 
     }
@@ -47,9 +47,16 @@ function ProfilePage1({navigation}) {
     function renderUserName() {
         if (userName === null) {
             return (
-                <TouchableOpacity>
-                    <Text>Đăng Nhập</Text>
+
+                <TouchableOpacity
+                    style={styles.userNameView}
+                    onPress={()=> onLoginPress() }
+                >
+                    <Text style={styles.userNameText}>
+                        Đăng nhập
+                    </Text>
                 </TouchableOpacity>
+
             )
         } else {
             return (
@@ -73,9 +80,21 @@ function ProfilePage1({navigation}) {
         navigation.push('ChangePassword')
     }
 
+    function onLoginPress() {
+        console.log('MERA  navigation ',navigation)
+        navigation.navigate('Login')
+    }
+
     function renderBody() {
         if (userName === null) {
-            return null
+            return (
+                <View style={styles.body}>
+                    <KeyboardAwareScrollView  keyboardDismissMode={'on-drag'}>
+                        {renderItem('Cộng đồng','team',()=> onChangeUserInfo())}
+
+                    </KeyboardAwareScrollView>
+                </View>
+            )
         } else {
             return (
                 <View style={styles.body}>
@@ -155,7 +174,8 @@ const styles = StyleSheet.create({
     },
     bottom: {
         flex: 1,
-        backgroundColor:GlobalStyle.colour.grayBackground
+        backgroundColor:GlobalStyle.colour.grayBackground,
+        justifyContent: 'center'
     },
     userNameView: {
         flex: 1,

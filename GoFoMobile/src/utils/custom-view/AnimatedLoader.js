@@ -67,7 +67,9 @@ export default class AnimatedLoader extends React.PureComponent {
     };
 
     render() {
+
         const {visible ,overlayColor, animationType, onForceClose} = this.props;
+        console.log('AnimatedLoader ==> ',visible)
         return (
             <Modal
                 transparent

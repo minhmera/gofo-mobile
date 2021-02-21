@@ -6,6 +6,7 @@ import * as api from "../../services/home";
 import {useGlobalDataContext, setCategories} from '../../contexts/globalDataContext'
 import AnimatedLoader from '../../utils/custom-view/AnimatedLoader';
 import GlobalStyle from '../../style/GlobalStyle'
+import LoadingPage from "../../components/LoadingPage";
 
 
 
@@ -14,14 +15,9 @@ import GlobalStyle from '../../style/GlobalStyle'
 function CategoryPage({navigation}) {
     const {t, i18n} = React.useContext(LocalizationContext);
     //Product Page1  {t('welcome')}
-   // console.log("MERA  CategoryPage param ==>  ",route,' -- ')
-
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
     const [refreshing, setRefreshing] = useState(false);
-
-    //const [categories, setCategories] = useState({});
-
     const { globalState, dispatch } = useGlobalDataContext();
 
     async function fetchData() {
@@ -134,15 +130,17 @@ function CategoryPage({navigation}) {
             <Header titleText='Danh mục sản phẩm'/>
             {RenderCategoryList(globalState.categories,refreshing, ()=> refreshData() )}
 
-            <AnimatedLoader
+            {/*<AnimatedLoader
                 visible={loading}
-                //overlayColor="rgba(215,215,215,0.55)"
                 overlayColor="rgba(0,0,0,0.55)"
                 animationType = 'slide'
                 animationStyle={styles.lottie}
-                animationStyle = {{height: 120, width: 120}}
+                animationStyle = {{height: 80, width: 80}}
                 loop = {true}
                 speed={3}
+            />*/}
+            <LoadingPage
+                isShow={loading}
             />
         </View>
     )

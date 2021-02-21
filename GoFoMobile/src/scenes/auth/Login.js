@@ -208,7 +208,7 @@ export default function Login(props) {
                         overlayColor="rgba(0,0,0,0.55)"
                         animationType='slide'
                         animationStyle={styles.lottie}
-                        //animationStyle = {{height: 200, width: 200}}
+                        animationStyle = {{height: 80, width: 80}}
                         loop={true}
                         speed={1}
                         onForceClose={()=> setLoading(false)}
