@@ -29,6 +29,9 @@ function ProfilePage1({navigation}) {
         navigation.push('SellingByUser',{userId:userId})
     }
 
+    function navigateBuyingPost() {
+        navigation.push('BuyingByUser',{userId:userId})
+    }
 
 
 
@@ -101,8 +104,8 @@ function ProfilePage1({navigation}) {
                     <KeyboardAwareScrollView  keyboardDismissMode={'on-drag'}>
                         {renderItem('Thay đổi thông tin cá nhân','setting',()=> onChangeUserInfo())}
                         {renderItem('Thay đổi mật khẩu','setting',()=> onChangePassword())}
-                        {renderItem('Tin mua đã đăng','book',()=> onChangeUserInfo())}
                         {renderItem('Tin bán đã đăng','export',()=> navigateSellingPost())}
+                        {renderItem('Tin mua đã đăng','book',()=> navigateBuyingPost())}
                         {renderItem('Cộng đồng','team',()=> onChangeUserInfo())}
                         {renderItem('Đăng xuất','logout',()=> logout())}
 

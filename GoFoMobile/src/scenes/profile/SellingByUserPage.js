@@ -20,9 +20,7 @@ function SellingByUser({navigation}) {
     console.log('MERA SellingByUser  userId ==>  ', userId);
 
     const [loading, setLoading] = useState(false);
-    const [selectedCity, setSelectedCity] = useState(null);
-    let [isShowCityDropdown, setShowCityDropdown] = useState(false);
-    const [cities, setCities] = useState({});
+
 
     const [page, setPage] = useState(1);
     const [refreshing, setRefreshing] = useState(false);
@@ -85,21 +83,7 @@ function SellingByUser({navigation}) {
 
     }
 
-    function fetchSelectedData(provinceId) {
-        api.getSellingByCategory(categoryItem.type,provinceId,1,).then((response) => {
-            console.log('MERA fetchSelectedData : ',response.data.result.length,' ---:---', sellingList.length)
-            if (response.data.result.length > 0) {
-                setSellingList(response.data.result)
-                setLoading(false);
-                setRefreshing(false)
-            } else {
-                setSellingList([])
-                setLoading(false);
-                setRefreshing(false)
-            }
 
-        });
-    }
 
     function refreshData() {
         setLoading(false);
@@ -137,47 +121,6 @@ function SellingByUser({navigation}) {
             )
         }
     }
-    function dropdownButton(title,onPress,isError) {
-        let errorStyle = null
-        return  (
-            <TouchableOpacity
-                style={[styles.dropdownButton,errorStyle]}
-                activeOpacity={1}
-                onPress={()=> onPress()}
-            >
-                <View style={{flex:4}}>
-                    <Text style={[styles.dropdownButtonTitle,errorStyle]}>
-                        {title}
-                    </Text>
-                </View>
-                <View style={{flex:1,alignItems:'flex-end', marginRight:4}}>
-                    <Icon
-                        name='caretdown'
-                        size={14}
-                        color={GlobalStyle.colour.primaryColor}
-                    />
-                </View>
-
-            </TouchableOpacity>
-        )
-    }
-
-    function cityDropDownCallBack(cityObj) {
-        console.log('MERA selected city ',cityObj)
-
-        setLoading(false);
-        setRefreshing(true)
-        setIsListEnd(false)
-        setPage(1);
-
-        setProvinceId(cityObj.id)
-        setSelectedCity(cityObj)
-        setShowCityDropdown(false)
-
-        fetchSelectedData(cityObj.id)
-
-
-    }
 
 
 
@@ -210,7 +153,7 @@ function RenderItem(navigation,item) {
 
 function navigateToEdit(navigation, item) {
     console.log("MERA navigateToDetail ==> productId: ",item)
-    navigation.push('EditSellingPost',{item:item, type:'SELLING'})
+    navigation.push('EditSellingPost',{item:item, type:'SELL'})
 }
 
 export default SellingByUser

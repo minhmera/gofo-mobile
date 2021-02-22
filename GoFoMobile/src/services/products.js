@@ -81,6 +81,26 @@ export async function editSellingPost(data, productId){
     }
 }
 
+export async function editBuyingPost(data, productId){
+    let token = await AsyncStorage.getItem(TOKEN_KEY);
+    let url =  c.EDIT_BUYING_POST
+    url = url.replace('$productId',productId)
+    let axiosConfig = {
+        headers: {
+            'Authorization': token,
+        }
+    };
+
+    console.log('editSellingPost ==>   ', url)
+    try{
+        let res = await axios.put(url, data,axiosConfig );
+
+        return res.data;
+    }catch (e) {
+        throw handler(e);
+    }
+}
+
 export async function buyingPost(data){
     let token = await AsyncStorage.getItem(TOKEN_KEY);
 
@@ -168,9 +188,23 @@ export async function getSellingByUser(userId,page) {
     let postData = { userId: userId}
     return axios.post(url,postData,axiosConfig)
 
+}
+export async function getBuyingByUser(userId,page) {
+    let url = c.GET_BUYING_PRODUCTS_BY_USER
+
+    url = url.replace('$page',page)
+    url = url.replace('$size',2)
+    console.log('MERA getSellingByUser 11 POST _______________URL_________ ',url, 'userId ==> ',userId)
+    let token = await AsyncStorage.getItem(TOKEN_KEY);
+    let axiosConfig = {
+        headers: {
+            'Authorization': token,
+        }
+    };
+    let postData = { userId: userId}
+    return axios.post(url,postData,axiosConfig)
 
 }
-
 export async function searchSellingProduct(productName,page) {
     let url = c.SEARCH_SELLING_PRODUCT
     url = url.replace('$productName',productName)

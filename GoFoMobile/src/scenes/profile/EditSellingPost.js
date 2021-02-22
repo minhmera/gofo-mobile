@@ -90,6 +90,7 @@ function dropdownButton(title, onPress, isError) {
 function EditSellingPost({navigation}) {
     const {t, i18n} = React.useContext(LocalizationContext);
     let navItem = navigation.getParam('item');
+    let type = navigation.getParam('type');
     const {globalState, dispatch} = useGlobalDataContext();
 
     console.log('MERA EditSellingPost  item ========> ',navItem)
@@ -170,15 +171,21 @@ function EditSellingPost({navigation}) {
 
     async function uploadSellingProduct() {
         setLoading(true);
+        console.log('images11 ==>  ',images)
+
+
         try {
             let imageUrls = []
-            if (images.length > 0) {
-                if (images[0].path !== undefined) {
-                    let response = await api.uploadImages(images);
-                    console.log('uploadImage response ==> ', response);
-                    imageUrls = response.imageUrls
+            if (images !== undefined) {
+                if (images.length > 0) {
+                    if (images[0].path !== undefined) {
+                        let response = await api.uploadImages(images);
+                        console.log('uploadImage response ==> ', response);
+                        imageUrls = response.imageUrls
+                    }
                 }
             }
+
 
 
             let res = await onSubmitSelling(imageUrls)
@@ -188,6 +195,7 @@ function EditSellingPost({navigation}) {
             console.log('Error ', e);
             setLoading(false);
         }
+
     }
 
     async function onSubmitSelling(photoUrls) {
@@ -213,31 +221,60 @@ function EditSellingPost({navigation}) {
         }
 
         console.log('MERA submit object ', sellingObj)
-        try {
-            let response = await api.editSellingPost(sellingObj,navItem._id);
-            console.log('MERA ------------------------ sellingPost response ----------------   ', response);
+        if (type === 'SELL') {
+            try {
+                let response = await api.editSellingPost(sellingObj,navItem._id);
+                console.log('MERA ------------------------ sellingPost response ----------------   ', response);
 
-            Alert.alert(
-                'Posting Successful',
-                response.message,
+                Alert.alert(
+                    'Posting Successful',
+                    response.message,
 
-                [
-                    {text: 'OK'}, //  {text: 'OK', onPress: () => navigation.replace("Login")}
-                ],
-                {cancelable: false},
-            );
-        } catch (error) {
-            Alert.alert(
-                'Posting',
-                error.message,
+                    [
+                        {text: 'OK'}, //  {text: 'OK', onPress: () => navigation.replace("Login")}
+                    ],
+                    {cancelable: false},
+                );
+            } catch (error) {
+                Alert.alert(
+                    'Posting',
+                    error.message,
 
-                [
-                    {text: 'OK'}, //  {text: 'OK', onPress: () => navigation.replace("Login")}
-                ],
-                {cancelable: false},
-            );
-            setError(error.message);
+                    [
+                        {text: 'OK'}, //  {text: 'OK', onPress: () => navigation.replace("Login")}
+                    ],
+                    {cancelable: false},
+                );
+                setError(error.message);
+            }
+        } else if (type === 'BUY') {
+            try {
+                let response = await api.editBuyingPost(sellingObj,navItem._id);
+                console.log('MERA ------------------------ sellingPost response ----------------   ', response);
+
+                Alert.alert(
+                    'Posting Successful',
+                    response.message,
+
+                    [
+                        {text: 'OK'}, //  {text: 'OK', onPress: () => navigation.replace("Login")}
+                    ],
+                    {cancelable: false},
+                );
+            } catch (error) {
+                Alert.alert(
+                    'Posting',
+                    error.message,
+
+                    [
+                        {text: 'OK'}, //  {text: 'OK', onPress: () => navigation.replace("Login")}
+                    ],
+                    {cancelable: false},
+                );
+                setError(error.message);
+            }
         }
+
     }
 
     function submitPost() {
@@ -279,8 +316,7 @@ function EditSellingPost({navigation}) {
 
                 setCities(cities)
             }
-            //setCities(response.result)
-            //console.log(' getLocation1 =====>  ',cities)
+
             setLoading(false);
 
         } catch (error) {
@@ -390,7 +426,7 @@ function EditSellingPost({navigation}) {
         } else {
             setPhoneError(false)
         }
-        console.log('MERA1  isSellingValid  ==>   ', productName, ' < -- >', isProductNameError)
+        console.log('MERA1  isSellingValid  ==>   ', isValidAllField)
         return isValidAllField
     }
 
