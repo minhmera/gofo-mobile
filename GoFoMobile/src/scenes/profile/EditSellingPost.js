@@ -169,7 +169,7 @@ function EditSellingPost({navigation}) {
 
     //token
 
-    async function uploadSellingProduct() {
+    async function uploadProduct() {
         setLoading(true);
         console.log('images11 ==>  ',images)
 
@@ -188,7 +188,7 @@ function EditSellingPost({navigation}) {
 
 
 
-            let res = await onSubmitSelling(imageUrls)
+            let res = await onSubmit(imageUrls)
             console.log('MERA ==> onSubmit ', res)
             setLoading(false);
         } catch (e) {
@@ -198,7 +198,7 @@ function EditSellingPost({navigation}) {
 
     }
 
-    async function onSubmitSelling(photoUrls) {
+    async function onSubmit(photoUrls) {
 
         let userId = await AsyncStorage.getItem(USER_ID_KEY);
         let userName = await AsyncStorage.getItem(USER_NAME_KEY);
@@ -279,7 +279,7 @@ function EditSellingPost({navigation}) {
 
     function submitPost() {
         if (isSellingValid() == true) {
-            let res = uploadSellingProduct()
+            let res = uploadProduct()
         }
     }
 
