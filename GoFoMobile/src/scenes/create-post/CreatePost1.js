@@ -24,7 +24,7 @@ import ModelCalendar from '../../components/ModelCalendar'
 import {ProductCertifications} from '../../config/AppConfig'
 import {useGlobalDataContext, setCategories} from '../../contexts/globalDataContext'
 import AsyncStorage from "@react-native-community/async-storage";
-import {TOKEN_KEY, USER_ID_KEY, USER_NAME_KEY} from "../../config/Contants";
+import {TOKEN_KEY, USER_ID_KEY, FULL_NAME_KEY} from "../../config/Contants";
 import AnimatedLoader from "../../utils/custom-view/AnimatedLoader";
 import LoginWarningView from '../../components/LogInWarningView'
 import CommonButton from "../../components/CommonButton";
@@ -149,11 +149,11 @@ function CreatePost1({navigation}) {
     async function onSubmitSelling(photoUrls) {
 
         let userId = await AsyncStorage.getItem(USER_ID_KEY);
-        let userName = await AsyncStorage.getItem(USER_NAME_KEY);
+        let fullName = await AsyncStorage.getItem(FULL_NAME_KEY);
         let sellingObj = {
             "photoUrls": photoUrls,
             "userId": userId,
-            "fullName": userName,
+            "fullName": fullName,
             "categoryId": selectedCategory.type,
             "productName": productName,
             "provinceId": selectedCity.id,
@@ -206,10 +206,10 @@ function CreatePost1({navigation}) {
     async function uploadBuyingProduct() {
         setLoading(true);
         let userId = await AsyncStorage.getItem(USER_ID_KEY);
-        let userName = await AsyncStorage.getItem(USER_NAME_KEY);
+        let fullName = await AsyncStorage.getItem(FULL_NAME_KEY);
         let buyingObj = {
             "userId": userId,
-            "fullName": userName,
+            "fullName": fullName,
             "categoryId": selectedCategory.type,
             "productName": productName,
             "provinceId": selectedCity.id,

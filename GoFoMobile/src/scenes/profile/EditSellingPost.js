@@ -24,7 +24,7 @@ import ModelCalendar from '../../components/ModelCalendar'
 import {ProductCertifications} from '../../config/AppConfig'
 import {useGlobalDataContext, setCategories} from '../../contexts/globalDataContext'
 import AsyncStorage from "@react-native-community/async-storage";
-import {TOKEN_KEY, USER_ID_KEY, USER_NAME_KEY} from "../../config/Contants";
+import {TOKEN_KEY, USER_ID_KEY, FULL_NAME_KEY} from "../../config/Contants";
 import LoadingPage from '../../components/LoadingPage'
 function renderImage(images) {
     //let arrImages = ['a','b','c']
@@ -201,11 +201,11 @@ function EditSellingPost({navigation}) {
     async function onSubmit(photoUrls) {
 
         let userId = await AsyncStorage.getItem(USER_ID_KEY);
-        let userName = await AsyncStorage.getItem(USER_NAME_KEY);
+        let fullName = await AsyncStorage.getItem(FULL_NAME_KEY);
         let sellingObj = {
             //"photoUrls": photoUrls,
             "userId": userId,
-            "fullName": userName,
+            "fullName": fullName,
             "categoryId": selectedCategory.type,
             "productName": productName,
             "provinceId": selectedCity.id,

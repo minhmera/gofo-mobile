@@ -15,7 +15,7 @@ import {Button, Input} from 'react-native-elements';
 import AppStyle from '../../style/style';
 import AnimatedLoader from '../../utils/custom-view/AnimatedLoader'
 import {backgroundColor} from 'react-native-calendars/src/style';
-import {TOKEN_KEY, USER_ID_KEY, USER_KEY, USER_NAME_KEY} from "../../config/Contants";
+import {TOKEN_KEY, USER_ID_KEY, USER_KEY, USER_NAME_KEY,FULL_NAME_KEY,PASSWORD_KEY} from "../../config/Contants";
 import Icon from "react-native-vector-icons/AntDesign";
 
 
@@ -90,8 +90,8 @@ export default function Login(props) {
             try {
                 let token = await AsyncStorage.setItem(TOKEN_KEY, response.result.token)
                 let id = await AsyncStorage.setItem(USER_ID_KEY, response.result.userInfo._id)
-                let userName = await AsyncStorage.setItem(USER_NAME_KEY, response.result.userInfo.local.fullName)
-                //let userName = await AsyncStorage.setItem(USER_NAME_KEY, response.result.userInfo.local.fullName)
+                let userName = await AsyncStorage.setItem(USER_NAME_KEY, response.result.userInfo.local.username)
+                let fullName = await AsyncStorage.setItem(FULL_NAME_KEY, response.result.userInfo.local.fullName)
                 let password = await AsyncStorage.setItem(PASSWORD_KEY, response.result.userInfo.local.password)
                 navigate('App');
                 setLoading(false);

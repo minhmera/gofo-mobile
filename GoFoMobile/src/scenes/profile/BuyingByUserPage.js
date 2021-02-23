@@ -1,15 +1,10 @@
 
 import React, {useEffect, useState} from 'react'
 
-import {Text, FAB, List} from 'react-native-paper'
 import {FlatList, ImageBackground, RefreshControl, StyleSheet, TouchableOpacity, View} from 'react-native';
 import Header from '../../components/Header'
-import AsyncStorage from '@react-native-community/async-storage';
-import {TOKEN_KEY, USER_NAME_KEY} from "../../config/Contants";
 import GlobalStyle from "../../style/GlobalStyle";
-import Icon from "react-native-vector-icons/AntDesign";
 import * as api from "../../services/products";
-import ModelList from "../../components/ModelList";
 import EditingProductItem from "../../components/EditingProductItem";
 
 

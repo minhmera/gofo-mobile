@@ -4,7 +4,7 @@ import {Text, FAB, List} from 'react-native-paper'
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import Header from '../../components/Header'
 import AsyncStorage from '@react-native-community/async-storage';
-import {TOKEN_KEY, USER_ID_KEY, USER_NAME_KEY} from "../../config/Contants";
+import {TOKEN_KEY, USER_ID_KEY, FULL_NAME_KEY} from "../../config/Contants";
 import GlobalStyle from "../../style/GlobalStyle";
 import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
 import Icon from 'react-native-vector-icons/AntDesign';
@@ -37,12 +37,12 @@ function ProfilePage1({navigation}) {
 
     async function getUserInfo() {
         let token = await AsyncStorage.getItem(TOKEN_KEY);
-        let userName = await AsyncStorage.getItem(USER_NAME_KEY);
+        let fullName = await AsyncStorage.getItem(FULL_NAME_KEY);
         let userId = await AsyncStorage.getItem(USER_ID_KEY);
         console.log('MERA Token ==> ',token)
         setToken(token)
         setUserId(userId)
-        setUserName(userName)
+        setUserName(fullName)
 
         console.log("MERA getUserInfo   ==> token: ", token,'userName ==>  ', userName)
     }

@@ -3,6 +3,7 @@ export const TOKEN_KEY = 'token';
 export const USER_KEY = 'user';
 export const USER_ID_KEY = 'userId';
 export const USER_NAME_KEY = 'username';
+export const FULL_NAME_KEY = 'fullName';
 export const PASSWORD_KEY = 'password';
 export const USER_POINT_KEY = 'point';
 
