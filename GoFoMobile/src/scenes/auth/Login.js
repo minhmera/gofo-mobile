@@ -15,7 +15,7 @@ import {Button, Input} from 'react-native-elements';
 import AppStyle from '../../style/style';
 import AnimatedLoader from '../../utils/custom-view/AnimatedLoader'
 import {backgroundColor} from 'react-native-calendars/src/style';
-import {TOKEN_KEY, USER_ID_KEY, USER_KEY, USER_NAME_KEY,FULL_NAME_KEY,PASSWORD_KEY} from "../../config/Contants";
+import {TOKEN_KEY, USER_ID_KEY, USER_KEY, USER_NAME_KEY,FULL_NAME_KEY,PASSWORD_KEY,PHONE_NUMBER_KEY} from "../../config/Contants";
 import Icon from "react-native-vector-icons/AntDesign";
 
 
@@ -86,13 +86,14 @@ export default function Login(props) {
             //await handleLogin(response);
             setLoading(false);
             console.log('MERA  Log in token  ', response.result.userInfo._id)
-            console.log('MERA  Login Result  ', response.result.userInfo.local.fullName)
+            console.log('MERA  Login phoneNumber  ', response.result.userInfo.local.phoneNumber)
             try {
                 let token = await AsyncStorage.setItem(TOKEN_KEY, response.result.token)
                 let id = await AsyncStorage.setItem(USER_ID_KEY, response.result.userInfo._id)
                 let userName = await AsyncStorage.setItem(USER_NAME_KEY, response.result.userInfo.local.username)
                 let fullName = await AsyncStorage.setItem(FULL_NAME_KEY, response.result.userInfo.local.fullName)
                 let password = await AsyncStorage.setItem(PASSWORD_KEY, response.result.userInfo.local.password)
+                let phoneNumber = await AsyncStorage.setItem(PHONE_NUMBER_KEY, response.result.userInfo.local.phoneNumber)
                 navigate('App');
                 setLoading(false);
 
@@ -129,7 +130,6 @@ export default function Login(props) {
 
     const {token} = AsyncStorage.getItem(TOKEN_KEY)
     console.log('MERA AAsyncStorage token ==>  ', token)
-    ////'default' | 'light-content' | 'dark-content';
     return (
 
         <ImageBackground

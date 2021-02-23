@@ -10,7 +10,9 @@ const GlobalStyle = {
         grayColor: '#D6D6D6',
         grayColor2: '#B5B5B5',
         grayBackground: '#F4F7FB',
-        errorColor:'#ff3333'
+        errorColor:'#ff3333',
+        redColor:'#E32227',
+        orangeColor:'#FF5D00',
     }
 }
 

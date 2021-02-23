@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
     StatusBar,
     Alert,
@@ -29,46 +29,43 @@ import Icon from 'react-native-vector-icons/AntDesign';
 import AnimatedLoader from "../../utils/custom-view/AnimatedLoader";
 import LottieView from 'lottie-react-native';
 import CommonButton from "../../components/CommonButton";
+import AsyncStorage from "@react-native-community/async-storage";
+import {
+    FULL_NAME_KEY,
+    PASSWORD_KEY,
+    PHONE_NUMBER_KEY,
+    TOKEN_KEY,
+    USER_ID_KEY,
+    USER_NAME_KEY
+} from "../../config/Contants";
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
 //https://medium.com/react-native-development/easily-build-forms-in-react-native-9006fcd2a73b
 function EditUserInfo(props) {
     const {navigation} = props;
-    //const {route} = props.route;
 
-    let movies = navigation.getParam('movies');
-    //console.log('MERA Register ==>  ', movies);
-
-    //1 - DECLARE VARIABLES
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
-
-    const [fullName, setFullName] = useState('');
-    const [fullNameError, setFullNameError] = useState({});
 
     const [phoneNumber, setPhoneNumber] = useState('');
     const [phoneNumberError, setPhoneNumberError] = useState({});
 
 
+    async function getUserInfo() {
+        let phoneNumber = await AsyncStorage.getItem(PHONE_NUMBER_KEY);
+        console.log('getUserInfo phoneNumber ==>  ',phoneNumber)
+        setPhoneNumber(phoneNumber)
+    }
+
     function isValidAllField() {
         let isValidAllFiled = true
-
-        if (fullName == "") {
-            isValidAllFiled = false
-            setFullNameError({style:{borderColor:'red'},text:'Vui lòng nhập tên đăng nhập'})
-        } else {
-            setFullNameError({style: {marginTop: 0}, text: ''})
-        }
-
         if (phoneNumber == "") {
             isValidAllFiled = false
             setPhoneNumberError({style:{borderColor:'red'},text:'Vui lòng nhập số điện thoại'})
         } else {
             setPhoneNumberError({style: {marginTop: 0}, text: ''})
         }
-
-
         return isValidAllFiled
     }
 
@@ -98,10 +95,16 @@ function EditUserInfo(props) {
         if (isValidAllField() === false) {
             return
         }
+        let userId = await AsyncStorage.getItem(USER_ID_KEY);
+        let fullName = await AsyncStorage.getItem(FULL_NAME_KEY);
+        let password = await AsyncStorage.getItem(PASSWORD_KEY);
+
 
         let editingObj = {
-            "fullName": fullName,
             "phoneNumber": phoneNumber,
+            "userId":userId,
+            //"fullName":fullName,
+            "password":password,
         }
 
         console.log('MERA  registerObj   ', editingObj);
@@ -110,49 +113,40 @@ function EditUserInfo(props) {
             let response = await api.editUserInfo(editingObj);
             console.log('MERA  Register Res ', response);
             setLoading(false);
+            AsyncStorage.setItem(PHONE_NUMBER_KEY, phoneNumber)
+            console.log('Set phone  ====>  ',phoneNumber)
 
-            if (response ) {
-                setLoading(false);
-                console.log('MERA RES  ',response.result.message)
-                if (response.result.success === true ){
-                    console.log('MERA RES 11  ',response.result.message)
-                    Alert.alert(
-                        'Đăng kí tài khoảng thành công',
-                        response.message,
-
-                        [
-                            {text: 'Xin mời bạn đăng nhập để để tiếp tục', onPress: () => navigation.replace("Login")}
-                        ],
-                        {cancelable: false},
-                    );
-                } else {
-                    console.log('MERA RES 22  ',response.result.message)
-                    let errorText = response.result.message
+            Alert.alert(
+                'Thành công',
+                'Thay đổi số điện thoại thành công',
+                [
+                    {text: 'OK'}
+                ],
+                {cancelable: false},
+            )
 
 
-                    Alert.alert(errorText)
-                }
-
-            }
 
 
         } catch (error) {
+
             setError(error.message);
+            console.log('MERA Error ', error.message);
             setLoading(false);
+            Alert.alert(
+                'Lỗi',
+                'Xảy ra lỗi, vui lòng thử lại',
+                [
+                    {text: 'OK'}
+                ],
+                {cancelable: false},
+            );
         }
 
     }
 
 
-    function onUsernameChange(username) {
 
-        const re = /^[A-Za-z0-9]+$/;
-        console.log('isValid username1 ==>   ',re.test(username))
-        if (username === '' || re.test(username)) {
-            setFullName(username)
-        }
-
-    }
 
     function onPhoneChange(phone) {
         const re = /^[0-9\b]+$/;
@@ -161,6 +155,10 @@ function EditUserInfo(props) {
             setPhoneNumber(phone)
         }
     }
+
+    useEffect(() => {
+        getUserInfo()
+    }, []);
 
     return (
 
@@ -172,26 +170,9 @@ function EditUserInfo(props) {
             <View style={styles.dimView}>
 
                 <StatusBar barStyle="light-content"/>
-                <Header titleText='Thay Đổi Thông Tin' navigation={navigation}/>
+                <Header titleText='Đổi Số Điện Thoại' navigation={navigation}/>
                 <View style={{flex: 1}}>
                     <View style={styles.loginContainer}>
-
-                        <View style={[AppStyle.inputView, fullNameError.style]}>
-                            <Input
-                                inputStyle={[AppStyle.inputStyle]}
-                                inputContainerStyle={[styles.inputContainer]}
-                                placeholderTextColor={GlobalStyle.colour.grayColor2}
-                                placeholder='Tên đầy đủ...'
-                                errorMessage={fullNameError.text}
-                                errorStyle={{marginTop:4}}
-                                onChangeText={text => onUsernameChange(text)}
-                                value={fullName}tên
-                                maxLength={16}
-
-                            />
-                        </View>
-
-
                         <View style={[AppStyle.inputView, phoneNumberError.style]}>
                             <Input
                                 inputStyle={[AppStyle.inputStyle]}
@@ -202,15 +183,14 @@ function EditUserInfo(props) {
                                 errorStyle={{marginTop:4}}
                                 onChangeText={text => onPhoneChange(text)}
                                 keyboardType={'number-pad'}
+                                value={phoneNumber}
                                 maxLength={16}
 
                             />
                         </View>
-
-
                         <CommonButton
                             title={'OK'}
-                            customStyle={{marginTop:24}}
+                            customStyle={{width:'60%',marginTop:24}}
                             onPress={()=> onSubmit()}
                         />
 

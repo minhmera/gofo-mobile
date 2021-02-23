@@ -102,10 +102,10 @@ function ProfilePage1({navigation}) {
             return (
                 <View style={styles.body}>
                     <KeyboardAwareScrollView  keyboardDismissMode={'on-drag'}>
-                        {renderItem('Thay đổi thông tin cá nhân','setting',()=> onChangeUserInfo())}
-                        {renderItem('Thay đổi mật khẩu','setting',()=> onChangePassword())}
                         {renderItem('Tin bán đã đăng','export',()=> navigateSellingPost())}
                         {renderItem('Tin mua đã đăng','book',()=> navigateBuyingPost())}
+                        {renderItem('Đổi số điện thoại','setting',()=> onChangeUserInfo())}
+                        {renderItem('Đổi mật khẩu','setting',()=> onChangePassword())}
                         {renderItem('Cộng đồng','team',()=> onChangeUserInfo())}
                         {renderItem('Đăng xuất','logout',()=> logout())}
 

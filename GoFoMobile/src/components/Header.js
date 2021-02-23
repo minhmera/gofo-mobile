@@ -7,12 +7,10 @@ import GlobalStyle from "../style/GlobalStyle";
 
 
 function Header({ titleText,navigation, customStyle }) {
-  //console.log('MERA Header ==>  navigation  ',navigation)
   function goBack() {
-    console.log('MERA Header ==>  navigation  ',navigation)
-    //navigation.replace("Login")
     navigation.goBack()
   }
+
   if (navigation) {
     return (
         <Appbar.Header style={[styles.headerContainer,customStyle]}>

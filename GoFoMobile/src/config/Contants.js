@@ -6,5 +6,6 @@ export const USER_NAME_KEY = 'username';
 export const FULL_NAME_KEY = 'fullName';
 export const PASSWORD_KEY = 'password';
 export const USER_POINT_KEY = 'point';
+export const PHONE_NUMBER_KEY = 'point';
 
 export const SEARCH_HISTORY_KEY = 'SEARCH_HISTORY_KEY';

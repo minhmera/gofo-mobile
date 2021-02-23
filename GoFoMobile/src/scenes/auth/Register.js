@@ -16,7 +16,6 @@ import {
 import * as api from '../../services/auth';
 
 import CTA from '../../components/CTA';
-import {ErrorText} from '../../components/Shared';
 import Header from '../../components/Header';
 import CategoryPage from '../product/CategoryPage';
 import t from 'tcomb-form-native';
@@ -46,6 +45,9 @@ function Register(props) {
     const [userName, setUserName] = useState('');
     const [userNameError, setUserNameError] = useState({});
 
+    const [fullName, setFullName] = useState('');
+    const [fullNameError, setFullNameError] = useState({});
+
     const [phoneNumber, setPhoneNumber] = useState('');
     const [phoneNumberError, setPhoneNumberError] = useState({});
 
@@ -63,24 +65,31 @@ function Register(props) {
 
         if (userName == "") {
             isValidAllFiled = false
-            setUserNameError({style:{borderColor:'red'},text:'Vui lòng nhập tên đăng nhập'})
+            setUserNameError({style:{borderColor:GlobalStyle.colour.errorColor},text:'Vui lòng nhập tên đăng nhập'})
         } else {
             setUserNameError({style: {marginTop: 0}, text: ''})
         }
 
+        if (fullName == "") {
+            isValidAllFiled = false
+            setFullNameError({style:{borderColor:GlobalStyle.colour.errorColor, marginTop:20},text:'Vui lòng nhập tên đầy đủ'})
+        } else {
+            setFullNameError({style: {marginTop: 0}, text: ''})
+        }
+
         if (phoneNumber == "") {
             isValidAllFiled = false
-            setPhoneNumberError({style:{borderColor:'red'},text:'Vui lòng nhập số điện thoại'})
+            setPhoneNumberError({style:{borderColor:GlobalStyle.colour.errorColor},text:'Vui lòng nhập số điện thoại'})
         } else {
             setPhoneNumberError({style: {marginTop: 0}, text: ''})
         }
 
         if (password == "") {
             isValidAllFiled = false
-            setPasswordError({style: {borderColor: 'red', marginTop: 10}, text: 'Vui lòng nhập mật khẩu'})
+            setPasswordError({style: {borderColor: GlobalStyle.colour.errorColor, marginTop: 10}, text: 'Vui lòng nhập mật khẩu'})
 
         } else if (password.length < 8) {
-            setPasswordError({style: {borderColor: 'red', marginTop: 10}, text: 'Mật khẩu phải có ít nhất 8 kí tự'})
+            setPasswordError({style: {borderColor: GlobalStyle.colour.errorColor, marginTop: 10}, text: 'Mật khẩu phải có ít nhất 8 kí tự'})
         } else {
             setPasswordError({style: {marginTop: 0}, text: ''})
 
@@ -88,7 +97,7 @@ function Register(props) {
 
         if (confirmPass != password) {
             isValidAllFiled = false
-            setConfirmPassError({style: {borderColor: 'red',marginTop: 10}, text: 'Mật khẩu không trùng khớp'})
+            setConfirmPassError({style: {borderColor:GlobalStyle.colour.errorColor,marginTop: 10}, text: 'Mật khẩu không trùng khớp'})
 
         } else {
             setConfirmPassError({style: {marginTop: 0}, text: ''})
@@ -127,6 +136,8 @@ function Register(props) {
         let registerObj = {
             "username": userName,
             "password": password,
+            "fullName": fullName,
+            "phoneNumber": phoneNumber,
 
         }
 
@@ -134,7 +145,6 @@ function Register(props) {
         setLoading(true);
         try {
             let response = await api.register(registerObj);
-            console.log('MERA  Register Res ', response);
             setLoading(false);
 
             if (response ) {
@@ -154,34 +164,23 @@ function Register(props) {
                 } else {
                     console.log('MERA RES 22  ',response.result.message)
                     let errorText = response.result.message
-
-
                     Alert.alert(errorText)
                 }
-
             }
-
 
         } catch (error) {
             setError(error.message);
             setLoading(false);
         }
-
     }
 
 
     function onUsernameChange(username) {
-
         const re = /^[A-Za-z0-9]+$/;
-       // const re = /^[0-9\b]+$/;
-        ///^[A-Z]+$/i
-        ///^[a-zA-Z]+$/
-
         console.log('isValid username1 ==>   ',re.test(username))
         if (username === '' || re.test(username)) {
             setUserName(username)
         }
-
     }
 
     function onPhoneChange(phone) {
@@ -190,6 +189,11 @@ function Register(props) {
         if (phone === '' || re.test(phone)) {
             setPhoneNumber(phone)
         }
+    }
+
+    function onFullNameChange(fullName) {
+        setFullName(fullName)
+
     }
 
     function onPasswordChange(password) {
@@ -211,7 +215,8 @@ function Register(props) {
 
         <ImageBackground
             style={styles.container}
-            source={{uri: 'https://dongxanh.s3.us-east-2.amazonaws.com/app_resource/bg_01.jpg'}}
+            source={{uri:'https://dongxanh.s3.us-east-2.amazonaws.com/app_resource/bg_01.jpg'}}
+            //source={{uri: 'https://drscdn.500px.org/photo/212672423/q%3D80_m%3D2000_k%3D1/v2?sig=c9fd062b0dedfdddb0466365d92b195adec52f91efabe3b88a76a738ffbc0b98'}}
         >
 
             <View style={styles.dimView}>
@@ -228,7 +233,7 @@ function Register(props) {
                                 placeholderTextColor={GlobalStyle.colour.grayColor2}
                                 placeholder='Tên đăng nhập...'
                                 errorMessage={userNameError.text}
-                                errorStyle={{marginTop:4}}
+                                errorStyle={{marginTop:0}}
                                 onChangeText={text => onUsernameChange(text)}
                                 value={userName}
                                 maxLength={16}
@@ -236,16 +241,32 @@ function Register(props) {
                             />
                         </View>
 
+                        <Text style={{marginTop:-8,fontSize:12, color:'white'}}>Đây là tên sẽ hiển thị khi bạn đăng tin mua bán</Text>
+                        <View style={[AppStyle.inputView,]}>
+                            <Input
+                                inputStyle={[AppStyle.inputStyle]}
+                                inputContainerStyle={[styles.inputContainer]}
+                                placeholderTextColor={GlobalStyle.colour.grayColor2}
+                                placeholder='Tên đầy đủ...'
+                                errorMessage={fullNameError.text}
+                                errorStyle={{marginTop:0}}
+                                onChangeText={text => onFullNameChange(text)}
+                                value={fullName}
+                                maxLength={16}
+
+                            />
+                        </View>
 
 
+                        <Text style={{marginTop:-8,fontSize:12, color:'white'}}>Số điện thoại để liên lạc khi bạn đăng tin mua bán</Text>
                         <View style={[AppStyle.inputView, phoneNumberError.style]}>
                             <Input
                                 inputStyle={[AppStyle.inputStyle]}
                                 inputContainerStyle={[styles.inputContainer]}
                                 placeholderTextColor={GlobalStyle.colour.grayColor2}
-                                placeholder='Số điện thoại ...'
+                                placeholder='Số điện thoại...'
                                 errorMessage={phoneNumberError.text}
-                                errorStyle={{marginTop:4}}
+                                errorStyle={{marginTop:0}}
                                 onChangeText={text => onPhoneChange(text)}
                                 keyboardType={'number-pad'}
                                 maxLength={16}
@@ -259,7 +280,7 @@ function Register(props) {
                                 inputContainerStyle={[styles.inputContainer]}
                                 placeholderTextColor={GlobalStyle.colour.grayColor2}
                                 errorMessage={passwordError.text}
-                                errorStyle={{marginTop:4}}
+                                errorStyle={{marginTop:0}}
                                 placeholder='Mật khẩu...'
                                 maxLength={16}
                                 value={password}
@@ -302,12 +323,7 @@ function Register(props) {
                             />
                         </View>
 
-                        <Text style={{fontSize:20, color:'red'}}>
-                            * Xin lưu ý
-                        </Text>
-                        <Text style={{fontSize:16, color:'red', textAlign:'center'}} >
-                            Vui lòng sử dụng số điện thoại thật để đăng ký tài khoảng.
-                        </Text>
+
                         <TouchableOpacity
                             style={[AppStyle.commonButton,{marginTop:20}]}
                             onPress={() => onSubmit()}
