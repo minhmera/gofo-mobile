@@ -1,13 +1,14 @@
 import React from 'react';
 
 //API URL
-//export const API_URL = 'https://morning-crag-89761.herokuapp.com';
-export const API_URL = 'http://192.168.1.16:3000';
+export const API_URL = 'https://morning-crag-89761.herokuapp.com';
+//export const API_URL = 'http://192.168.1.16:3000';
 
 //API End Points
 export const REGISTER = `${API_URL}/auth/signup`;
 export const GENERATE_NEW_PASSWORD = `${API_URL}/auth/updatePassByName/$username`;
 export const LOGIN = `${API_URL}/auth/login`;///auth/login
+export const USER_DETAIL = `${API_URL}/auth/userDetail`;
 export const UPDATE_PROFILE = `${API_URL}/user`;
 export const UPLOAD_IMAGE = `${API_URL}/user/upload`;
 export const FORGOT_PASSWORD = `${API_URL}/auth/recover`;

@@ -33,6 +33,17 @@ export async function login(data){
     }
 }
 
+export async function editUserInfo(data){
+    try{
+        let res = await axios.post(c.USER_DETAIL, data);
+        console.log('editUserInfo ==>  ',c.USER_DETAIL)
+        return res.data;
+    }catch (e) {
+        throw handler(e);
+    }
+}
+
+
 export async function forgotPassword(data) {
     try {
         let res = await axios.post(c.FORGOT_PASSWORD, data);

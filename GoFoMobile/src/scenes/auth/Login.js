@@ -91,7 +91,8 @@ export default function Login(props) {
                 let token = await AsyncStorage.setItem(TOKEN_KEY, response.result.token)
                 let id = await AsyncStorage.setItem(USER_ID_KEY, response.result.userInfo._id)
                 let userName = await AsyncStorage.setItem(USER_NAME_KEY, response.result.userInfo.local.fullName)
-                //navigate.setParams({"param":"Value cc "})
+                //let userName = await AsyncStorage.setItem(USER_NAME_KEY, response.result.userInfo.local.fullName)
+                let password = await AsyncStorage.setItem(PASSWORD_KEY, response.result.userInfo.local.password)
                 navigate('App');
                 setLoading(false);
 

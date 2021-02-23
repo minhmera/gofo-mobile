@@ -2,6 +2,7 @@ import React from 'react'
 import {View, TouchableOpacity, StyleSheet, StatusBar, ImageBackground} from 'react-native';
 import {Appbar, Text, Title} from 'react-native-paper'
 import Icon from 'react-native-vector-icons/AntDesign';
+import IconEntypo from 'react-native-vector-icons/Entypo';
 
 import GlobalStyle from "../style/GlobalStyle";
 
@@ -18,12 +19,21 @@ function ProductItem({item, onPress}) {
     }
 
     function renderImage() {
-        console.log('ProductItem photoUrls ==>  ',item)
-        /*if (item.photoUrls !== undefined){
+        console.log('ProductItem photoUrls ==> 1 ',item)
+        if (item.photoUrls !== undefined){
             return  <ImageBackground imageStyle={{ borderRadius: 4 }} source={{uri: item.photoUrls[0]}} style={styles.imageWrapperView}></ImageBackground>
         } else {
-            return null
-        }*/
+            return (
+                <View style={[styles.imageWrapperView,{backgroundColor:GlobalStyle.colour.grayColor,justifyContent:'center',alignItems:'center'}]} >
+                    <IconEntypo
+
+                        name={'images'}
+                        size = {48}
+                        color = {'white'}
+                    />
+                </View>
+            )
+        }
     }
 
     return (
@@ -34,8 +44,8 @@ function ProductItem({item, onPress}) {
         >
             <View style={styles.itemWrapper}>
                 {
-                    item.photoUrls != null ? <ImageBackground imageStyle={{ borderRadius: 4 }} source={{uri: item.photoUrls[0]}} style={styles.imageWrapperView}></ImageBackground> : null
-                    //renderImage()
+                    // item.photoUrls != null ? <ImageBackground imageStyle={{ borderRadius: 4 }} source={{uri: item.photoUrls[0]}} style={styles.imageWrapperView}></ImageBackground> : null
+                    renderImage()
                 }
 
                 <View style={styles.contentInfoView}>

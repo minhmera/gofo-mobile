@@ -44,29 +44,21 @@ function EditUserInfo(props) {
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
 
-    const [userName, setUserName] = useState('');
-    const [userNameError, setUserNameError] = useState({});
+    const [fullName, setFullName] = useState('');
+    const [fullNameError, setFullNameError] = useState({});
 
     const [phoneNumber, setPhoneNumber] = useState('');
     const [phoneNumberError, setPhoneNumberError] = useState({});
 
-    const [password, setPassword] = useState('');
-    const [passwordError, setPasswordError] = useState({});
-
-    const [confirmPass, setConfirmPass] = useState('');
-    const [confirmPassError, setConfirmPassError] = useState({});
-
-    const [onPassSecure, setPassSecure] = useState(true)
-    const [onConfirmPassSecure, setConfirmPassSecure] = useState(true)
 
     function isValidAllField() {
         let isValidAllFiled = true
 
-        if (userName == "") {
+        if (fullName == "") {
             isValidAllFiled = false
-            setUserNameError({style:{borderColor:'red'},text:'Vui lòng nhập tên đăng nhập'})
+            setFullNameError({style:{borderColor:'red'},text:'Vui lòng nhập tên đăng nhập'})
         } else {
-            setUserNameError({style: {marginTop: 0}, text: ''})
+            setFullNameError({style: {marginTop: 0}, text: ''})
         }
 
         if (phoneNumber == "") {
@@ -76,25 +68,7 @@ function EditUserInfo(props) {
             setPhoneNumberError({style: {marginTop: 0}, text: ''})
         }
 
-        if (password == "") {
-            isValidAllFiled = false
-            setPasswordError({style: {borderColor: 'red', marginTop: 10}, text: 'Vui lòng nhập mật khẩu'})
 
-        } else if (password.length < 8) {
-            setPasswordError({style: {borderColor: 'red', marginTop: 10}, text: 'Mật khẩu phải có ít nhất 8 kí tự'})
-        } else {
-            setPasswordError({style: {marginTop: 0}, text: ''})
-
-        }
-
-        if (confirmPass != password) {
-            isValidAllFiled = false
-            setConfirmPassError({style: {borderColor: 'red',marginTop: 10}, text: 'Mật khẩu không trùng khớp'})
-
-        } else {
-            setConfirmPassError({style: {marginTop: 0}, text: ''})
-
-        }
         return isValidAllFiled
     }
 
@@ -125,16 +99,15 @@ function EditUserInfo(props) {
             return
         }
 
-        let registerObj = {
-            "username": userName,
-            "password": password,
-
+        let editingObj = {
+            "fullName": fullName,
+            "phoneNumber": phoneNumber,
         }
 
-        console.log('MERA  registerObj   ', registerObj);
+        console.log('MERA  registerObj   ', editingObj);
         setLoading(true);
         try {
-            let response = await api.register(registerObj);
+            let response = await api.editUserInfo(editingObj);
             console.log('MERA  Register Res ', response);
             setLoading(false);
 
@@ -174,13 +147,9 @@ function EditUserInfo(props) {
     function onUsernameChange(username) {
 
         const re = /^[A-Za-z0-9]+$/;
-        // const re = /^[0-9\b]+$/;
-        ///^[A-Z]+$/i
-        ///^[a-zA-Z]+$/
-
         console.log('isValid username1 ==>   ',re.test(username))
         if (username === '' || re.test(username)) {
-            setUserName(username)
+            setFullName(username)
         }
 
     }
@@ -193,21 +162,6 @@ function EditUserInfo(props) {
         }
     }
 
-    function onPasswordChange(password) {
-        const re = /^[A-Za-z0-9]+$/;
-        console.log('isValid pass ==>   ',re.test(password))
-        if (password === '' || re.test(password)) {
-            setPassword(password)
-        }
-    }
-
-
-
-
-    function setConfirmPassPress() {
-        console.log('MERA  onConfirmPassSecure==> ', onConfirmPassSecure)
-        setConfirmPassSecure(!onConfirmPassSecure)
-    }
     return (
 
         <ImageBackground
@@ -222,21 +176,20 @@ function EditUserInfo(props) {
                 <View style={{flex: 1}}>
                     <View style={styles.loginContainer}>
 
-                        <View style={[AppStyle.inputView, userNameError.style]}>
+                        <View style={[AppStyle.inputView, fullNameError.style]}>
                             <Input
                                 inputStyle={[AppStyle.inputStyle]}
                                 inputContainerStyle={[styles.inputContainer]}
                                 placeholderTextColor={GlobalStyle.colour.grayColor2}
-                                placeholder='Tên đăng nhập...'
-                                errorMessage={userNameError.text}
+                                placeholder='Tên đầy đủ...'
+                                errorMessage={fullNameError.text}
                                 errorStyle={{marginTop:4}}
                                 onChangeText={text => onUsernameChange(text)}
-                                value={userName}
+                                value={fullName}tên
                                 maxLength={16}
 
                             />
                         </View>
-
 
 
                         <View style={[AppStyle.inputView, phoneNumberError.style]}>
@@ -254,17 +207,11 @@ function EditUserInfo(props) {
                             />
                         </View>
 
-                        {/*<TouchableOpacity
-                            style={[AppStyle.commonButton,{marginTop:20}]}
-                            onPress={() => onSubmit()}
-                        >
-                            <Text style={styles.loginText}>Đăng ký</Text>
-                        </TouchableOpacity>*/}
 
                         <CommonButton
                             title={'OK'}
                             customStyle={{marginTop:24}}
-                            onPress={()=> console.log(' Chang passed Pressed')}
+                            onPress={()=> onSubmit()}
                         />
 
                     </View>

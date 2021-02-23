@@ -6,6 +6,7 @@ import Icon from 'react-native-vector-icons/AntDesign';
 import GlobalStyle from "../style/GlobalStyle";
 
 import moment from "moment";
+import IconEntypo from "react-native-vector-icons/Entypo";
 
 
 function EditingProductItem({item, onEdit, onDelete}) {
@@ -13,6 +14,24 @@ function EditingProductItem({item, onEdit, onDelete}) {
     let fortmatString = 'DD/MM/YYYYTHH:mm'
     let time = moment(item.createDate).format(fortmatString)
     let timeString = time.replace('T',' - ')
+
+    function renderImage() {
+        console.log('ProductItem photoUrls ==> 1 ',item)
+        if (item.photoUrls !== undefined){
+            return  <ImageBackground imageStyle={{ borderRadius: 4 }} source={{uri: item.photoUrls[0]}} style={styles.imageWrapperView}></ImageBackground>
+        } else {
+            return (
+                <View style={[styles.imageWrapperView,{backgroundColor:GlobalStyle.colour.grayColor,justifyContent:'center',alignItems:'center'}]} >
+                    <IconEntypo
+
+                        name={'images'}
+                        size = {48}
+                        color = {'white'}
+                    />
+                </View>
+            )
+        }
+    }
     return (
         <TouchableOpacity
             style={[styles.itemContainer]}
@@ -21,7 +40,7 @@ function EditingProductItem({item, onEdit, onDelete}) {
         >
             <View style={styles.itemWrapper}>
                 {
-                    item.photoUrls != null ? <ImageBackground imageStyle={{ borderRadius: 4 }} source={{uri: item.photoUrls[0]}} style={styles.imageWrapperView}></ImageBackground> : null
+                    renderImage()
                 }
 
                 <View style={styles.contentInfoView}>
