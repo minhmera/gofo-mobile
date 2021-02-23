@@ -43,6 +43,15 @@ export async function editUserInfo(data){
     }
 }
 
+export async function changePassword(data){
+    try{
+        let res = await axios.post(c.CHANGE_PASSWORD, data);
+        console.log('changePassword ==>  ',c.CHANGE_PASSWORD)
+        return res.data;
+    }catch (e) {
+        throw handler(e);
+    }
+}
 
 export async function forgotPassword(data) {
     try {

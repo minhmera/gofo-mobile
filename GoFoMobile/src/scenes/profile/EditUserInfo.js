@@ -125,9 +125,6 @@ function EditUserInfo(props) {
                 {cancelable: false},
             )
 
-
-
-
         } catch (error) {
 
             setError(error.message);

@@ -26,25 +26,23 @@ import {Button, Input} from 'react-native-elements';
 import CommonButton from '../../components/CommonButton'
 
 import LottieView from 'lottie-react-native';
+import Icon from "react-native-vector-icons/AntDesign";
+import AsyncStorage from "@react-native-community/async-storage";
+import {PASSWORD_KEY, PHONE_NUMBER_KEY, USER_ID_KEY} from "../../config/Contants";
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
 function ChangePassword(props) {
     const {navigation} = props;
-    //const {route} = props.route;
 
-    let movies = navigation.getParam('movies');
-    //console.log('MERA Register ==>  ', movies);
-
-    //1 - DECLARE VARIABLES
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
 
-    const [userName, setUserName] = useState('');
-    const [userNameError, setUserNameError] = useState({});
 
-    const [phoneNumber, setPhoneNumber] = useState('');
-    const [phoneNumberError, setPhoneNumberError] = useState({});
+
+    const [oldPassword, setOldPassword] = useState('');
+    const [oldPasswordError, setOldPasswordError] = useState({});
+
 
     const [password, setPassword] = useState('');
     const [passwordError, setPasswordError] = useState({});
@@ -57,20 +55,9 @@ function ChangePassword(props) {
 
     function isValidAllField() {
         let isValidAllFiled = true
+        console.log('isValidAllField ==>  ',oldPassword)
 
-        if (userName == "") {
-            isValidAllFiled = false
-            setUserNameError({style:{borderColor:'red'},text:'Vui lòng nhập tên đăng nhập'})
-        } else {
-            setUserNameError({style: {marginTop: 0}, text: ''})
-        }
 
-        if (phoneNumber == "") {
-            isValidAllFiled = false
-            setPhoneNumberError({style:{borderColor:'red'},text:'Vui lòng nhập số điện thoại'})
-        } else {
-            setPhoneNumberError({style: {marginTop: 0}, text: ''})
-        }
 
         if (password == "") {
             isValidAllFiled = false
@@ -80,7 +67,6 @@ function ChangePassword(props) {
             setPasswordError({style: {borderColor: 'red', marginTop: 10}, text: 'Mật khẩu phải có ít nhất 8 kí tự'})
         } else {
             setPasswordError({style: {marginTop: 0}, text: ''})
-
         }
 
         if (confirmPass != password) {
@@ -120,43 +106,33 @@ function ChangePassword(props) {
         if (isValidAllField() === false) {
             return
         }
+        let curPass = await AsyncStorage.getItem(PASSWORD_KEY);
+        let userId = await AsyncStorage.getItem(USER_ID_KEY);
 
-        let registerObj = {
-            "username": userName,
-            "password": password,
+        let changePassObject = {
+            "userId": userId,
+            "password": curPass,
+            "newPassword": password,
 
         }
 
-        console.log('MERA  registerObj   ', registerObj);
+        console.log('MERA  changePassObject   ', changePassObject);
         setLoading(true);
         try {
-            let response = await api.register(registerObj);
-            console.log('MERA  Register Res ', response);
+            let response = await api.changePassword(changePassObject);
             setLoading(false);
 
-            if (response ) {
-                setLoading(false);
-                console.log('MERA RES  ',response.result.message)
-                if (response.result.success === true ){
-                    console.log('MERA RES 11  ',response.result.message)
-                    Alert.alert(
-                        'Đăng kí tài khoảng thành công',
-                        response.message,
-
-                        [
-                            {text: 'Xin mời bạn đăng nhập để để tiếp tục', onPress: () => navigation.replace("Login")}
-                        ],
-                        {cancelable: false},
-                    );
-                } else {
-                    console.log('MERA RES 22  ',response.result.message)
-                    let errorText = response.result.message
-
-
-                    Alert.alert(errorText)
-                }
-
-            }
+            console.log('MERA  Change pass Res ', response);
+            setLoading(false);
+            //AsyncStorage.setItem(PASSWORD_KEY, response.local.password)
+            Alert.alert(
+                'Thành công',
+                'Đổi mật khẩu thành công, vui lòng đăng nhập lại để sử dụng tiếp tục',
+                [
+                    {text: 'OK',onPress:()=> logout()}
+                ],
+                {cancelable: false},
+            )
 
 
         } catch (error) {
@@ -166,28 +142,14 @@ function ChangePassword(props) {
 
     }
 
+    async function logout() {
+        console.log(' ********** Log out  ***************')
+        AsyncStorage.clear()
+        navigation.navigate('Auth')
 
-    function onUsernameChange(username) {
-
-        const re = /^[A-Za-z0-9]+$/;
-        // const re = /^[0-9\b]+$/;
-        ///^[A-Z]+$/i
-        ///^[a-zA-Z]+$/
-
-        console.log('isValid username1 ==>   ',re.test(username))
-        if (username === '' || re.test(username)) {
-            setUserName(username)
-        }
 
     }
 
-    function onPhoneChange(phone) {
-        const re = /^[0-9\b]+$/;
-        console.log('isValid phone ==>   ',re.test(phone))
-        if (phone === '' || re.test(phone)) {
-            setPhoneNumber(phone)
-        }
-    }
 
     function onPasswordChange(password) {
         const re = /^[A-Za-z0-9]+$/;
@@ -218,49 +180,60 @@ function ChangePassword(props) {
                 <View style={{flex: 1}}>
                     <View style={styles.loginContainer}>
 
-                        <View style={[AppStyle.inputView, userNameError.style]}>
+
+                        <View style={[AppStyle.inputView, passwordError.style ]}>
                             <Input
                                 inputStyle={[AppStyle.inputStyle]}
                                 inputContainerStyle={[styles.inputContainer]}
                                 placeholderTextColor={GlobalStyle.colour.grayColor2}
-                                placeholder='Tên đăng nhập...'
-                                errorMessage={userNameError.text}
-                                errorStyle={{marginTop:4}}
-                                onChangeText={text => onUsernameChange(text)}
-                                value={userName}
+                                errorMessage={passwordError.text}
+                                errorStyle={{marginTop:0}}
+                                placeholder='Mật khẩu mới...'
                                 maxLength={16}
+                                value={password}
+                                onChangeText={text => onPasswordChange(text)}
+                                secureTextEntry={onPassSecure}
+
+                                rightIcon={
+                                    <Icon
+                                        name='eye'
+                                        size={24}
+                                        color={'white'}
+                                        onPress={()=> setPassSecure(!onPassSecure)}
+                                    />
+                                }
+                                rightIconContainerStyle = {{width:80,marginRight:-30}}
 
                             />
                         </View>
-
-
-
-                        <View style={[AppStyle.inputView, phoneNumberError.style]}>
+                        <View style={[AppStyle.inputView,confirmPassError.style]}>
                             <Input
-                                inputStyle={[AppStyle.inputStyle]}
+                                inputStyle={AppStyle.inputStyle}
                                 inputContainerStyle={[styles.inputContainer]}
-                                placeholderTextColor={GlobalStyle.colour.grayColor2}
-                                placeholder='Số điện thoại ...'
-                                errorMessage={phoneNumberError.text}
+                                errorMessage={confirmPassError.text}
                                 errorStyle={{marginTop:4}}
-                                onChangeText={text => onPhoneChange(text)}
-                                keyboardType={'number-pad'}
+                                placeholder='Xác nhận mật khẩu... '
                                 maxLength={16}
+                                placeholderTextColor={GlobalStyle.colour.grayColor2}
+                                secureTextEntry={onConfirmPassSecure}
+                                onChangeText={text => setConfirmPass(text)}
 
+                                rightIcon={
+                                    <Icon
+                                        name='eye'
+                                        size={24}
+                                        color={'white'}
+                                        onPress={()=> setConfirmPassPress(!onPassSecure)}
+                                    />
+                                }
+                                rightIconContainerStyle = {{width:80,marginRight:-30}}
                             />
                         </View>
-
-                        {/*<TouchableOpacity
-                            style={[AppStyle.commonButton,{marginTop:20}]}
-                            onPress={() => onSubmit()}
-                        >
-                            <Text style={styles.loginText}>Đăng ký</Text>
-                        </TouchableOpacity>*/}
 
                         <CommonButton
                             title={'OK'}
                             customStyle={{marginTop:24}}
-                            onPress={()=> console.log(' Chang passed Pressed')}
+                            onPress={()=> onSubmit()}
                         />
 
 

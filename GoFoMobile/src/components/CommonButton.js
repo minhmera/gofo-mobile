@@ -7,8 +7,6 @@ const windowHeight = Dimensions.get('window').height;
 
 
 function CommonButton({title,textStyle,customStyle,onPress}) {
-    console.log(' -------------  LoadingPage ----------------------')
-
 
     return (
         <TouchableOpacity

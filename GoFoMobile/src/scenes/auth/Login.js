@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {StatusBar, TextInput, TouchableOpacity, StyleSheet, View, Text, ImageBackground} from 'react-native';
+import {StatusBar, TextInput, TouchableOpacity, StyleSheet, View, Text, ImageBackground, Alert} from 'react-native';
 
 import AsyncStorage from '@react-native-community/async-storage'
 
@@ -17,6 +17,7 @@ import AnimatedLoader from '../../utils/custom-view/AnimatedLoader'
 import {backgroundColor} from 'react-native-calendars/src/style';
 import {TOKEN_KEY, USER_ID_KEY, USER_KEY, USER_NAME_KEY,FULL_NAME_KEY,PASSWORD_KEY,PHONE_NUMBER_KEY} from "../../config/Contants";
 import Icon from "react-native-vector-icons/AntDesign";
+import LoadingPage from "../../components/LoadingPage";
 
 
 async function getTokenKey() {
@@ -84,9 +85,8 @@ export default function Login(props) {
         try {
             let response = await api.login(submitObj);
             //await handleLogin(response);
+
             setLoading(false);
-            console.log('MERA  Log in token  ', response.result.userInfo._id)
-            console.log('MERA  Login phoneNumber  ', response.result.userInfo.local.phoneNumber)
             try {
                 let token = await AsyncStorage.setItem(TOKEN_KEY, response.result.token)
                 let id = await AsyncStorage.setItem(USER_ID_KEY, response.result.userInfo._id)
@@ -99,12 +99,29 @@ export default function Login(props) {
 
             } catch (error) {
                 // Error saving data
-                console.log('AsyncStorage Error 1 ', error)
+                console.log(' ------------------ ERROR 11 -------------- ',error)
+                Alert.alert(
+                    'Lỗi !!!',
+                    'Tên đăng nhập hoặc mật khẩu không đúng, vui lòng thử lại',
+                    [
+                        {text: 'OK'}
+                    ],
+                    {cancelable: false},
+                )
             }
 
         } catch (error) {
+            console.log(' ------------------ ERROR 22 -------------- ',error)
             setError(error.message);
             setLoading(false)
+            Alert.alert(
+                'Lỗi !!!',
+                'Tên đăng nhập hoặc mật khẩu không đúng, vui lòng thử lại',
+                [
+                    {text: 'OK'}
+                ],
+                {cancelable: false},
+            )
         }
     }
 
@@ -203,18 +220,10 @@ export default function Login(props) {
 
                     </View>
 
-                    <AnimatedLoader
-                        visible={loading}
-                        //overlayColor="rgba(215,215,215,0.55)"
-                        overlayColor="rgba(0,0,0,0.55)"
-                        animationType='slide'
-                        animationStyle={styles.lottie}
-                        animationStyle = {{height: 80, width: 80}}
-                        loop={true}
-                        speed={1}
-                        onForceClose={()=> setLoading(false)}
+                   
+                    <LoadingPage
+                        isShow={loading}
                     />
-
 
                 </KeyboardAwareScrollView>
             </View>

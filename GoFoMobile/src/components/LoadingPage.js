@@ -6,7 +6,6 @@ const windowHeight = Dimensions.get('window').height;
 
 
 function LoadingPage({isShow, spinnerStyle}) {
-    console.log(' -------------  LoadingPage ----------------------')
     if (isShow === false) {
         return  null
     }
