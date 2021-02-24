@@ -159,7 +159,7 @@ function PostedPage1({navigation}) {
                     <FlatList
                         data={data}
                         renderItem={({item}) =>
-                            RenderItem(navigation,item)
+                            RenderItem(navigation,item,'SELL')
                         }
                         keyExtractor={(item, index) => item._id}
                         onEndReached={() => fetchData()}
@@ -186,7 +186,7 @@ function PostedPage1({navigation}) {
                     <FlatList
                         data={data}
                         renderItem={({item}) =>
-                            RenderItem(navigation,item)
+                            RenderItem(navigation,item,'BUY')
                         }
                         keyExtractor={(item, index) => item._id}
                         onEndReached={() => fetchDataBuying()}
@@ -275,10 +275,11 @@ function PostedPage1({navigation}) {
 
 export default PostedPage1
 
-function RenderItem(navigation,item) {
+function RenderItem(navigation,item,type) {
     return (
         <ProductItem
             item = {item}
+            type={type}
             onPress = {() => navigateToDetail(navigation,item._id)}
         />
     )

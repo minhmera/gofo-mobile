@@ -1,7 +1,6 @@
 import React from 'react'
-import {View, TouchableOpacity, StyleSheet, StatusBar, ImageBackground} from 'react-native';
+import {View, TouchableOpacity, StyleSheet, Linking, ImageBackground} from 'react-native';
 import {Appbar, Text, Title} from 'react-native-paper'
-import Icon from 'react-native-vector-icons/AntDesign';
 import IconEntypo from 'react-native-vector-icons/Entypo';
 
 import GlobalStyle from "../style/GlobalStyle";
@@ -10,7 +9,7 @@ import moment from "moment";
 import {func} from "prop-types";
 
 
-function ProductItem({item, onPress}) {
+function ProductItem({item, onPress, type}) {
     let fortmatString = 'DD/MM/YYYYTHH:mm'
     let timeString = ""
     if (item.createDate != undefined){
@@ -36,6 +35,13 @@ function ProductItem({item, onPress}) {
         }
     }
 
+    let typeString = 'Người bán'
+    if (type === 'BUY') {
+        typeString = 'Người mua'
+    } else if (type === 'SELL') {
+        typeString = 'Người bán'
+    }
+
     return (
         <TouchableOpacity
             style={[styles.itemContainer]}
@@ -52,12 +58,30 @@ function ProductItem({item, onPress}) {
                     <Text style={styles.itemTitle}>
                         {item.productName}
                     </Text>
-                    <Text style={styles.normalText}>
-                        Người bán: {item.fullName}
-                    </Text>
-                    <Text style={styles.normalText}>
-                        Liên hệ: {item.sellerPhone}
-                    </Text>
+                    <View style={{flexDirection:'row'}}>
+                        <Text style={styles.normalText}>
+                            {typeString}: {' '}
+                        </Text>
+                        <Text style={styles.sellerText}>
+                            {item.fullName}
+                        </Text>
+                    </View>
+
+                    <View style={{flexDirection:'row'}}>
+                        <Text style={styles.normalText}>
+                            Liên hệ: {' '}
+                        </Text>
+                        <TouchableOpacity
+                            onPress={()=> Linking.canOpenURL(item.sellerPhone)}
+                        >
+                            <Text style={styles.fontText}>
+                                {item.sellerPhone}
+                            </Text>
+                        </TouchableOpacity>
+
+                    </View>
+
+
                     <Text style={styles.normalText}>
                         Ngày đăng: {timeString}
                     </Text>
@@ -86,12 +110,7 @@ const styles = StyleSheet.create({
         //borderColor:'#E8E8E8'
         borderColor: '#E8E8E8',
         shadowColor: "black",
-        // shadowOffset: {
-        //     width: 0,
-        //     height: 0.25,
-        // },
-        //shadowOpacity: 0.2,
-        //shadowRadius: 0.5,
+
 
     },
     imageWrapperView: {
@@ -105,16 +124,32 @@ const styles = StyleSheet.create({
         marginLeft: 8,
     },
     itemTitle: {
-        //color: GlobalStyle.colour.primaryColor,
-        fontSize:16,
+        fontSize:18,
         fontWeight:'500',
         marginTop:6,
-        color: '#3C3C3D'
+        //color:  GlobalStyle.colour.grayColor
 
     },
     normalText: {
         color:'#6B6B6B',
         marginTop:4
+    },
+
+    sellerText: {
+        marginTop:4,
+        color: GlobalStyle.colour.orangeColor,
+        fontWeight: '500'
+    },
+    fontText: {
+        fontWeight: 'bold',
+        fontSize: 16,
+        marginTop:2,
+        color:'#6B6B6B',
+        textDecorationLine: "underline",
+        textDecorationStyle:'solid',
+        //textDecorationStyle: "solid",
+        textDecorationColor: GlobalStyle.colour.grayColor2
+        //color: 'blue',
     }
 })
 

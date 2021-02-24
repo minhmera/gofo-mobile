@@ -2,11 +2,14 @@
 import React, {useEffect, useState} from 'react'
 
 import {Text, FAB, List} from 'react-native-paper'
-import {FlatList, ImageBackground, RefreshControl, StyleSheet, TouchableOpacity, View} from 'react-native';
+import {Alert, FlatList, ImageBackground, RefreshControl, StyleSheet, TouchableOpacity, View} from 'react-native';
 import Header from '../../components/Header'
 import GlobalStyle from "../../style/GlobalStyle";
 import * as api from "../../services/products";
 import EditingProductItem from "../../components/EditingProductItem";
+import AsyncStorage from "@react-native-community/async-storage";
+import {TOKEN_KEY, USER_ID_KEY} from "../../config/Contants";
+import LoadingPage from "../../components/LoadingPage";
 
 
 function SellingByUser({navigation}) {
@@ -30,16 +33,15 @@ function SellingByUser({navigation}) {
 
         if (isRefresh === true ) {
             console.log('MERA  =======================  fetchData ============== page:',page, 'isRefresh:',isRefresh)
-            setLoading(true)
+            //setLoading(true)
             api.getSellingByUser(userId,1).then((response) => {
-                //console.log('MERA length 11: ',response.data.result.length,' : ', sellingList.length)
+                setLoading(false);
                 if (response.data.result.length > 0) {
                     setSellingList(response.data.result)
-                    setLoading(false);
+
                     setRefreshing(false)
                 } else {
                     //setIsListEnd(true);
-                    setLoading(false);
                     setRefreshing(false)
                 }
 
@@ -47,9 +49,9 @@ function SellingByUser({navigation}) {
         } else {
             if (!loading && !isListEnd) {
                 console.log('MERA ......................  LOAD MORE  ........................   page: ',page, 'isRefresh:',isRefresh, 'loading: ',loading,'  isListEnd:',isListEnd)
-                setLoading(true)
+
                 api.getSellingByUser(userId,page).then((response) => {
-                    //setSellingList(response.data.result)
+                    setLoading(false);
                     console.log('MERA LOAD MORE Lenght:  ',response.data,' =====:===== ')
                     if (response.data.result.length > 0) {
 
@@ -61,11 +63,11 @@ function SellingByUser({navigation}) {
                             setSellingList([...sellingList, ...response.data.result])
                         }
 
-                        setLoading(false);
+
                         setRefreshing(false)
                     } else {
 
-                        setLoading(false);
+
                         setRefreshing(false)
                     }
 
@@ -116,10 +118,78 @@ function SellingByUser({navigation}) {
         }
     }
 
+    function onDeletePress(item) {
+        Alert.alert(
+            'Xoá Sản Phẩm',
+            'Bạn có chắc muốn xoá sản phầm này không',
+
+            [
+                {text: 'Không'},
+                {text: 'Xoá',style:'destructive',
+                    onPress: () => deleteSellingProduct(item)}
+            ],
+            {cancelable: true},
+        );
+    }
+
+    async function deleteSellingProduct(item) {
+        let userId = await AsyncStorage.getItem(USER_ID_KEY);
+        let objData = {userId:userId}
+        console.log('MERA deleteSellingProduct body  ',objData)
+        setLoading(true)
+        try {
+            let response = await api.deleteSellingPost(objData,item._id);
+            if (response) {
+                setLoading(false)
+                console.log('MERA ------------------------ deleteSellingProduct response ----------------   ', response);
+                Alert.alert(
+                    'Thành công',
+                    'Xoá sản phẩm thành công',
+
+                    [
+                        {text: 'OK'},
+
+                    ],
+                    {cancelable: false},
+                );
+            }
+
+
+
+        } catch (error) {
+            setLoading(false)
+            Alert.alert(
+                'Lỗi !!!',
+                'Xoá sản phẩm xảy ra lỗi, vui lòng thử lại',
+
+                [
+                    {text: 'OK'},
+                ],
+                {cancelable: false},
+            );
+            //setError(error.message);
+        }
+    }
+
+    function RenderItem(navigation,item) {
+        return (
+            <EditingProductItem
+                item = {item}
+                onEdit = {() => navigateToEdit(navigation,item)}
+                onDelete = {() => onDeletePress(item)}
+            />
+        )
+    }
+
+    function navigateToEdit(navigation, item) {
+        console.log("MERA navigateToDetail ==> productId: ",item)
+        navigation.push('EditSellingPost',{item:item, type:'SELL'})
+    }
+
 
 
     useEffect(() => {
-        fetchData()
+        { fetchData(),setLoading(true)}
     }, []);
     return (
         <View style={styles.container}>
@@ -129,26 +199,14 @@ function SellingByUser({navigation}) {
                 {RenderList(navigation,sellingList)}
             </View>
 
-
+            <LoadingPage
+                isShow={loading}
+            />
 
         </View>
     )
 }
 
-
-function RenderItem(navigation,item) {
-    return (
-        <EditingProductItem
-            item = {item}
-            onEdit = {(pressItem) => navigateToEdit(navigation,item)}
-        />
-    )
-}
-
-function navigateToEdit(navigation, item) {
-    console.log("MERA navigateToDetail ==> productId: ",item)
-    navigation.push('EditSellingPost',{item:item, type:'SELL'})
-}
 
 export default SellingByUser
 

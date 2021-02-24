@@ -81,6 +81,7 @@ export async function editSellingPost(data, productId){
     }
 }
 
+
 export async function editBuyingPost(data, productId){
     let token = await AsyncStorage.getItem(TOKEN_KEY);
     let url =  c.EDIT_BUYING_POST
@@ -100,6 +101,51 @@ export async function editBuyingPost(data, productId){
         throw handler(e);
     }
 }
+
+export async function deleteSellingPost(data, productId){
+    let token = await AsyncStorage.getItem(TOKEN_KEY);
+    let url =  c.DELETE_SELLING_PRODUCT
+    url = url.replace('$productId',productId)
+    let axiosConfig = {
+        headers: {
+            'Authorization': token,
+        },
+        data: data
+    };
+
+    console.log('deleteSellingPost ==>   data ', data,'axiosConfig: ==> ',axiosConfig)
+    try{
+        //let res = await axios.delete(url, data,axiosConfig );
+        let res = await axios.delete(url,axiosConfig);
+
+        return res.data;
+    }catch (e) {
+        throw handler(e);
+    }
+}
+
+export async function deleteBuyingPost(data, productId){
+    let token = await AsyncStorage.getItem(TOKEN_KEY);
+    let url =  c.DELETE_BUYING_PRODUCT
+    url = url.replace('$productId',productId)
+    let axiosConfig = {
+        headers: {
+            'Authorization': token,
+        },
+        data: data
+    };
+
+    console.log('deleteBuyingPost ==>   ', url,'axiosConfig ==> ',axiosConfig)
+    try{
+        let res = await axios.delete(url,axiosConfig );
+
+        return res.data;
+    }catch (e) {
+        throw handler(e);
+    }
+}
+
+
 
 export async function buyingPost(data){
     let token = await AsyncStorage.getItem(TOKEN_KEY);

@@ -220,7 +220,7 @@ export default function Login(props) {
 
                     </View>
 
-                   
+
                     <LoadingPage
                         isShow={loading}
                     />

@@ -16,7 +16,6 @@ function EditingProductItem({item, onEdit, onDelete}) {
     let timeString = time.replace('T',' - ')
 
     function renderImage() {
-        console.log('ProductItem photoUrls ==> 1 ',item)
         if (item.photoUrls !== undefined){
             return  <ImageBackground imageStyle={{ borderRadius: 4 }} source={{uri: item.photoUrls[0]}} style={styles.imageWrapperView}></ImageBackground>
         } else {
