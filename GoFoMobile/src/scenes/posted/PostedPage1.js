@@ -278,14 +278,14 @@ function RenderItem(navigation,item,type) {
         <ProductItem
             item = {item}
             type={type}
-            onPress = {() => navigateToDetail(navigation,item._id)}
+            onPress = {() => navigateToDetail(navigation,item._id,type)}
         />
     )
 }
 
-function navigateToDetail(navigation, productId) {
-    console.log("MERA navigateToDetail ==> productId: ",productId)
-    navigation.push('ProductDetail',{productId:productId, type:'SELLING'})
+function navigateToDetail(navigation, productId, type) {
+    console.log("MERA navigateToDetail ==> productId: ",productId,'type ==> ',type)
+    navigation.push('ProductDetail',{productId:productId, type:type})
 }
 
 const styles = StyleSheet.create({

@@ -37,7 +37,7 @@ function ProductDetail({navigation}) {
     function fetchBuyingProductDetail() {
         api.getBuyingProductDetail(productId).then((response) => {
             setLoading(false)
-            console.log('MERA getBuyingProductDetail : ', response.data.productName)
+            console.log('MERA getBuyingProductDetail RES : ', response.data.productName)
             setBuyingData(response.data)
 
         });
@@ -76,7 +76,7 @@ function ProductDetail({navigation}) {
     }
 
     function getDefaultData() {
-        if (type === 'SELLING') {
+        if (type === 'SELL') {
             fetchSellingProductDetail()
         } else {
             fetchBuyingProductDetail()
@@ -114,7 +114,7 @@ function ProductDetail({navigation}) {
     )
 
     function renderInfo() {
-        if (type === 'SELLING') {
+        if (type === 'SELL') {
             return (
                 <View style={styles.infoView}>
                     {renderProductImages(sellingData)}
@@ -126,7 +126,9 @@ function ProductDetail({navigation}) {
         } else {
             return (
                 <View>
-
+                    {renderProductImages(buyingData)}
+                    {renderProductInfoView(buyingData)}
+                    {renderPersonInfoView(buyingData)}
                 </View>
             )
         }
@@ -140,7 +142,7 @@ function ProductDetail({navigation}) {
 
         let title = ''
         let seller = ''
-        if (type === 'SELLING') {
+        if (type === 'SELL') {
             title = 'Thông tin người bán'
             seller = 'Người bán'
         } else {
