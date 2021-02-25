@@ -95,7 +95,7 @@ function SellingByUser({navigation}) {
         //console.log('MERA RenderList data ==> ', data.length)
         if (data.length > 0) {
             return (
-                <View style={{marginTop: 0}}>
+                <View style={{flex:1,marginTop: 0}}>
                     <FlatList
                         data={data}
                         renderItem={({item}) =>

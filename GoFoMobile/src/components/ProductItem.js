@@ -18,8 +18,8 @@ function ProductItem({item, onPress, type}) {
     }
 
     function renderImage() {
-        console.log('ProductItem photoUrls ==> 1 ',item)
-        if (item.photoUrls !== undefined){
+        console.log('ProductItem photoUrls ==>  ',item.photoUrls)
+        if (item.photoUrls !== undefined && item.photoUrls.length > 0){
             return  <ImageBackground imageStyle={{ borderRadius: 4 }} source={{uri: item.photoUrls[0]}} style={styles.imageWrapperView}></ImageBackground>
         } else {
             return (

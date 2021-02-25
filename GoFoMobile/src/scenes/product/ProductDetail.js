@@ -92,6 +92,8 @@ function ProductDetail({navigation}) {
             <Header titleText='Chi Tiết Sản Phẩm' navigation={navigation}/>
             <ScrollView >
                 {renderInfo()}
+
+
                 <View style={{alignItems:'center', marginTop:24, marginBottom:48}}>
                     <CommonButton
                         title={'Gọi'}
@@ -100,15 +102,12 @@ function ProductDetail({navigation}) {
                         iconStyle={{color: 'white'}}
                         onPress={()=> console.log('PRess')}
                     />
-
-
-
                 </View>
 
             </ScrollView>
-            {/*<LoadingPage
+            <LoadingPage
                 isShow={loading}
-            />*/}
+            />
         </View>
 
     )
@@ -131,6 +130,19 @@ function ProductDetail({navigation}) {
                     {renderPersonInfoView(buyingData)}
                 </View>
             )
+        }
+    }
+
+
+    function renderButton() {
+        if (type === 'SELL') {
+            if (sellingData !== null) {
+
+            }
+        } else {
+            if (buyingData !== null) {
+
+            }
         }
     }
 

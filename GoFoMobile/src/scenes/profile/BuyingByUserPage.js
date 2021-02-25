@@ -14,7 +14,7 @@ function BuyingByUser({navigation}) {
     //const {navigate} = props.navigation;
 
     let userId = navigation.getParam('userId');
-    console.log('MERA SellingByUser  userId ==>  ', userId);
+    //console.log('MERA SellingByUser  userId ==>  ', userId);
 
     const [loading, setLoading] = useState(false);
     const [selectedCity, setSelectedCity] = useState(null);
@@ -35,14 +35,12 @@ function BuyingByUser({navigation}) {
             console.log('MERA  =======================  fetchData ============== page:',page, 'isRefresh:',isRefresh)
             api.getBuyingByUser(userId,1).then((response) => {
                 setLoading(false);
+                console.log('MERA getBuyingByUser Refresh ',response.data)
+                setRefreshing(false)
                 if (response.data.result.length > 0) {
                     setSellingList(response.data.result)
                     setLoading(false);
 
-                } else {
-                    //setIsListEnd(true);
-
-                    setRefreshing(false)
                 }
 
             });
@@ -52,7 +50,7 @@ function BuyingByUser({navigation}) {
 
                 api.getBuyingByUser(userId,page).then((response) => {
                     setLoading(false);
-                    console.log('MERA LOAD MORE Lenght:  ',response.data,' =====:===== ')
+                    //console.log('MERA LOAD MORE Lenght:  ',response.data,' =====:===== ')
                     if (response.data.result.length > 0) {
 
                         setPage(page + 1);
@@ -111,7 +109,7 @@ function BuyingByUser({navigation}) {
         //console.log('MERA RenderList data ==> ', data.length)
         if (data.length > 0) {
             return (
-                <View style={{marginTop: 0}}>
+                <View style={{flex:1,marginTop: 0}}>
                     <FlatList
                         data={data}
                         renderItem={({item}) =>
