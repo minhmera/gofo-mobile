@@ -9,6 +9,7 @@ import {backgroundColor} from "react-native-calendars/src/style";
 import * as api from "../../services/products";
 import {setCategories} from "../../contexts/globalDataContext";
 import ProductItem from "../../components/ProductItem";
+import LoadingPage from "../../components/LoadingPage";
 
 console.disableYellowBox = true;
 
@@ -36,16 +37,13 @@ function PostedPage1({navigation}) {
     function fetchData(isRefresh) {
         console.log('MERA fetchData ==>  page: ', page, 'isRefresh: ', isRefresh, 'loading ==> ' ,loading, 'isListEnd ==> ' ,isListEnd)
         if (isRefresh == true ) {
-            setLoading(true)
             api.getSellingProduct2(1).then((response) => {
                 console.log('MERA length 11: ',response.data.result.length,' : ', sellingList.length)
+                setLoading(false);
                 if (response.data.result.length > 0) {
                     setSellingList(response.data.result)
-                    setLoading(false);
                     setRefreshing(false)
                 } else {
-                    //setIsListEnd(true);
-                    setLoading(false);
                     setRefreshing(false)
                 }
 
@@ -53,10 +51,9 @@ function PostedPage1({navigation}) {
         }
 
         if ((!loading && !isListEnd)) {
-            setLoading(true)
             api.getSellingProduct2(page).then((response) => {
                 console.log('MERA  getSellingProduct2 response ', response)
-                //setSellingList(response.data.result)
+                setLoading(false);
                 if (response.data.result.length > 0) {
 
                     setPage(page + 1);
@@ -68,11 +65,11 @@ function PostedPage1({navigation}) {
                         setSellingList([...sellingList, ...response.data.result])
                     }
 
-                    setLoading(false);
+
                     setRefreshing(false)
                 } else {
                     //setIsListEnd(true);
-                    setLoading(false);
+
                     setRefreshing(false)
                 }
 
@@ -84,12 +81,10 @@ function PostedPage1({navigation}) {
     function fetchDataBuying(isRefresh) {
         console.log('MERA fetchData buying ==>  page: ', page, 'isRefresh: ', isRefresh)
         if (isListEndBuying == true ) {
-            setLoading(true)
             api.getBuyingProduct(1).then((response) => {
                 console.log('MERA length 11: ',response.data.result.length,' : ', sellingList.length)
                 if (response.data.result.length > 0) {
                     setBuyingList(response.data.result)
-                    setLoadingBuying(false);
                     setRefreshingBuying(false)
                 } else {
                     //setIsListEnd(true);
@@ -230,7 +225,7 @@ function PostedPage1({navigation}) {
 
 
     useEffect(() => {
-        fetchData(), fetchDataBuying()
+        fetchData(), fetchDataBuying(), setLoading(true)
     }, []);
 
     return (
@@ -269,6 +264,9 @@ function PostedPage1({navigation}) {
                     renderBuyingApp()
                 )}
             </View>
+            <LoadingPage
+                isShow={loading}
+            />
         </View>
     )
 }

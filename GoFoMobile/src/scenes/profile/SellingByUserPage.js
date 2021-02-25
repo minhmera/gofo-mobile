@@ -205,7 +205,7 @@ function SellingByUser({navigation}) {
 
         </View>
     )
-}
+}``
 
 
 export default SellingByUser
