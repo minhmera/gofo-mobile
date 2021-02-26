@@ -9,6 +9,7 @@ const GlobalStyle = {
         font: '#434e5a',
         grayColor: '#D6D6D6',
         grayColor2: '#B5B5B5',
+        grayColor3: '#5A5A5A',
         grayBackground: '#F4F7FB',
         errorColor:'#ff3333',
         redColor:'#E32227',
