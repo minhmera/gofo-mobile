@@ -30,7 +30,8 @@ import LoginWarningView from '../../components/LogInWarningView'
 import CommonButton from "../../components/CommonButton";
 import LoadingPage from "../../components/LoadingPage";
 import DropdownButton from "../../components/DropdownButton";
-
+import * as Utils from '../../utils/AppUtils';
+import {value} from "react-native-extended-stylesheet";
 
 function renderImage(images) {
     //let arrImages = ['a','b','c']
@@ -67,6 +68,7 @@ function CreatePost1({navigation}) {
 
     const [productName, setProductName] = useState('');
     const [productPrice, setProductPrice] = useState('');
+    const [displayPrice, setDisplayPrice] = useState('');
     const [measuring, setMeasuring] = useState('');
     const [description, setDescription] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
@@ -129,6 +131,9 @@ function CreatePost1({navigation}) {
             "fullName": fullName,
             "categoryId": selectedCategory.type,
             "productName": productName,
+            "productPrice": productPrice,
+            "measuring": measuring,
+            "description": description,
             "provinceId": selectedCity.id,
             "districtId": selectedDistrict.id,
             "provinceName": selectedCity.name,
@@ -185,6 +190,9 @@ function CreatePost1({navigation}) {
             "fullName": fullName,
             "categoryId": selectedCategory.type,
             "productName": productName,
+            "productPrice": productPrice,
+            "measuring": measuring,
+            "description": description,
             "provinceId": selectedCity.id,
             "districtId": selectedDistrict.id,
             "provinceName": selectedCity.name,
@@ -378,9 +386,22 @@ function CreatePost1({navigation}) {
     async function getTokenKey() {
         let token = await AsyncStorage.getItem(TOKEN_KEY);
         let phone = await AsyncStorage.getItem(PHONE_NUMBER_KEY);
-        console.log("MERA phone 11   ==> ", phone)
         setToken(token)
         setPhoneNumber(phone)
+    }
+
+    function onPriceChange(price) {
+        console.log('onPriceChange 11 ==>  ',price)
+        setProductPrice(price)
+        let formatPrice =  Utils.numberWithCommas(price)
+        if (price === ''){
+            console.log(' &&&&&&&&&&&&&&&&&&& ========== 0')
+            setDisplayPrice('')
+        } else {
+            setDisplayPrice(formatPrice)
+        }
+
+        console.log('onPriceChange ==> ',price,' formatPrice ==>  ',formatPrice)
     }
 
     function renderCropDayView() {
@@ -393,7 +414,6 @@ function CreatePost1({navigation}) {
                     <DropdownButton
                         title={selectedCropTimeDate === null ? 'Chọn' : selectedCropTimeDate.format('DD/MM/YYYY')}
                         onPress={() => setShowCropTimeCalendar(true)}
-                        isError={isCityError}
                         containerStyle = {{flex:2}}
                     />
                 </View>
@@ -515,15 +535,18 @@ function CreatePost1({navigation}) {
                                         <Text style={styles.selectionTitleText}>Giá</Text>
                                     </View>
                                     <View style={{flex:5}}>
+                                       {/* <Text style={[{paddingTop:12,position:'absolute'},styles.inputStyle]}>{displayPrice === '0' ? '' : displayPrice}</Text>*/}
                                         <Input
                                             inputStyle={[styles.inputStyle]}
-                                            placeholder='Nhập giá'
+                                            placeholder=''
                                             inputContainerStyle={[styles.basicInput,{marginRight:24}, {borderBottomColor: isProductNameError === true ? GlobalStyle.colour.errorColor : GlobalStyle.colour.grayColor}]}
-                                            onChangeText={value => setProductPrice(value)}
+                                            onChangeText={value => onPriceChange(value)}
                                             value={productPrice}
+
                                             keyboardType={'phone-pad'}
 
                                         />
+
                                     </View>
                                     <View style={{flex:0.5,marginLeft:-16 ,marginRight:8}}>
                                         <Text style={styles.selectionTitleText}>đ</Text>
@@ -597,7 +620,7 @@ function CreatePost1({navigation}) {
                                 <DropdownButton
                                     title={selectedCertification == null ? "" : selectedCertification}
                                     onPress={()=> setShowCertification(true) }
-                                    isError={isCityError}
+
                                     containerStyle = {{flex:2}}
                                 />
                             </View>

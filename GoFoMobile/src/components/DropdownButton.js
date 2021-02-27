@@ -5,7 +5,6 @@ import GlobalStyle from "../style/GlobalStyle";
 import Icon from "react-native-vector-icons/AntDesign";
 
 function DropdownButton({title, onPress, isError,containerStyle}) {
-    console.log('MERA  dropdownButton ', title, ' ---  ', isError)
     let errorStyle = null
     if (isError === true) {
         errorStyle = {

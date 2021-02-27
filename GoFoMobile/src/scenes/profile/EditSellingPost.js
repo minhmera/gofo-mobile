@@ -55,38 +55,6 @@ function renderImage(images) {
 
 }
 
-function dropdownButton(title, onPress, isError) {
-    console.log('MERA  dropdownButton ', title, ' ---  ', isError)
-    let errorStyle = null
-    if (isError == true) {
-        errorStyle = {
-            borderBottomColor: GlobalStyle.colour.errorColor,
-            color: GlobalStyle.colour.errorColor
-        }
-    }
-
-    return (
-        <TouchableOpacity
-            style={[styles.dropdownButton, errorStyle]}
-            activeOpacity={1}
-            onPress={() => onPress()}
-        >
-            <View style={{flex: 4}}>
-                <Text style={[styles.dropdownButtonTitle, errorStyle]}>
-                    {title}
-                </Text>
-            </View>
-            <View style={{flex: 1, alignItems: 'flex-end', marginRight: 4}}>
-                <Icon
-                    name='right'
-                    size={20}
-                    color={errorStyle ? 'red' : 'black'}
-                />
-            </View>
-
-        </TouchableOpacity>
-    )
-}
 
 //Product Page1  {t('welcome')}
 function EditSellingPost({navigation}) {
