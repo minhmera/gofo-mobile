@@ -24,7 +24,7 @@ import ModelCalendar from '../../components/ModelCalendar'
 import {ProductCertifications} from '../../config/AppConfig'
 import {useGlobalDataContext, setCategories} from '../../contexts/globalDataContext'
 import AsyncStorage from "@react-native-community/async-storage";
-import {TOKEN_KEY, USER_ID_KEY, FULL_NAME_KEY} from "../../config/Contants";
+import {TOKEN_KEY, USER_ID_KEY, FULL_NAME_KEY, PHONE_NUMBER_KEY} from "../../config/Contants";
 import AnimatedLoader from "../../utils/custom-view/AnimatedLoader";
 import LoginWarningView from '../../components/LogInWarningView'
 import CommonButton from "../../components/CommonButton";
@@ -54,38 +54,7 @@ function renderImage(images) {
 
 }
 
-function dropdownButton(title, onPress, isError) {
-    console.log('MERA  dropdownButton ', title, ' ---  ', isError)
-    let errorStyle = null
-    if (isError == true) {
-        errorStyle = {
-            borderBottomColor: GlobalStyle.colour.errorColor,
-            color: GlobalStyle.colour.errorColor
-        }
-    }
 
-    return (
-        <TouchableOpacity
-            style={[styles.dropdownButton, errorStyle]}
-            activeOpacity={1}
-            onPress={() => onPress()}
-        >
-            <View style={{flex: 4}}>
-                <Text style={[styles.dropdownButtonTitle, errorStyle]}>
-                    {title}
-                </Text>
-            </View>
-            <View style={{flex: 1, alignItems: 'flex-end', marginRight: 4}}>
-                <Icon
-                    name='caretdown'
-                    size={10}
-                    color={errorStyle ? 'red' : 'black'}
-                />
-            </View>
-
-        </TouchableOpacity>
-    )
-}
 
 //Product Page1  {t('welcome')}
 function CreatePost1({navigation}) {
@@ -97,6 +66,9 @@ function CreatePost1({navigation}) {
     let [isSell, setSellStatus] = useState(true);
 
     const [productName, setProductName] = useState('');
+    const [productPrice, setProductPrice] = useState('');
+    const [measuring, setMeasuring] = useState('');
+    const [description, setDescription] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
     const [cities, setCities] = useState({});
     const [districts, setDistricts] = useState({});
@@ -405,8 +377,10 @@ function CreatePost1({navigation}) {
 
     async function getTokenKey() {
         let token = await AsyncStorage.getItem(TOKEN_KEY);
-        console.log("MERA getTokenKey11   ==> ", token)
+        let phone = await AsyncStorage.getItem(PHONE_NUMBER_KEY);
+        console.log("MERA phone 11   ==> ", phone)
         setToken(token)
+        setPhoneNumber(phone)
     }
 
     function renderCropDayView() {
@@ -484,7 +458,6 @@ function CreatePost1({navigation}) {
                                         checked={isSell}
                                         checkedColor={GlobalStyle.colour.primaryColor}
                                         onPress={() => setSellStatus(true)}
-                                        //onPress={()=> console.log('MERA globalCategory  ',globalCategory)}
 
                                     />
                                     <Text>
@@ -506,8 +479,6 @@ function CreatePost1({navigation}) {
 
                             </View>
 
-
-                           {/* {dropdownButton(selectedCategory === null ? "Phân loại sản phẩm" : selectedCategory.title_vi, () => setShowCategoryDropdown(true), isCategoryError)}*/}
                             <View style={styles.selectionItem}>
                                 <View style={styles.selectionTitleView}>
                                     <Text style={styles.selectionTitleText}>*Loại sản phẩm</Text>
@@ -547,10 +518,12 @@ function CreatePost1({navigation}) {
                                     <View style={{flex:5}}>
                                         <Input
                                             inputStyle={[styles.inputStyle]}
-                                            errorMessage={isProductNameError === true ? 'Vui lòng nhập tên sản phẩm' : ''}
                                             placeholder='Nhập giá'
                                             inputContainerStyle={[styles.basicInput,{marginRight:24}, {borderBottomColor: isProductNameError === true ? GlobalStyle.colour.errorColor : GlobalStyle.colour.grayColor}]}
-                                            onChangeText={value => setProductName(value)}
+                                            onChangeText={value => setProductPrice(value)}
+                                            value={productPrice}
+                                            keyboardType={'phone-pad'}
+
                                         />
                                     </View>
                                     <View style={{flex:0.5,marginLeft:-16 ,marginRight:8}}>
@@ -570,7 +543,8 @@ function CreatePost1({navigation}) {
                                             inputStyle={[styles.inputStyle]}
                                             placeholder='Nhập đơn vị'
                                             inputContainerStyle={[styles.basicInput,{marginRight:8}, {borderBottomColor: isProductNameError === true ? GlobalStyle.colour.errorColor : GlobalStyle.colour.grayColor}]}
-                                            onChangeText={value => setProductName(value)}
+                                            onChangeText={value => setMeasuring(value)}
+                                            value={measuring}
                                         />
                                     </View>
                                 </View>
@@ -640,6 +614,7 @@ function CreatePost1({navigation}) {
                                         errorMessage={isPhoneError === true ? 'Vui lòng nhập số điện thoại' : ''}
                                         inputContainerStyle={[styles.basicInput, {borderBottomColor: isPhoneError === true ? GlobalStyle.colour.errorColor : GlobalStyle.colour.grayColor}]}
                                         keyboardType={'phone-pad'}
+                                        value={phoneNumber}
                                         onChangeText={value => setPhoneNumber(value)}
                                     />
                                 </View>
@@ -657,8 +632,8 @@ function CreatePost1({navigation}) {
                                         inputStyle={[styles.inputStyle,{alignSelf:'flex-start'}]}
                                         placeholder="Nhập mô tả"
                                         inputContainerStyle={[styles.basicInput,{height:80,marginLeft:2}, {borderColor: isPhoneError === true ? GlobalStyle.colour.errorColor : GlobalStyle.colour.grayColor}]}
-                                        keyboardType={'phone-pad'}
-                                        onChangeText={value => setPhoneNumber(value)}
+                                        onChangeText={value => setDescription(value)}
+                                        value={description}
                                     />
                                 </View>
                             </View>
