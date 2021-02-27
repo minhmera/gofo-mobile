@@ -67,7 +67,7 @@ const AppStyle = StyleSheet.create({
         width: "80%",
         backgroundColor: GlobalStyle.colour.primaryColor,
         borderRadius: 25,
-        height: 50,
+        height: 42,
         alignItems: "center",
         justifyContent: "center",
 

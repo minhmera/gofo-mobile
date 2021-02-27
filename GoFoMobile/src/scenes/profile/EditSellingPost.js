@@ -26,6 +26,8 @@ import {useGlobalDataContext, setCategories} from '../../contexts/globalDataCont
 import AsyncStorage from "@react-native-community/async-storage";
 import {TOKEN_KEY, USER_ID_KEY, FULL_NAME_KEY} from "../../config/Contants";
 import LoadingPage from '../../components/LoadingPage'
+import DropdownButton from "../../components/DropdownButton";
+import CommonButton from "../../components/CommonButton";
 function renderImage(images) {
     //let arrImages = ['a','b','c']
 
@@ -134,6 +136,9 @@ function EditSellingPost({navigation}) {
     let [defaultImages, setDefaultImages] = useState(null);
 
     const [productName, setProductName] = useState('');
+    const [productPrice, setProductPrice] = useState('');
+    const [measuring, setMeasuring] = useState('');
+    const [description, setDescription] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
     const [cities, setCities] = useState({});
     const [districts, setDistricts] = useState({});
@@ -430,6 +435,23 @@ function EditSellingPost({navigation}) {
         return isValidAllField
     }
 
+    function renderCropDayView() {
+        console.log('MERA selectedCropTimeDate ',selectedCropTimeDate)
+        return (
+            <View style={styles.selectionItem}>
+                <View style={styles.selectionTitleView}>
+                    <Text style={styles.selectionTitleText}>Thời gian thu hoạch</Text>
+                </View>
+                <DropdownButton
+                    title={selectedCropTimeDate === null ? 'Chọn' : selectedCropTimeDate.format('DD/MM/YYYY')}
+                    onPress={() => setShowCropTimeCalendar(true)}
+                    isError={isCityError}
+                    containerStyle = {{flex:2}}
+                />
+            </View>
+        );
+
+    }
 
     async function getTokenKey() {
         let token = await AsyncStorage.getItem(TOKEN_KEY);
@@ -478,20 +500,117 @@ function EditSellingPost({navigation}) {
 
 
 
-                            {dropdownButton(selectedCategory === null ? "Phân loại sản phẩm" : selectedCategory.title_vi, () => setShowCategoryDropdown(true), isCategoryError)}
+                           {/* {dropdownButton(selectedCategory === null ? "Phân loại sản phẩm" : selectedCategory.title_vi, () => setShowCategoryDropdown(true), isCategoryError)}*/}
 
-                            <Input
-                                inputStyle={styles.inputStyle}
-                                errorMessage={isProductNameError === true ? 'Vui lòng nhập tên sản phẩm' : ''}
-                                placeholder='Tên sản phẩm'
-                                inputContainerStyle={[styles.basicInput, {borderBottomColor: isProductNameError === true ? GlobalStyle.colour.errorColor : GlobalStyle.colour.grayColor}]}
-                                onChangeText={value => setProductName(value)}
-                                value = {productName}
-                            />
+                            <View style={styles.selectionItem}>
+                                <View style={styles.selectionTitleView}>
+                                    <Text style={styles.selectionTitleText}>*Loại sản phẩm</Text>
+                                </View>
+                                <DropdownButton
+                                    title={selectedCategory === null ? 'Chọn' : selectedCategory.title_vi}
+                                    onPress={() => setShowCategoryDropdown(true)}
+                                    isError={isCategoryError}
+                                    containerStyle = {{flex:2}}
+                                />
+                            </View>
 
+                            <View style={styles.selectionItem}>
+                                <View style={styles.selectionTitleView}>
+                                    <Text style={styles.selectionTitleText}>*Tên sản phẩm</Text>
+                                </View>
+                                <View style={{flex:2}}>
+                                    <Input
+                                        inputStyle={[styles.inputStyle]}
+                                        errorMessage={isProductNameError === true ? 'Vui lòng nhập tên sản phẩm' : ''}
+                                        placeholder='Nhập tên sản phẩm'
+                                        inputContainerStyle={[styles.basicInput, {borderBottomColor: isProductNameError === true ? GlobalStyle.colour.errorColor : GlobalStyle.colour.grayColor}]}
+                                        onChangeText={value => setProductName(value)}
+                                        value = {productName}
+                                    />
+                                </View>
+
+                            </View>
+
+                            <View style={[styles.selectionItem]}>
+                                <View style={{flex:1,flexDirection:'row',alignItems:'center'}}>
+                                    <View style={[styles.selectionTitleView,{flex:1}]}>
+                                        <Text style={styles.selectionTitleText}>Giá</Text>
+                                    </View>
+                                    <View style={{flex:5}}>
+                                        <Input
+                                            inputStyle={[styles.inputStyle]}
+                                            placeholder='Nhập giá'
+                                            inputContainerStyle={[styles.basicInput,{marginRight:24}, {borderBottomColor: isProductNameError === true ? GlobalStyle.colour.errorColor : GlobalStyle.colour.grayColor}]}
+                                            onChangeText={value => setProductPrice(value)}
+                                            value={productPrice}
+                                            keyboardType={'phone-pad'}
+
+                                        />
+                                    </View>
+                                    <View style={{flex:0.5,marginLeft:-16 ,marginRight:8}}>
+                                        <Text style={styles.selectionTitleText}>đ</Text>
+                                    </View>
+
+                                </View>
+                                <View style={{flex:1,flexDirection:'row',alignItems:'center'}}>
+
+                                    <View style={[styles.selectionTitleView,{flex:1,marginLeft:4}]}>
+                                        <Text style={styles.selectionTitleText}>Đơn vị</Text>
+                                    </View>
+
+
+                                    <View style={{flex:3}}>
+                                        <Input
+                                            inputStyle={[styles.inputStyle]}
+                                            placeholder='Nhập đơn vị'
+                                            inputContainerStyle={[styles.basicInput,{marginRight:8}, {borderBottomColor: isProductNameError === true ? GlobalStyle.colour.errorColor : GlobalStyle.colour.grayColor}]}
+                                            onChangeText={value => setMeasuring(value)}
+                                            value={measuring}
+                                        />
+                                    </View>
+                                </View>
+                            </View>
+
+
+
+                            <View style={{flex:1,flexDirection:'row',marginTop:4}}>
+                                <View style={{flex:1}}/>
+
+                                <View style={{flex:1, alignItems:'flex-end'}}>
+                                    <Text style={{fontSize:10, color:GlobalStyle.colour.grayColor3}}>Đơn vị đo lường cho hàng hoá ví dụ kilogram, tạ, tấn, ...</Text>
+                                </View>
+                            </View>
+
+{/*
                             {dropdownButton(selectedCity === null ? "Choose city" : selectedCity.name, () => setShowCityDropdown(true), isCityError)}
 
-                            {dropdownButton(selectedDistrict === null ? "Choose district" : selectedDistrict.name, () => handleShowDistrictDropdown())}
+                            {dropdownButton(selectedDistrict === null ? "Choose district" : selectedDistrict.name, () => handleShowDistrictDropdown())}*/}
+
+                            <View style={styles.selectionItem}>
+                                <View style={styles.selectionTitleView}>
+                                    <Text style={styles.selectionTitleText}>*Tỉnh/Thành phố</Text>
+                                </View>
+                                <DropdownButton
+                                    title={selectedCity === null ? 'Chọn' : selectedCity.name}
+                                    onPress={() => setShowCityDropdown(true)}
+                                    isError={isCityError}
+                                    containerStyle = {{flex:2}}
+                                />
+                            </View>
+
+                            <View style={styles.selectionItem}>
+                                <View style={styles.selectionTitleView}>
+                                    <Text style={styles.selectionTitleText}>*Quận/Huyện</Text>
+                                </View>
+                                <DropdownButton
+                                    title={selectedDistrict === null ? "Chọn" : selectedDistrict.name}
+                                    onPress={()=> handleShowDistrictDropdown()}
+                                    isError={isCityError}
+                                    containerStyle = {{flex:2}}
+                                />
+                            </View>
+
+                            {renderCropDayView()}
 
                             <ModelList
                                 isVisible={isShowCategoryDropdown}
@@ -538,30 +657,63 @@ function EditSellingPost({navigation}) {
                                 callBack={(item) => certificationCallBack(item)}
                             />
 
-                            {
 
-                                dropdownButton(selectedCropTimeDate === null ? "Thời gian thu hoạch" : selectedCropTimeDate.format('DD/MM/YYYY'), () => setShowCropTimeCalendar(true))
+                            <View style={styles.selectionItem}>
+                                <View style={styles.selectionTitleView}>
+                                    <Text style={styles.selectionTitleText}>Tiêu chuẩn</Text>
+                                </View>
+                                <DropdownButton
+                                    title={selectedCertification == null ? "" : selectedCertification}
+                                    onPress={()=> setShowCertification(true) }
+                                    isError={isCityError}
+                                    containerStyle = {{flex:2}}
+                                />
+                            </View>
 
-                            }
 
-                            {dropdownButton(selectedCertification == null ? "Tiêu chuẩn" : selectedCertification, () => setShowCertification(true))}
+                            <View style={styles.selectionItem}>
+                                <View style={styles.selectionTitleView}>
+                                    <Text style={styles.selectionTitleText}>*Số điện thoại</Text>
+                                </View>
+                                <View style={{flex:2}}>
+                                    <Input
+                                        inputStyle={styles.inputStyle}
+                                        placeholder="Số điện thoại"
+                                        errorMessage={isPhoneError === true ? 'Vui lòng nhập số điện thoại' : ''}
+                                        inputContainerStyle={[styles.basicInput, {borderBottomColor: isPhoneError === true ? GlobalStyle.colour.errorColor : GlobalStyle.colour.grayColor}]}
+                                        keyboardType={'phone-pad'}
+                                        value={phoneNumber}
+                                        onChangeText={value => setPhoneNumber(value)}
+                                    />
+                                </View>
+                            </View>
 
-                            <Input
-                                inputStyle={styles.inputStyle}
-                                placeholder="Số điện thoại"
-                                errorMessage={isPhoneError === true ? 'Vui lòng nhập số điện thoại' : ''}
-                                inputContainerStyle={styles.basicInput}
-                                inputContainerStyle={[styles.basicInput, {borderBottomColor: isPhoneError === true ? GlobalStyle.colour.errorColor : GlobalStyle.colour.grayColor}]}
-                                keyboardType={'phone-pad'}
-                                onChangeText={value => setPhoneNumber(value)}
-                                value= {phoneNumber}
-                            />
+
+                            <View
+                                style={[styles.selectionItem,{flex:1,flexDirection:'column',alignItems:'flex-start',marginTop:12,marginRight:8}]}>
+                                <View style={[styles.selectionTitleView,{flex:1}]}>
+                                    <Text style={styles.selectionTitleText}>Mô tả sản phẩm</Text>
+                                </View>
+                                <View style={[styles.noteInput,{width:'100%',marginTop:4}]}>
+                                    <Input
+                                        multiline={true}
+                                        numberOfLines={8}
+                                        inputStyle={[styles.inputStyle,{alignSelf:'flex-start'}]}
+                                        placeholder="Nhập mô tả"
+                                        inputContainerStyle={[styles.basicInput,{height:80,marginLeft:2}, {borderColor: isPhoneError === true ? GlobalStyle.colour.errorColor : GlobalStyle.colour.grayColor}]}
+                                        onChangeText={value => setDescription(value)}
+                                        value={description}
+                                    />
+                                </View>
+                            </View>
+
+
                             <View style={styles.bottomView}>
-                                <Button
-                                    title="Sửa"
-                                    onPress={() => submitPost()}
-                                    buttonStyle={[AppStyle.commonButton_1, styles.submitButton,]} //submitButton
-                                    containerStyle={styles.buttonContainer}
+                                <CommonButton
+                                    title={'OK'}
+                                    customStyle={{marginTop:32}}
+                                    textStyle={{fontSize:18}}
+                                    onPress={()=> submitPost()}
                                 />
                             </View>
                         </View>
@@ -638,7 +790,8 @@ const styles = StyleSheet.create({
     },
     basicInput: {
         borderBottomWidth: 0.5,
-        borderBottomColor: GlobalStyle.colour.grayColor
+        borderBottomColor: GlobalStyle.colour.grayColor,
+        marginLeft:-8
     },
     inputStyle: {
         fontSize: 16,
@@ -683,6 +836,7 @@ const styles = StyleSheet.create({
     },
     bottomView: {
         height: 160,
+        alignItems:'center'
     },
     submitButton: {
         backgroundColor: GlobalStyle.colour.primaryColor,
@@ -694,6 +848,25 @@ const styles = StyleSheet.create({
         fontWeight: '400',
 
     },
+
+    noteInput: {
+        borderWidth: 0.5,
+        borderColor: GlobalStyle.colour.grayColor,
+        borderRadius:4,
+
+    },
+    selectionItem: {
+        marginLeft:10,
+        flexDirection:'row',
+        alignItems:'center'
+    },
+    selectionTitleView: {
+        flex:2,
+    },
+    selectionTitleText: {
+        color: GlobalStyle.colour.grayColor3
+    }
+
 
 
 });

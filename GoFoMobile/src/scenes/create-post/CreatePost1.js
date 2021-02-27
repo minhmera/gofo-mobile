@@ -509,7 +509,6 @@ function CreatePost1({navigation}) {
                             </View>
 
 
-
                             <View style={[styles.selectionItem]}>
                                 <View style={{flex:1,flexDirection:'row',alignItems:'center'}}>
                                     <View style={[styles.selectionTitleView,{flex:1}]}>
@@ -548,10 +547,10 @@ function CreatePost1({navigation}) {
                                         />
                                     </View>
                                 </View>
-
-
-
                             </View>
+
+
+
                             <View style={{flex:1,flexDirection:'row',marginTop:4}}>
                                 <View style={{flex:1}}/>
 
