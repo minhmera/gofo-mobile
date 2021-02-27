@@ -29,11 +29,13 @@ function ModelCalendar({isVisible,title,items,style, callBack}) {
         customStyle = style
     }
 
-    //console.log('customStyle ===>  ',customStyle)
 
     return (
         <Modal isVisible={isVisible}>
-            <TouchableOpacity style={[styles.dropDownContainer,customStyle]} activeOpacity={1} >
+            <TouchableOpacity
+                style={[styles.dropDownContainer,customStyle]} activeOpacity={1}
+                onPress={()=> callBack(null)}
+            >
                 <Text style={styles.dropdownTitle}>{title}</Text>
 
                 <Calendar
@@ -45,15 +47,7 @@ function ModelCalendar({isVisible,title,items,style, callBack}) {
                     markingType={'multi-dot'}
                 />
 
-                {/*<View
-                    style= {styles.dropDownHideButtonView}>
-                    <Button
-                        style={{backgroundColor:GlobalStyle.colour.primaryColor,borderRadius:20,}}
-                        title="Hide modal"
-                        buttonStyle={[AppStyle.commonButton, styles.submitButton]} //submitButton
-                        onPress={()=> callBack()}
-                    />
-                </View>*/}
+
 
             </TouchableOpacity>
         </Modal>

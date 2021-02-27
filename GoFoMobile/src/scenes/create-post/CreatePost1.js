@@ -345,10 +345,13 @@ function CreatePost1({navigation}) {
     }
 
     function cropTimeCalendarCallBack(day) {
+        if (day === null) {
+            setSelectedCropTimeDate(null)
+            setShowCropTimeCalendar(false)
+            return
+        }
         console.log('MERA cropTimeCalendarCallBack ==> ', day)
         let selectedDate = moment(day.dateString);
-        //let dateString = selectedDate.format('DD-MM-YYYY')
-        //console.log('MERA cropTimeCalendarCallBack ==> ', dateString );
         setSelectedCropTimeDate(selectedDate)
         setShowCropTimeCalendar(false)
     }
@@ -408,14 +411,13 @@ function CreatePost1({navigation}) {
 
     function renderCropDayView() {
         if (isSell === true) {
-            //return  dropdownButton(selectedCropTimeDate === null ? "Thời gian thu hoạch" : selectedCropTimeDate.format('DD-MM-YYYY'), () => setShowCropTimeCalendar(true))
             return (
                 <View style={styles.selectionItem}>
                     <View style={styles.selectionTitleView}>
                         <Text style={styles.selectionTitleText}>Thời gian thu hoạch</Text>
                     </View>
                     <DropdownButton
-                        title={selectedCropTimeDate === null ? "" : selectedCropTimeDate.format('DD/MM/YYYY')}
+                        title={selectedCropTimeDate === null ? 'Chọn' : selectedCropTimeDate.format('DD/MM/YYYY')}
                         onPress={() => setShowCropTimeCalendar(true)}
                         isError={isCityError}
                         containerStyle = {{flex:2}}
@@ -511,7 +513,7 @@ function CreatePost1({navigation}) {
                                     <Text style={styles.selectionTitleText}>*Loại sản phẩm</Text>
                                 </View>
                                 <DropdownButton
-                                    title={selectedCategory === null ? '' : selectedCategory.title_vi}
+                                    title={selectedCategory === null ? 'Chọn' : selectedCategory.title_vi}
                                     onPress={() => setShowCategoryDropdown(true)}
                                     isError={isCategoryError}
                                     containerStyle = {{flex:2}}
@@ -566,7 +568,6 @@ function CreatePost1({navigation}) {
                                     <View style={{flex:3}}>
                                         <Input
                                             inputStyle={[styles.inputStyle]}
-                                            errorMessage={isProductNameError === true ? 'Vui lòng nhập tên sản phẩm' : ''}
                                             placeholder='Nhập đơn vị'
                                             inputContainerStyle={[styles.basicInput,{marginRight:8}, {borderBottomColor: isProductNameError === true ? GlobalStyle.colour.errorColor : GlobalStyle.colour.grayColor}]}
                                             onChangeText={value => setProductName(value)}
@@ -594,7 +595,7 @@ function CreatePost1({navigation}) {
                                     <Text style={styles.selectionTitleText}>*Tỉnh/Thành phố</Text>
                                 </View>
                                 <DropdownButton
-                                    title={selectedCity === null ? "" : selectedCity.name}
+                                    title={selectedCity === null ? 'Chọn' : selectedCity.name}
                                     onPress={() => setShowCityDropdown(true)}
                                     isError={isCityError}
                                     containerStyle = {{flex:2}}
