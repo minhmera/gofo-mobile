@@ -20,7 +20,7 @@ function DropdownButton({title, onPress, isError,containerStyle}) {
             activeOpacity={1}
             onPress={() => onPress()}
         >
-            <View style={{flex: 4, justifyContent:'center',alignItems:'center'}}>
+            <View style={{flex: 4}}>
                 <Text style={[styles.dropdownButtonTitle, errorStyle]}>
                     {title}
                 </Text>
@@ -46,8 +46,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         //justifyContent: 'center',
 
-        marginLeft: 10,
-        marginRight: 10,
+        marginLeft: 8,
+        marginRight: 8,
         borderBottomColor: GlobalStyle.colour.grayColor,
         borderBottomWidth: 0.5,
     },
