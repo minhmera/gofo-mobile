@@ -72,7 +72,6 @@ function EditSellingPost({navigation}) {
     function setDefaultData(navItem,globalState) {
         globalState.categories.map((item, index) => {
             if (navItem.categoryId === item.type ) {
-                console.log('item ==>  ',item,' at ', index)
                 setSelectedCategory(item)
             }
         })
@@ -88,10 +87,24 @@ function EditSellingPost({navigation}) {
         setSelectedCropTimeDate(moment(cropDate))
         setSelectedCertification(navItem.productCertification)
         setPhoneNumber(navItem.sellerPhone)
-        setImages(navItem.photoUrls)
-        console.log('selectedCropTimeDate ==>  ',cropDate)
-        //'2021-02-19'
-        //selectedCropTimeDate.format('DD-MM-YYYY')
+        if (navItem.photoUrls.length === 0) {
+            setImages(null)
+        } else {
+            setImages(navItem.photoUrls)
+        }
+
+
+        if (navItem.productPrice !== undefined) {
+            setProductPrice(navItem.productPrice.toString())
+            console.log('navItem productPrice ==>  ',navItem.productPrice)
+        }
+        if (navItem.measuring !== undefined) {
+            setMeasuring(navItem.measuring)
+        }
+        if (navItem.description !== undefined) {
+            setDescription(navItem.description)
+        }
+
 
     }
 
@@ -149,7 +162,7 @@ function EditSellingPost({navigation}) {
 
         try {
             let imageUrls = []
-            if (images !== undefined) {
+            if (images !== null) {
                 if (images.length > 0) {
                     if (images[0].path !== undefined) {
                         let response = await api.uploadImages(images);
@@ -165,7 +178,7 @@ function EditSellingPost({navigation}) {
             console.log('MERA ==> onSubmit ', res)
             setLoading(false);
         } catch (e) {
-            console.log('Error ', e);
+            console.log('uploadImages Error ', e);
             setLoading(false);
         }
 
@@ -181,6 +194,9 @@ function EditSellingPost({navigation}) {
             "fullName": fullName,
             "categoryId": selectedCategory.type,
             "productName": productName,
+            "productPrice": productPrice,
+            "measuring": measuring,
+            "description": description,
             "provinceId": selectedCity.id,
             "districtId": selectedDistrict.id,
             "provinceName": selectedCity.name,
@@ -404,7 +420,7 @@ function EditSellingPost({navigation}) {
     }
 
     function renderCropDayView() {
-        console.log('MERA selectedCropTimeDate ',selectedCropTimeDate)
+        //console.log('MERA selectedCropTimeDate ',selectedCropTimeDate)
         return (
             <View style={styles.selectionItem}>
                 <View style={styles.selectionTitleView}>
@@ -512,7 +528,6 @@ function EditSellingPost({navigation}) {
                                             onChangeText={value => setProductPrice(value)}
                                             value={productPrice}
                                             keyboardType={'phone-pad'}
-
                                         />
                                     </View>
                                     <View style={{flex:0.5,marginLeft:-16 ,marginRight:8}}>

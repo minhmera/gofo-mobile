@@ -109,14 +109,23 @@ function CreatePost1({navigation}) {
     async function uploadSellingProduct() {
         setLoading(true);
         try {
-            let response = await api.uploadImages(images);
-            console.log('uploadImage response ==> ', response);
-            let imageUrls = response.imageUrls
-            let res = await onSubmitSelling(imageUrls)
-            console.log('MERA ==> onSubmit ', res)
-            setLoading(false);
+
+            if (images !== null) {
+                let response = await api.uploadImages(images);
+                console.log('uploadImage response ==> ', response);
+                let imageUrls = response.imageUrls
+                let res = await onSubmitSelling(imageUrls)
+                console.log('MERA ==> onSubmit ', res)
+                setLoading(false);
+            } else {
+                let res = await onSubmitSelling([])
+                console.log('MERA ==> onSubmit ', res)
+                setLoading(false);
+            }
+
+
         } catch (e) {
-            console.log('Error ', e);
+            console.log('uploadSellingProduct Error ', e);
             setLoading(false);
         }
     }
@@ -142,6 +151,7 @@ function CreatePost1({navigation}) {
             "productCertification": selectedCertification,
             "sellerPhone": phoneNumber
         }
+
         console.log('MERA submit object ', sellingObj)
         try {
             let response = await api.sellingPost(sellingObj);
@@ -393,15 +403,9 @@ function CreatePost1({navigation}) {
     function onPriceChange(price) {
         console.log('onPriceChange 11 ==>  ',price)
         setProductPrice(price)
-        let formatPrice =  Utils.numberWithCommas(price)
-        if (price === ''){
-            console.log(' &&&&&&&&&&&&&&&&&&& ========== 0')
-            setDisplayPrice('')
-        } else {
-            setDisplayPrice(formatPrice)
-        }
 
-        console.log('onPriceChange ==> ',price,' formatPrice ==>  ',formatPrice)
+
+        console.log('onPriceChange ==> ',price,' formatPrice ==>  ')
     }
 
     function renderCropDayView() {
@@ -836,7 +840,7 @@ const styles = StyleSheet.create({
         padding: 40,
     },
     bottomView: {
-        height: 160,
+        height: 260,
         alignItems:'center'
     },
     submitButton: {

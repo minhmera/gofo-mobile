@@ -6,8 +6,7 @@ import IconEntypo from 'react-native-vector-icons/Entypo';
 import GlobalStyle from "../style/GlobalStyle";
 
 import moment from "moment";
-import {func} from "prop-types";
-
+import * as Utils from '../utils/AppUtils';
 
 function ProductItem({item, onPress, type}) {
     let fortmatString = 'DD/MM/YYYYTHH:mm'
@@ -42,6 +41,25 @@ function ProductItem({item, onPress, type}) {
         typeString = 'Người bán'
     }
 
+    function renderPrice(productItem) {
+        let measuringText = ''
+        if (item.productPrice === undefined) {
+            return (
+                <Text style={styles.priceText}>
+                    Liên hệ
+                </Text>
+            )
+
+        } else {
+            measuringText = productItem.measuring
+            return (
+                <Text style={styles.priceText}>
+                    {Utils.moneyFormat(productItem.productPrice)} / {measuringText}
+                </Text>
+            )
+        }
+    }
+
     return (
         <TouchableOpacity
             style={[styles.itemContainer]}
@@ -69,12 +87,24 @@ function ProductItem({item, onPress, type}) {
 
                     <View style={{flexDirection:'row'}}>
                         <Text style={styles.normalText}>
-                            Liên hệ: {' '}
+                            Giá: {' '}
                         </Text>
                         <TouchableOpacity
                             onPress={()=> Linking.canOpenURL(item.sellerPhone)}
                         >
-                            <Text style={styles.fontText}>
+                            {renderPrice(item)}
+                        </TouchableOpacity>
+
+                    </View>
+
+                    <View style={{flexDirection:'row'}}>
+                        <Text style={styles.normalText}>
+                            SĐT: {' '}
+                        </Text>
+                        <TouchableOpacity
+                            onPress={()=> Linking.canOpenURL(item.sellerPhone)}
+                        >
+                            <Text style={styles.phoneText}>
                                 {item.sellerPhone}
                             </Text>
                         </TouchableOpacity>
@@ -140,9 +170,9 @@ const styles = StyleSheet.create({
         color: GlobalStyle.colour.orangeColor,
         fontWeight: '500'
     },
-    fontText: {
+    phoneText: {
         fontWeight: 'bold',
-        fontSize: 16,
+        //fontSize: 14,
         marginTop:2,
         color:'#6B6B6B',
         textDecorationLine: "underline",
@@ -150,6 +180,13 @@ const styles = StyleSheet.create({
         //textDecorationStyle: "solid",
         textDecorationColor: GlobalStyle.colour.grayColor2
         //color: 'blue',
+    },
+    priceText: {
+        fontWeight: 'bold',
+        //fontSize: 14,
+        marginTop:2,
+        color:'#6B6B6B',
+        textDecorationColor: GlobalStyle.colour.grayColor2
     }
 })
 

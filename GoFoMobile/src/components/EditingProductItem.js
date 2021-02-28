@@ -1,5 +1,5 @@
 import React from 'react'
-import {View, TouchableOpacity, StyleSheet, StatusBar, ImageBackground} from 'react-native';
+import {View, TouchableOpacity, StyleSheet, StatusBar, ImageBackground, Linking} from 'react-native';
 import {Appbar, Text, Title} from 'react-native-paper'
 import Icon from 'react-native-vector-icons/AntDesign';
 
@@ -7,6 +7,7 @@ import GlobalStyle from "../style/GlobalStyle";
 
 import moment from "moment";
 import IconEntypo from "react-native-vector-icons/Entypo";
+import * as Utils from "../utils/AppUtils";
 
 
 function EditingProductItem({item, onEdit, onDelete}) {
@@ -16,7 +17,8 @@ function EditingProductItem({item, onEdit, onDelete}) {
     let timeString = time.replace('T',' - ')
 
     function renderImage() {
-        if (item.photoUrls !== undefined){
+        console.log('')
+        if (item.photoUrls !== undefined && item.photoUrls.length > 0){
             return  <ImageBackground imageStyle={{ borderRadius: 4 }} source={{uri: item.photoUrls[0]}} style={styles.imageWrapperView}></ImageBackground>
         } else {
             return (
@@ -31,6 +33,26 @@ function EditingProductItem({item, onEdit, onDelete}) {
             )
         }
     }
+
+    function renderPrice(productItem) {
+        let measuringText = ''
+        if (item.productPrice === undefined) {
+            return (
+                <Text style={styles.priceText}>
+                    Liên hệ
+                </Text>
+            )
+
+        } else {
+            measuringText = productItem.measuring
+            return (
+                <Text style={styles.priceText}>
+                    {Utils.moneyFormat(productItem.productPrice)} / {measuringText}
+                </Text>
+            )
+        }
+    }
+
     return (
         <TouchableOpacity
             style={[styles.itemContainer]}
@@ -53,7 +75,20 @@ function EditingProductItem({item, onEdit, onDelete}) {
                     <Text style={styles.normalText}>
                         {timeString}
                     </Text>
+
+                    <View style={{flexDirection:'row'}}>
+                        <Text style={styles.normalText}>
+                            Giá: {' '}
+                        </Text>
+                        <TouchableOpacity
+                            onPress={()=> Linking.canOpenURL(item.sellerPhone)}
+                        >
+                            {renderPrice(item)}
+                        </TouchableOpacity>
+
+                    </View>
                 </View>
+
                 <View style={styles.editingButtonView}>
                     <TouchableOpacity
                         style={[styles.editButton,{backgroundColor:GlobalStyle.colour.grayBackground, marginTop:8}]}
@@ -132,6 +167,13 @@ const styles = StyleSheet.create({
     editButtonTitle: {
         fontSize: 15,
         fontWeight: '500'
+    },
+    priceText: {
+        fontWeight: 'bold',
+        //fontSize: 14,
+        marginTop:4,
+        color:'#6B6B6B',
+        textDecorationColor: GlobalStyle.colour.grayColor2
     }
 
 })

@@ -5,6 +5,7 @@ import {handler} from './auth';
 import AsyncStorage from '@react-native-community/async-storage'
 import {TOKEN_KEY, USER_ID_KEY} from "../config/Contants";
 
+const PAGE_SIZE = 20
 
 export async function getLocation() {
     try {
@@ -172,7 +173,7 @@ export async function buyingPost(data){
 export async function getSellingProduct(page) {
     let url = c.GET_SELLING_PRODUCTS
     url = url.replace('$page',page)
-    url = url.replace('$size',2)
+    url = url.replace('$size',PAGE_SIZE)
     try {
         console.log('API URL =============================> ', url)
         let res = await axios.get(url);
@@ -186,7 +187,7 @@ export async function getSellingProduct2(page) {
     let url = c.GET_SELLING_PRODUCTS
 
     url = url.replace('$page',page)
-    url = url.replace('$size',2)
+    url = url.replace('$size',PAGE_SIZE)
     console.log('MERA API getSellingProduct2 ===========> ',url)
     return axios.get(url);
 
@@ -196,7 +197,7 @@ export async function getBuyingProduct(page) {
     let url = c.GET_BUYING_PRODUCTS
 
     url = url.replace('$page',page)
-    url = url.replace('$size',2)
+    url = url.replace('$size',PAGE_SIZE)
     console.log('MERA API getBuyingProduct ===========> ',url)
     return axios.get(url);
 
@@ -213,7 +214,7 @@ export async function getSellingByCategory(categoryId,provinceId,page) {
     }
 
     url = url.replace('$page',page)
-    url = url.replace('$size',2)
+    url = url.replace('$size',PAGE_SIZE)
     console.log('MERA getSellingByCategory  _______________URL_________ ',url)
     return axios.get(url);
 
@@ -223,7 +224,7 @@ export async function getSellingByUser(userId,page) {
     let url = c.GET_SELLING_PRODUCTS_BY_USER
 
     url = url.replace('$page',page)
-    url = url.replace('$size',2)
+    url = url.replace('$size',PAGE_SIZE)
     console.log('MERA getSellingByUser 11 POST _______________URL_________ ',url, 'userId ==> ',userId)
     let token = await AsyncStorage.getItem(TOKEN_KEY);
     let axiosConfig = {
@@ -239,7 +240,7 @@ export async function getBuyingByUser(userId,page) {
     let url = c.GET_BUYING_PRODUCTS_BY_USER
 
     url = url.replace('$page',page)
-    url = url.replace('$size',2)
+    url = url.replace('$size',PAGE_SIZE)
     console.log('MERA getSellingByUser 11 POST _______________URL_________ ',url, 'userId ==> ',userId)
     let token = await AsyncStorage.getItem(TOKEN_KEY);
     let axiosConfig = {
@@ -255,7 +256,7 @@ export async function searchSellingProduct(productName,page) {
     let url = c.SEARCH_SELLING_PRODUCT
     url = url.replace('$productName',productName)
     url = url.replace('$page',page)
-    url = url.replace('$size',2)
+    url = url.replace('$size',PAGE_SIZE)
     console.log('MERA searchSellingProduct  _______________URL_________ ',url)
     return axios.get(url);
 
@@ -274,7 +275,7 @@ export async function getBuyingByCategory(categoryId,provinceId,page) {
     }
 
     url = url.replace('$page',page)
-    url = url.replace('$size',2)
+    url = url.replace('$size',PAGE_SIZE)
     console.log('MERA getBuyingByCategory  _______________URL_________ ',url)
     return axios.get(url);
 
