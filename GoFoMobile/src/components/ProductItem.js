@@ -60,6 +60,11 @@ function ProductItem({item, onPress, type}) {
         }
     }
 
+    function openCall(phoneNumber){
+        const url= `tel:${phoneNumber}`
+        Linking.openURL(url)
+    }
+
     return (
         <TouchableOpacity
             style={[styles.itemContainer]}
@@ -89,11 +94,11 @@ function ProductItem({item, onPress, type}) {
                         <Text style={styles.normalText}>
                             Giá: {' '}
                         </Text>
-                        <TouchableOpacity
-                            onPress={()=> Linking.canOpenURL(item.sellerPhone)}
+                        <View
+
                         >
                             {renderPrice(item)}
-                        </TouchableOpacity>
+                        </View>
 
                     </View>
 
@@ -102,7 +107,7 @@ function ProductItem({item, onPress, type}) {
                             SĐT: {' '}
                         </Text>
                         <TouchableOpacity
-                            onPress={()=> Linking.canOpenURL(item.sellerPhone)}
+                            onPress={()=> openCall(item.sellerPhone)}
                         >
                             <Text style={styles.phoneText}>
                                 {item.sellerPhone}

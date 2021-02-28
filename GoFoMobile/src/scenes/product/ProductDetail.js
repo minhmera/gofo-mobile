@@ -1,7 +1,16 @@
 import React, {useEffect, useState} from 'react'
 
 import {Text, FAB, List} from 'react-native-paper'
-import {ScrollView, FlatList, ImageBackground, RefreshControl, StyleSheet, TouchableOpacity, View} from 'react-native';
+import {
+    ScrollView,
+    FlatList,
+    ImageBackground,
+    RefreshControl,
+    StyleSheet,
+    TouchableOpacity,
+    View,
+    Linking
+} from 'react-native';
 import Header from '../../components/Header'
 import GlobalStyle from "../../style/GlobalStyle";
 import * as api from "../../services/products";
@@ -85,6 +94,19 @@ function ProductDetail({navigation}) {
         }
     }
 
+    function openCall(){
+        //const url='tel://:+0946334909'
+        let url='tel:0946334909'
+        console.log('phoneNumber: ',sellingData.phoneNumber)
+        if (type === 'SELL') {
+            url= `tel:${sellingData.sellerPhone}`
+        } else {
+            url= `tel:${buyingData.sellerPhone}`
+        }
+        console.log('openCall ==>  ',url)
+        Linking.openURL(url)
+    }
+
     useEffect(() => {
         getDefaultData(),setLoading(true);
     }, []);
@@ -102,7 +124,7 @@ function ProductDetail({navigation}) {
                         iconName={'phone'}
                         iconSize={24}
                         iconStyle={{color: 'white'}}
-                        onPress={()=> console.log('PRess')}
+                        onPress={()=> openCall()}
                     />
                 </View>
 
@@ -136,17 +158,6 @@ function ProductDetail({navigation}) {
     }
 
 
-    function renderButton() {
-        if (type === 'SELL') {
-            if (sellingData !== null) {
-
-            }
-        } else {
-            if (buyingData !== null) {
-
-            }
-        }
-    }
 
     // Seller or Buyer info
     function renderPersonInfoView(data) {
