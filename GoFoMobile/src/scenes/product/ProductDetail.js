@@ -11,6 +11,8 @@ import moment from "moment";
 import CommonButton from "../../components/CommonButton";
 import Icon from "react-native-vector-icons/AntDesign";
 import {color} from "react-native-reanimated";
+import * as Utils from "../../utils/AppUtils";
+import {Input} from "react-native-elements";
 
 function ProductDetail({navigation}) {
     //const {navigate} = props.navigation;
@@ -171,7 +173,6 @@ function ProductDetail({navigation}) {
 
                     <View style={styles.titleView}>
                         <View style={styles.separatorLineView}></View>
-
                         <Text style={styles.titleText} >{title}</Text>
                     </View>
 
@@ -204,6 +205,25 @@ function ProductDetail({navigation}) {
         )
     }
 
+    function renderPrice(productItem) {
+        let measuringText = ''
+        if (productItem.productPrice === undefined) {
+            return (
+                <Text style={styles.priceText}>
+                    Liên hệ
+                </Text>
+            )
+
+        } else {
+            measuringText = productItem.measuring
+            return (
+                <Text style={styles.priceText}>
+                    {Utils.moneyFormat(productItem.productPrice)} / {measuringText}
+                </Text>
+            )
+        }
+    }
+
     function renderProductInfoView(data) {
         let fortmatString = 'DD/MM/YYYY'
         let timeString = ""
@@ -234,6 +254,16 @@ function ProductDetail({navigation}) {
                                 {' '} {data.productName}
                             </Text>
                         </View>
+
+                        <View style={styles.itemView}>
+                            <Text style = {styles.itemTitleText}>
+                                Gía:
+                            </Text>
+                            <Text style = {styles.itemContentText}>
+                                {' '} {renderPrice(data)}
+                            </Text>
+                        </View>
+
                         <View style={styles.itemView}>
                             <Text style = {styles.itemTitleText}>
                                 Nơi trồng:
@@ -249,6 +279,20 @@ function ProductDetail({navigation}) {
                             <Text style= {styles.itemContentText}>
                                 {' '} {timeString}
                             </Text>
+                        </View>
+
+
+
+                        <View
+                            style={[styles.selectionItem,{flex:1,flexDirection:'column',alignItems:'flex-start',marginTop:12,marginRight:8}]}>
+                            <View style={[styles.selectionTitleView,{flex:1}]}>
+                                <Text style={styles.itemTitleText}>Mô tả sản phẩm:</Text>
+                            </View>
+                            <View style={{width:'100%',marginTop:4,marginLeft:0,marginBottom:8}}>
+                                <Text style= {styles.itemContentText}>
+                                    {' '} {data.description !== undefined ? data.description : ''}
+                                </Text>
+                            </View>
                         </View>
 
 
@@ -294,7 +338,7 @@ const styles = StyleSheet.create({
 
     productView: {
         marginTop: 16,
-        height: 160,
+        //height: 160,
         justifyContent:'center'
 
     },
@@ -334,9 +378,9 @@ const styles = StyleSheet.create({
         borderColor:GlobalStyle.colour.grayColor
     },
     itemTitleText: {
-        color:GlobalStyle.colour.orangeColor,
-        fontWeight: '500',
-        fontSize: 16
+        color:GlobalStyle.colour.grayColor3,
+        //fontWeight: '500',
+        //fontSize: 16
     },
     itemContentText: {
         fontSize: 16
