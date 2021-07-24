@@ -29,7 +29,6 @@ function ProductItem({item, onPress, type}) {
 
     function renderImage() {
         console.log('ProductItem photoUrls ==>  ',item.photoUrls)
-        let uri = "https://dongxanh.s3.us-east-2.amazonaws.com/user_upload/images/1623487702707-vai.jpg"
         if (item.photoUrls !== undefined && item.photoUrls.length > 0){
             return  (
             <ImageBackground
@@ -55,6 +54,9 @@ function ProductItem({item, onPress, type}) {
             )
         }
     }
+
+
+
 
     let typeString = 'Người bán'
     if (type === 'BUY') {
