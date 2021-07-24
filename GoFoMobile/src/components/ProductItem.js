@@ -29,8 +29,20 @@ function ProductItem({item, onPress, type}) {
 
     function renderImage() {
         console.log('ProductItem photoUrls ==>  ',item.photoUrls)
+        let uri = "https://dongxanh.s3.us-east-2.amazonaws.com/user_upload/images/1623487702707-vai.jpg"
         if (item.photoUrls !== undefined && item.photoUrls.length > 0){
-            return  <ImageBackground imageStyle={{ borderRadius: 4 }} source={{uri: item.photoUrls[0]}} style={styles.imageWrapperView}></ImageBackground>
+            return  (
+            <ImageBackground
+                imageStyle={{ borderRadius: 4 }}
+                style={styles.imageWrapperView}
+                source={{uri: item.photoUrls[0]}}
+                //source={{uri: uri}}
+                >
+
+
+            </ImageBackground>
+            )
+
         } else {
             return (
                 <View style={[styles.imageWrapperView,{backgroundColor:GlobalStyle.colour.grayColor,justifyContent:'center',alignItems:'center'}]} >
@@ -99,7 +111,7 @@ function ProductItem({item, onPress, type}) {
                         <IconAnt
                             style={[styles.leftIcon,{marginLeft:-2}]}
                             name={'user'}
-                            size = {20}
+                            size = {18}
                             color = { GlobalStyle.colour.grayColor2}
                         />
                         <Text style={styles.sellerText}>
@@ -145,7 +157,7 @@ function ProductItem({item, onPress, type}) {
                         <IconAnt
                             style={styles.leftIcon}
                             name={'clockcircleo'}
-                            size = {16}
+                            size = {15}
                             color = { GlobalStyle.colour.grayColor2}
                         />
                         <TouchableOpacity
