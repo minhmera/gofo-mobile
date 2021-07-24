@@ -236,6 +236,7 @@ export async function getSellingByUser(userId,page) {
     return axios.post(url,postData,axiosConfig)
 
 }
+
 export async function getBuyingByUser(userId,page) {
     let url = c.GET_BUYING_PRODUCTS_BY_USER
 

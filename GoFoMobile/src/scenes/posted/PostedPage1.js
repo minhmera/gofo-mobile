@@ -150,7 +150,7 @@ function PostedPage1({navigation}) {
         console.log('MERA RenderList data ==> ', data.length)
         if (data.length > 0) {
             return (
-                <View style={{flex: 1,marginTop: 0}}>
+                <View style={{flex: 1,marginTop: 0, marginBottom:10, backgroundColor:'transparent'}}>
                     <FlatList
                         data={data}
                         renderItem={({item}) =>

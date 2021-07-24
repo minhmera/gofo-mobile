@@ -2,6 +2,14 @@ import React from 'react'
 import {View, TouchableOpacity, StyleSheet, Linking, ImageBackground} from 'react-native';
 import {Appbar, Text, Title} from 'react-native-paper'
 import IconEntypo from 'react-native-vector-icons/Entypo';
+import IconAnt from "react-native-vector-icons/AntDesign";
+import IconFon from "react-native-vector-icons/Fontisto";
+import IconION from "react-native-vector-icons/Ionicons";
+
+require('moment/locale/vi.js');
+require('moment/locale/es.js');
+
+
 
 import GlobalStyle from "../style/GlobalStyle";
 
@@ -12,8 +20,11 @@ function ProductItem({item, onPress, type}) {
     let fortmatString = 'DD/MM/YYYYTHH:mm'
     let timeString = ""
     if (item.createDate != undefined){
-        let time = moment(item.createDate).format(fortmatString)
-        timeString = time.replace('T',' - ')
+        //let time = moment(item.createDate).format(fortmatString)
+        //timeString = time.replace('T',' - ')
+
+
+        timeString = moment(item.createDate).locale('vi').fromNow()
     }
 
     function renderImage() {
@@ -24,7 +35,6 @@ function ProductItem({item, onPress, type}) {
             return (
                 <View style={[styles.imageWrapperView,{backgroundColor:GlobalStyle.colour.grayColor,justifyContent:'center',alignItems:'center'}]} >
                     <IconEntypo
-
                         name={'images'}
                         size = {48}
                         color = {'white'}
@@ -78,22 +88,32 @@ function ProductItem({item, onPress, type}) {
                 }
 
                 <View style={styles.contentInfoView}>
-                    <Text style={styles.itemTitle}>
+                    <Text numberOfLines={2}  style={styles.itemTitle}>
                         {item.productName}
                     </Text>
-                    <View style={{flexDirection:'row'}}>
-                        <Text style={styles.normalText}>
+                    <View style={[styles.infoRow,{marginTop:8}]}>
+                        {/*<Text style={styles.normalText}>
                             {typeString}: {' '}
-                        </Text>
+                        </Text>*/}
+
+                        <IconAnt
+                            style={[styles.leftIcon,{marginLeft:-2}]}
+                            name={'user'}
+                            size = {20}
+                            color = { GlobalStyle.colour.grayColor2}
+                        />
                         <Text style={styles.sellerText}>
                             {item.fullName}
                         </Text>
                     </View>
 
-                    <View style={{flexDirection:'row'}}>
-                        <Text style={styles.normalText}>
-                            Giá: {' '}
-                        </Text>
+                    <View style={styles.infoRow}>
+                        <IconFon
+                            style={[styles.leftIcon,{marginLeft:3}]}
+                            name={'dollar'}
+                            size = {16}
+                            color = { GlobalStyle.colour.grayColor2}
+                        />
                         <View
 
                         >
@@ -102,10 +122,14 @@ function ProductItem({item, onPress, type}) {
 
                     </View>
 
-                    <View style={{flexDirection:'row'}}>
-                        <Text style={styles.normalText}>
-                            SĐT: {' '}
-                        </Text>
+                    <View style={styles.infoRow}>
+
+                        <IconION
+                            style={styles.leftIcon}
+                            name={'call-outline'}
+                            size = {18}
+                            color = { GlobalStyle.colour.grayColor2}
+                        />
                         <TouchableOpacity
                             onPress={()=> openCall(item.sellerPhone)}
                         >
@@ -116,20 +140,37 @@ function ProductItem({item, onPress, type}) {
 
                     </View>
 
+                    <View style={styles.infoRow}>
 
-                    <Text style={styles.normalText}>
-                        Ngày đăng: {timeString}
-                    </Text>
+                        <IconAnt
+                            style={styles.leftIcon}
+                            name={'clockcircleo'}
+                            size = {16}
+                            color = { GlobalStyle.colour.grayColor2}
+                        />
+                        <TouchableOpacity
+                            onPress={()=> openCall(item.sellerPhone)}
+                        >
+                            <Text style={[styles.priceText, {textTransform: 'capitalize'}]}>
+                                {timeString}
+                            </Text>
+                        </TouchableOpacity>
+
+                    </View>
+
+
+
                 </View>
 
             </View>
         </TouchableOpacity>
     )
 }
+//textTransform: 'capitalize'
 const styles = StyleSheet.create({
 
     itemContainer: {
-        height: 150,
+       // height: 168,
     },
 
     itemWrapper: {
@@ -157,6 +198,7 @@ const styles = StyleSheet.create({
     contentInfoView: {
         flex: 2,
         marginLeft: 8,
+
     },
     itemTitle: {
         fontSize:18,
@@ -165,7 +207,18 @@ const styles = StyleSheet.create({
         //color:  GlobalStyle.colour.grayColor
 
     },
+
+    infoRow: {
+        flexDirection:'row',
+        height:24
+    },
+    leftIcon: {
+        width:32,
+        marginTop:2,
+        //marginRight: 8
+    },
     normalText: {
+
         color:'#6B6B6B',
         marginTop:4
     },
