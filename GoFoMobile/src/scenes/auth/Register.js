@@ -29,6 +29,16 @@ import AnimatedLoader from "../../utils/custom-view/AnimatedLoader";
 import LottieView from 'lottie-react-native';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
+import * as AppUtils from '../../utils/AppUtils'
+
+import {
+    SPECIAL_CHAR_WARNING,
+    PHONE_NUMBER_ERROR,
+    MINIMUM_4_CHAR,
+    MINIMUM_8_CHAR
+} from '../../contants/appContants'
+
+
 
 //https://medium.com/react-native-development/easily-build-forms-in-react-native-9006fcd2a73b
 function Register(props) {
@@ -68,11 +78,16 @@ function Register(props) {
             setUserNameError({style:{borderColor:GlobalStyle.colour.errorColor,paddingTop: 16},text:'Vui lòng nhập tên đăng nhập'})
         } else {
             if (userName.length < 4) {
-                setUserNameError({style:{borderColor:GlobalStyle.colour.errorColor,paddingTop: 16},text:'Vui lòng nhập tên đăng nhập'})
+                setUserNameError({style:{borderColor:GlobalStyle.colour.errorColor,paddingTop: 16},text:"Tên đăng nhập " + MINIMUM_4_CHAR})
 
-            } else {
-                setUserNameError({style: {marginTop: 0}, text: ''})
+            }  else  {
+                if (AppUtils.isFullNameError(userName) === true) {
+                    setUserNameError({style:{borderColor:GlobalStyle.colour.errorColor,paddingTop: 16},text:SPECIAL_CHAR_WARNING})
+                } else {
+                    setUserNameError({style: {marginTop: 0}, text: ''})
+                }
             }
+
 
         }
 
@@ -80,14 +95,27 @@ function Register(props) {
             isValidAllFiled = false
             setFullNameError({style:{borderColor:GlobalStyle.colour.errorColor, paddingTop: 16},text:'Vui lòng nhập tên đầy đủ'})
         } else {
-            setFullNameError({style: {marginTop: 0}, text: ''})
+            if (fullName.length < 4) {
+                setFullNameError({style:{borderColor:GlobalStyle.colour.errorColor, paddingTop: 16},text:"Tên đầy đủ " + MINIMUM_4_CHAR})
+            } else {
+                if (AppUtils.isFullNameError(fullName) === true) {
+                    setFullNameError({style:{borderColor:GlobalStyle.colour.errorColor, paddingTop: 16},text:SPECIAL_CHAR_WARNING})
+                } else {
+                    setFullNameError({style: {marginTop: 0}, text: ''})
+                }
+            }
         }
 
         if (phoneNumber === "") {
             isValidAllFiled = false
             setPhoneNumberError({style:{borderColor:GlobalStyle.colour.errorColor,paddingTop: 16},text:'Vui lòng nhập số điện thoại'})
         } else {
-            setPhoneNumberError({style: {marginTop: 0}, text: ''})
+            if (AppUtils.isPhoneNumberError(phoneNumber)) {
+                setPhoneNumberError({style:{borderColor:GlobalStyle.colour.errorColor,paddingTop: 16},text:PHONE_NUMBER_ERROR})
+            } else {
+                setPhoneNumberError({style: {marginTop: 0}, text: ''})
+            }
+
         }
 
         if (password === "") {
@@ -95,7 +123,7 @@ function Register(props) {
             setPasswordError({style: {borderColor: GlobalStyle.colour.errorColor, paddingTop: 16}, text: 'Vui lòng nhập mật khẩu'})
 
         } else if (password.length < 8) {
-            setPasswordError({style: {borderColor: GlobalStyle.colour.errorColor, paddingTop: 16}, text: 'Mật khẩu phải có ít nhất 8 kí tự'})
+            setPasswordError({style: {borderColor: GlobalStyle.colour.errorColor, paddingTop: 16}, text: "Mật khẩu " + MINIMUM_8_CHAR})
         } else {
             setPasswordError({style: {marginTop: 0}, text: ''})
 
