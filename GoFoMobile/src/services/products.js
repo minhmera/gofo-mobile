@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import * as c from '../contants/constants';
+import * as c from '../contants/apiConstants';
 import {handler} from './auth';
 import AsyncStorage from '@react-native-community/async-storage'
 import {TOKEN_KEY, USER_ID_KEY} from "../config/Contants";

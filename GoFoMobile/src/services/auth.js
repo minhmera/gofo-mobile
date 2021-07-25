@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import * as c from '../contants/constants';
+import * as c from '../contants/apiConstants';
 
 export async function register(data){
     try{
