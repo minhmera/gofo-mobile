@@ -53,6 +53,8 @@ function EditUserInfo(props) {
     const [phoneNumber, setPhoneNumber] = useState('');
     const [fullName, setFullName] = useState('');
     const [shopPath, setShopPath] = useState('');
+    const [orgShopPath, setOrgShopPath] = useState('');
+    const [orgFullName, setOrgFullName] = useState('');
 
     const [fullNameError, setFullNameError] = useState({});
     const [shopPathError, setShopPathError] = useState({});
@@ -77,6 +79,9 @@ function EditUserInfo(props) {
                 setPhoneNumber(response.local.phoneNumber)
                 setFullName(response.local.fullName)
                 setShopPath(response.local.shopPath)
+
+                setOrgFullName(response.local.fullName)
+                setOrgShopPath(response.local.shopPath)
 
             }
 
@@ -157,34 +162,59 @@ function EditUserInfo(props) {
             return
         }
         let userId = await AsyncStorage.getItem(USER_ID_KEY);
-       // let fullName = await AsyncStorage.getItem(FULL_NAME_KEY);
         let password = await AsyncStorage.getItem(PASSWORD_KEY);
 
+        let upDateShopPath = ""
+        let upDateFullName = ""
+        if (fullName !== orgFullName) {
+            upDateFullName = fullName
+        }
+
+        if (shopPath !== orgShopPath) {
+            upDateShopPath = shopPath
+        }
 
         let editingObj = {
-            "phoneNumber": phoneNumber,
-            "userId":userId,
-            //"fullName":fullName,
-            "password":password,
+            userId: userId,
+            password: password,
+            fullName: upDateFullName,
+            shopPath: upDateShopPath
         }
 
         console.log('MERA  registerObj   ', editingObj);
         setLoading(true);
         try {
-            let response = await api.editUserInfo(editingObj);
-            console.log('MERA  Register Res ', response);
+            let response = await api.changeUserDetail(editingObj);
+            console.log('MERA  changeUserDetail Res11 ', response);
             setLoading(false);
-            AsyncStorage.setItem(PHONE_NUMBER_KEY, phoneNumber)
+            //AsyncStorage.setItem(PHONE_NUMBER_KEY, phoneNumber)
+
+            if (response) {
+                if (response.fullNameError) {
+                    setFullNameError({style:{borderColor:GlobalStyle.colour.errorColor, paddingTop: 16},text:'Tên này đã được sử dụng'})
+                }
+                if (response.shopPathError) {
+                    setShopPathError({style:{borderColor:GlobalStyle.colour.errorColor, paddingTop: 16},text:'Tên này đã được sử dụng'})
+                }
+
+                if (response.shopPathError === undefined && response.fullNameError === undefined ) {
+                    Alert.alert(
+                        'Thành công',
+                        'Thay đổi thông tin thành công',
+                        [
+                            {text: 'OK'}
+                        ],
+                        {cancelable: false},
+                    )
+                }
+
+
+            }
+
+
             console.log('Set phone  ====>  ',phoneNumber)
 
-            Alert.alert(
-                'Thành công',
-                'Thay đổi số điện thoại thành công',
-                [
-                    {text: 'OK'}
-                ],
-                {cancelable: false},
-            )
+
 
         } catch (error) {
 
