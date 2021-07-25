@@ -45,29 +45,33 @@ const AppStyle = StyleSheet.create({
 
     },
     inputStyle: {
+        height:44,
+        width:'10%',
         fontSize: 16,
         color: 'white',
-
-        height: 58,
         fontWeight: '400',
+        //backgroundColor:'gray'
     },
 
     inputView: {
         width: "80%",
         borderWidth: 1,
         borderColor: 'white',
-        borderRadius: 25,
-        height: 50,
-        marginBottom: 20,
+        borderRadius: 22,
+        height: 44,
+        marginBottom: 24,
         justifyContent: "center",
-        padding: 20
+        alignItems:'center',
+        paddingTop: 0,
+        // paddingLeft: 12,
+        // paddingRight: 12
     },
 
     commonButton: {
         width: "80%",
         backgroundColor: GlobalStyle.colour.primaryColor,
         borderRadius: 25,
-        height: 42,
+        height: 44,
         alignItems: "center",
         justifyContent: "center",
 

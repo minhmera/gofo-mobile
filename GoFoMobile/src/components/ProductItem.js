@@ -28,8 +28,9 @@ function ProductItem({item, onPress, type}) {
     }
 
     function renderImage() {
-        console.log('ProductItem photoUrls ==>  ',item.photoUrls)
+
         if (item.photoUrls !== undefined && item.photoUrls.length > 0){
+            console.log('ProductItem photoUrls 1111 ==>  ',item.photoUrls)
             return  (
             <ImageBackground
                 imageStyle={{ borderRadius: 4 }}
@@ -43,6 +44,7 @@ function ProductItem({item, onPress, type}) {
             )
 
         } else {
+            console.log('ProductItem photoUrls 2222 ==>  ',item.photoUrls)
             return (
                 <View style={[styles.imageWrapperView,{backgroundColor:GlobalStyle.colour.grayColor,justifyContent:'center',alignItems:'center'}]} >
                     <IconEntypo

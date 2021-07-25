@@ -9,6 +9,7 @@ import Icon from "react-native-vector-icons/AntDesign";
 import * as api from "../../services/products";
 import ModelList from "../../components/ModelList";
 import ProductItem from "../../components/ProductItem";
+import LoadingPage from "../../components/LoadingPage";
 
 
 function SellingProduct({navigation}) {
@@ -26,19 +27,14 @@ function SellingProduct({navigation}) {
     const [cities, setCities] = useState({});
 
     const [page, setPage] = useState(1);
-    const [loadingBuying, setLoadingBuying] = useState(false);
     const [refreshing, setRefreshing] = useState(false);
-    const [refreshingBuying, setRefreshingBuying] = useState(false);
     const [sellingList, setSellingList] = useState([]);
-    const [buyingList, setBuyingList] = useState([]);
 
     const  [provinceId, setProvinceId] = useState(0);
 
     const [isListEnd, setIsListEnd] = useState(false);
 
     async function fetchDataLocation() {
-        //setLoading(true);
-
 
         try {
             let response = await api.getLocation();
@@ -57,13 +53,9 @@ function SellingProduct({navigation}) {
                 })
                 setCities(cities)
             }
-            //setCities(response.result)
-            //console.log(' getLocation1 =====>  ',cities)
-            setLoading(false);
 
         } catch (error) {
             setError(error.message);
-            setLoading(false)
         }
     }
 
@@ -71,7 +63,6 @@ function SellingProduct({navigation}) {
 
         if (isRefresh === true ) {
             console.log('MERA  =======================  fetchData ============== page:',page, 'isRefresh:',isRefresh)
-            setLoading(true)
             api.getSellingByCategory(categoryItem.type,provinceId,1,).then((response) => {
                 //console.log('MERA length 11: ',response.data.result.length,' : ', sellingList.length)
                 if (response.data.result.length > 0) {
@@ -88,7 +79,7 @@ function SellingProduct({navigation}) {
         } else {
             if (!loading && !isListEnd) {
                 console.log('MERA ......................  LOAD MORE  ........................   page: ',page, 'isRefresh:',isRefresh, 'loading: ',loading,'  isListEnd:',isListEnd)
-                setLoading(true)
+                setLoading(false)
                 api.getSellingByCategory(categoryItem.type,provinceId,page,).then((response) => {
                     //setSellingList(response.data.result)
                     console.log('MERA LOAD MORE Lenght:  ',response.data.result.length,' =====:===== ', sellingList.length)
@@ -106,8 +97,7 @@ function SellingProduct({navigation}) {
                         setLoading(false);
                         setRefreshing(false)
                     } else {
-                        //setIsListEnd(true);
-                        //setSellingList([])
+
                         setLoading(false);
                         setRefreshing(false)
                     }
@@ -152,6 +142,7 @@ function SellingProduct({navigation}) {
             return (
                 <View style={{marginTop: 0}}>
                     <FlatList
+                        style={{height:'100%'}}
                         data={data}
                         renderItem={({item}) =>
                             RenderItem(navigation,item)
@@ -217,7 +208,7 @@ function SellingProduct({navigation}) {
 
 
     useEffect(() => {
-        fetchData(),fetchDataLocation();
+        fetchData(),fetchDataLocation(), setLoading(true);
     }, []);
     return (
         <View style={styles.container}>
@@ -235,7 +226,9 @@ function SellingProduct({navigation}) {
                 {RenderList(navigation,sellingList)}
             </View>
 
-
+            <LoadingPage
+                isShow={loading}
+            />
 
         </View>
     )

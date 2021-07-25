@@ -8,6 +8,8 @@ import GlobalStyle from "../../style/GlobalStyle";
 import Icon from "react-native-vector-icons/AntDesign";
 import * as api from "../../services/products";
 import ModelList from "../../components/ModelList";
+import LoadingPage from "../../components/LoadingPage";
+import ProductItem from "../../components/ProductItem";
 
 
 function BuyingProduct({navigation}) {
@@ -70,7 +72,6 @@ function BuyingProduct({navigation}) {
 
         if (isRefresh === true ) {
             console.log('MERA  =======================  fetchData ============== page:',page, 'isRefresh:',isRefresh)
-            setLoading(true)
             api.getBuyingByCategory(categoryItem.type,provinceId,1,).then((response) => {
                 //console.log('MERA length 11: ',response.data.result.length,' : ', sellingList.length)
                 if (response.data.result.length > 0) {
@@ -87,7 +88,7 @@ function BuyingProduct({navigation}) {
         } else {
             if (!loading && !isListEnd) {
                 console.log('MERA ......................  LOAD MORE  ........................   page: ',page, 'isRefresh:',isRefresh, 'loading: ',loading,'  isListEnd:',isListEnd)
-                setLoading(true)
+                setLoading(false)
                 api.getBuyingByCategory(categoryItem.type,provinceId,page,).then((response) => {
                     //setSellingList(response.data.result)
                     console.log('MERA LOAD MORE Lenght:  ',response.data.result.length,' =====:===== ', sellingList.length)
@@ -151,6 +152,7 @@ function BuyingProduct({navigation}) {
             return (
                 <View style={{marginTop: 0}}>
                     <FlatList
+                        style={{height:'100%'}}
                         data={data}
                         renderItem={({item}) =>
                             RenderItem(navigation,item)
@@ -216,7 +218,7 @@ function BuyingProduct({navigation}) {
 
 
     useEffect(() => {
-        fetchData(),fetchDataLocation();
+        fetchData(),fetchDataLocation(), setLoading(true);
     }, []);
     return (
         <View style={styles.container}>
@@ -233,7 +235,9 @@ function BuyingProduct({navigation}) {
             <View style={{flex:1, marginTop:8}}>
                 {RenderList(navigation,sellingList)}
             </View>
-
+            <LoadingPage
+                isShow={loading}
+            />
 
 
         </View>
@@ -241,35 +245,16 @@ function BuyingProduct({navigation}) {
 }
 
 
+
 function RenderItem(navigation,item) {
     return (
-        <TouchableOpacity
-            style={[styles.itemContainer]}
-            onPress={() => navigateToDetail(navigation, item._id)}
-        >
-            <View style={styles.itemWrapper}>
-                {
-                    item.photoUrls != null ?
-                        <ImageBackground imageStyle={{borderRadius: 4}} source={{uri: item.photoUrls[0]}}
-                                         style={styles.imageWrapperView}></ImageBackground> : null
-                }
-
-                <View style={styles.contentInfoView}>
-                    <Text style={styles.itemTitle}>
-                        {item.productName}
-                    </Text>
-                    <Text style={styles.normalText}>
-                        Người bán: {item.fullName}
-                    </Text>
-                    <Text style={styles.normalText}>
-                        Liên hệ: {item.sellerPhone}
-                    </Text>
-                </View>
-
-            </View>
-        </TouchableOpacity>
+        <ProductItem
+            item = {item}
+            onPress = {() => navigateToDetail(navigation,item._id)}
+        />
     )
 }
+
 function navigateToDetail(navigation, productId) {
     console.log("MERA navigateToDetail ==> productId: ",productId)
     navigation.push('ProductDetail',{productId:productId, type:'BUYING'})

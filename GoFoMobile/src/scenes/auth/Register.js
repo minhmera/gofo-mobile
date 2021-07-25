@@ -65,31 +65,31 @@ function Register(props) {
 
         if (userName == "") {
             isValidAllFiled = false
-            setUserNameError({style:{borderColor:GlobalStyle.colour.errorColor},text:'Vui lòng nhập tên đăng nhập'})
+            setUserNameError({style:{borderColor:GlobalStyle.colour.errorColor,paddingTop: 16},text:'Vui lòng nhập tên đăng nhập'})
         } else {
             setUserNameError({style: {marginTop: 0}, text: ''})
         }
 
         if (fullName == "") {
             isValidAllFiled = false
-            setFullNameError({style:{borderColor:GlobalStyle.colour.errorColor, marginTop:20},text:'Vui lòng nhập tên đầy đủ'})
+            setFullNameError({style:{borderColor:GlobalStyle.colour.errorColor, paddingTop: 16},text:'Vui lòng nhập tên đầy đủ'})
         } else {
             setFullNameError({style: {marginTop: 0}, text: ''})
         }
 
         if (phoneNumber == "") {
             isValidAllFiled = false
-            setPhoneNumberError({style:{borderColor:GlobalStyle.colour.errorColor},text:'Vui lòng nhập số điện thoại'})
+            setPhoneNumberError({style:{borderColor:GlobalStyle.colour.errorColor,paddingTop: 16},text:'Vui lòng nhập số điện thoại'})
         } else {
             setPhoneNumberError({style: {marginTop: 0}, text: ''})
         }
 
         if (password == "") {
             isValidAllFiled = false
-            setPasswordError({style: {borderColor: GlobalStyle.colour.errorColor, marginTop: 10}, text: 'Vui lòng nhập mật khẩu'})
+            setPasswordError({style: {borderColor: GlobalStyle.colour.errorColor, paddingTop: 16}, text: 'Vui lòng nhập mật khẩu'})
 
         } else if (password.length < 8) {
-            setPasswordError({style: {borderColor: GlobalStyle.colour.errorColor, marginTop: 10}, text: 'Mật khẩu phải có ít nhất 8 kí tự'})
+            setPasswordError({style: {borderColor: GlobalStyle.colour.errorColor, paddingTop: 16}, text: 'Mật khẩu phải có ít nhất 8 kí tự'})
         } else {
             setPasswordError({style: {marginTop: 0}, text: ''})
 
@@ -97,7 +97,7 @@ function Register(props) {
 
         if (confirmPass != password) {
             isValidAllFiled = false
-            setConfirmPassError({style: {borderColor:GlobalStyle.colour.errorColor,marginTop: 10}, text: 'Mật khẩu không trùng khớp'})
+            setConfirmPassError({style: {borderColor:GlobalStyle.colour.errorColor,paddingTop: 16}, text: 'Mật khẩu không trùng khớp'})
 
         } else {
             setConfirmPassError({style: {marginTop: 0}, text: ''})
@@ -242,7 +242,7 @@ function Register(props) {
                         </View>
 
                         <Text style={{marginTop:-8,fontSize:12, color:'white'}}>Đây là tên sẽ hiển thị khi bạn đăng tin mua bán</Text>
-                        <View style={[AppStyle.inputView,]}>
+                        <View style={[AppStyle.inputView,fullNameError.style]}>
                             <Input
                                 inputStyle={[AppStyle.inputStyle]}
                                 inputContainerStyle={[styles.inputContainer]}
@@ -304,7 +304,7 @@ function Register(props) {
                                 inputStyle={AppStyle.inputStyle}
                                 inputContainerStyle={[styles.inputContainer]}
                                 errorMessage={confirmPassError.text}
-                                errorStyle={{marginTop:4}}
+                                errorStyle={{marginTop:0}}
                                 placeholder='Xác nhận mật khẩu... '
                                 maxLength={16}
                                 placeholderTextColor={GlobalStyle.colour.grayColor2}
