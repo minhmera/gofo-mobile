@@ -45,9 +45,9 @@ const AppStyle = StyleSheet.create({
 
     },
     inputStyle: {
-        height:44,
-        width:'10%',
-        fontSize: 16,
+        height:32,
+
+        fontSize: 14,
         color: 'white',
         fontWeight: '400',
         //backgroundColor:'gray'
@@ -58,8 +58,8 @@ const AppStyle = StyleSheet.create({
         borderWidth: 1,
         borderColor: 'white',
         borderRadius: 22,
-        height: 44,
-        marginBottom: 24,
+        height: 36,
+        marginBottom: 20,
         justifyContent: "center",
         alignItems:'center',
         paddingTop: 0,

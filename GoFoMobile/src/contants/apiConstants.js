@@ -7,8 +7,12 @@ export const API_URL = 'https://morning-crag-89761.herokuapp.com';
 //API End Points
 export const REGISTER = `${API_URL}/auth/signup`;
 export const GENERATE_NEW_PASSWORD = `${API_URL}/auth/updatePassByName/$username`;
-export const LOGIN = `${API_URL}/auth/login`;///auth/login
+export const LOGIN = `${API_URL}/auth/login`; // old version
 export const USER_DETAIL = `${API_URL}/auth/userDetail`;
+
+export const GET_USER_DETAIL = `${API_URL}/auth/getUserDetail`;
+export const CHANGE_USER_DETAIL = `${API_URL}/auth/userDetail`;
+
 export const CHANGE_PASSWORD = `${API_URL}/auth/changePassword`;
 export const UPDATE_PROFILE = `${API_URL}/user`;
 export const UPLOAD_IMAGE = `${API_URL}/user/upload`;

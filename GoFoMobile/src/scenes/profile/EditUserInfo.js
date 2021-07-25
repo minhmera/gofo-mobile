@@ -38,6 +38,8 @@ import {
     USER_ID_KEY,
     USER_NAME_KEY
 } from "../../config/Contants";
+import {MINIMUM_4_CHAR, SPECIAL_CHAR_WARNING} from "../../contants/appContants";
+import * as AppUtils from "../../utils/AppUtils";
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
@@ -49,23 +51,82 @@ function EditUserInfo(props) {
     const [loading, setLoading] = useState(false);
 
     const [phoneNumber, setPhoneNumber] = useState('');
-    const [phoneNumberError, setPhoneNumberError] = useState({});
+    const [fullName, setFullName] = useState('');
+    const [shopPath, setShopPath] = useState('');
 
+    const [fullNameError, setFullNameError] = useState({});
+    const [shopPathError, setShopPathError] = useState({});
 
     async function getUserInfo() {
-        let phoneNumber = await AsyncStorage.getItem(PHONE_NUMBER_KEY);
-        console.log('getUserInfo phoneNumber ==>  ',phoneNumber)
-        setPhoneNumber(phoneNumber)
+        //let phoneNumber = await AsyncStorage.getItem(PHONE_NUMBER_KEY);
+        //setPhoneNumber(phoneNumber)
+        setLoading(true)
+
+        let userId = await AsyncStorage.getItem(USER_ID_KEY);
+
+        if (userId) {
+            console.log('getUserInfo with userId ==>  ',userId)
+            let submitObj = {
+                userId: userId,
+            }
+            let response = await api.getUserDetail(submitObj);
+
+            setLoading(false)
+            if (response.local) {
+                console.log("getUserDetail   ===>  ",response.local)
+                setPhoneNumber(response.local.phoneNumber)
+                setFullName(response.local.fullName)
+                setShopPath(response.local.shopPath)
+
+            }
+
+
+
+
+        }
+
     }
 
     function isValidAllField() {
         let isValidAllFiled = true
-        if (phoneNumber == "") {
+
+        if (fullName === "") {
+            console.log('MERA isValidAllField ');
             isValidAllFiled = false
-            setPhoneNumberError({style:{borderColor:'red'},text:'Vui lòng nhập số điện thoại'})
+            setFullNameError({style:{borderColor:GlobalStyle.colour.errorColor, paddingTop: 16},text:'Vui lòng nhập tên đầy đủ'})
         } else {
-            setPhoneNumberError({style: {marginTop: 0}, text: ''})
+            if (fullName.length < 4) {
+                isValidAllFiled = false
+                setFullNameError({style:{borderColor:GlobalStyle.colour.errorColor, paddingTop: 16},text:"Tên đầy đủ " + MINIMUM_4_CHAR})
+            } else {
+
+                if (AppUtils.isFullNameError(fullName) === true) {
+                    isValidAllFiled = false
+                    setFullNameError({style:{borderColor:GlobalStyle.colour.errorColor, paddingTop: 16},text:SPECIAL_CHAR_WARNING})
+                } else {
+                    setFullNameError({style: {marginTop: 0}, text: ''})
+                }
+            }
         }
+
+        if (shopPath === "") {
+            isValidAllFiled = false
+            setShopPathError({style:{borderColor:GlobalStyle.colour.errorColor, paddingTop: 16},text:'Vui lòng nhập shop URL'})
+        } else {
+            if (shopPath.length < 4) {
+                isValidAllFiled = false
+                setShopPathError({style:{borderColor:GlobalStyle.colour.errorColor, paddingTop: 16},text:"URL " + MINIMUM_4_CHAR})
+            } else {
+
+                if (AppUtils.isShopPathError(shopPath) === true) {
+                    isValidAllFiled = false
+                    setShopPathError({style:{borderColor:GlobalStyle.colour.errorColor, paddingTop: 16},text:SPECIAL_CHAR_WARNING})
+                } else {
+                    setShopPathError({style: {marginTop: 0}, text: ''})
+                }
+            }
+        }
+        console.log('MERA Register value: ',"shopPath: ",shopPath,"fullName: ", fullName,' ==>   ', isValidAllFiled);
         return isValidAllFiled
     }
 
@@ -76,7 +137,7 @@ function EditUserInfo(props) {
 
         return (
             <View style={styles.dimLoadingView}>
-                <View style={{width:100, height:100}}>
+                <View style={{width:80, height:80}}>
                     <LottieView
                         source = {require('../../utils/custom-view/LoadingJSON/spinning-circle.json')}
                         autoPlay={true}
@@ -90,13 +151,13 @@ function EditUserInfo(props) {
     }
 
     async function onSubmit() {
-        console.log('MERA Register value: ', isValidAllField());
+
 
         if (isValidAllField() === false) {
             return
         }
         let userId = await AsyncStorage.getItem(USER_ID_KEY);
-        let fullName = await AsyncStorage.getItem(FULL_NAME_KEY);
+       // let fullName = await AsyncStorage.getItem(FULL_NAME_KEY);
         let password = await AsyncStorage.getItem(PASSWORD_KEY);
 
 
@@ -143,8 +204,13 @@ function EditUserInfo(props) {
     }
 
 
+    function onFullNameChange(fullName) {
+        setFullName(fullName)
 
-
+    }
+    function onShopPathChange(fullName) {
+        setShopPath(fullName)
+    }
     function onPhoneChange(phone) {
         const re = /^[0-9\b]+$/;
         console.log('isValid phone ==>   ',re.test(phone))
@@ -168,31 +234,76 @@ function EditUserInfo(props) {
 
                 <StatusBar barStyle="light-content"/>
                 <Header titleText='Đổi Số Điện Thoại' navigation={navigation}/>
-                <View style={{flex: 1}}>
-                    <View style={styles.loginContainer}>
-                        <View style={[AppStyle.inputView, phoneNumberError.style]}>
-                            <Input
-                                inputStyle={[AppStyle.inputStyle]}
-                                inputContainerStyle={[styles.inputContainer]}
-                                placeholderTextColor={GlobalStyle.colour.grayColor2}
-                                placeholder='Số điện thoại ...'
-                                errorMessage={phoneNumberError.text}
-                                errorStyle={{marginTop:4}}
-                                onChangeText={text => onPhoneChange(text)}
-                                keyboardType={'number-pad'}
-                                value={phoneNumber}
-                                maxLength={16}
+                <KeyboardAwareScrollView style={{flex: 1}} keyboardDismissMode={'on-drag'}>
+                    <View style={{flex: 1}}>
+                        <View style={styles.loginContainer}>
+                            <Text style={styles.titleText}>Số điện thoại</Text>
+                            <View style={[AppStyle.inputView]}>
+                                <Input
+                                    inputStyle={[AppStyle.inputStyle]}
+                                    inputContainerStyle={[styles.inputContainer]}
+                                    placeholderTextColor={GlobalStyle.colour.grayColor2}
+                                    placeholder='Số điện thoại ...'
+                                    errorStyle={{marginTop: 4}}
+                                    //onChangeText={text => onPhoneChange(text)}
+                                    keyboardType={'number-pad'}
+                                    value={phoneNumber}
+                                    maxLength={16}
+                                    disabled={true}
 
+                                />
+                            </View>
+
+                            <Text style={styles.titleText}>Tên đầy đủ</Text>
+                            <View style={[AppStyle.inputView, fullNameError.style]}>
+                                <Input
+                                    inputStyle={[AppStyle.inputStyle]}
+                                    inputContainerStyle={[styles.inputContainer]}
+                                    placeholderTextColor={GlobalStyle.colour.grayColor2}
+                                    placeholder='Tên đầy đủ ...'
+                                    errorMessage={fullNameError.text}
+                                    errorStyle={{marginTop: 4}}
+                                    onChangeText={text => onFullNameChange(text)}
+                                    keyboardType={'number-pad'}
+                                    value={fullName}
+                                    maxLength={16}
+
+                                />
+                            </View>
+
+
+                            <Text style={styles.titleText}>Shop URL</Text>
+                            <Text style={{marginTop:-2,fontSize:12, color:GlobalStyle.colour.grayColor}}>(Link trang web tới shop của bạn)</Text>
+                            <View style={[AppStyle.inputView, shopPathError.style]}>
+                                <Input
+                                    inputStyle={[AppStyle.inputStyle]}
+                                    inputContainerStyle={[styles.inputContainer]}
+                                    placeholderTextColor={GlobalStyle.colour.grayColor2}
+                                    placeholder='Shop URL'
+                                    errorMessage={shopPathError.text}
+                                    errorStyle={{marginTop: 4}}
+                                    onChangeText={text => onShopPathChange(text)}
+                                    //keyboardType={'number-pad'}
+                                    value={shopPath}
+                                    maxLength={16}
+
+                                />
+                            </View>
+
+
+                            <CommonButton
+                                title={'OK'}
+                                customStyle={{width: '80%', marginTop: 24}}
+                                onPress={() => onSubmit()}
                             />
-                        </View>
-                        <CommonButton
-                            title={'OK'}
-                            customStyle={{width:'60%',marginTop:24}}
-                            onPress={()=> onSubmit()}
-                        />
 
+                        </View>
                     </View>
-                </View>
+                </KeyboardAwareScrollView>
+
+
+
+
 
             </View>
 
@@ -208,7 +319,6 @@ export default EditUserInfo;
 
 //onPress={() => navigation.replace("Login")}
 //onPress={() => navigation.goBack()}
-
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -216,17 +326,17 @@ const styles = StyleSheet.create({
     dimLoadingView: {
         height: windowHeight,
         width:windowWidth,
-        //top:200,
         position:'absolute',
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: 'rgba(0,0,0,0.7)',
     },
     loginContainer: {
-        flex: 1,
-        marginTop: 60,
-        alignItems: 'center',
-        //justifyContent: 'center',
+        width:'100%',
+        marginTop: 20,
+        marginBottom: 60,
+        justifyContent: 'center',
+        marginLeft:'10%'
     },
     registerText: {
         fontSize: 28,
@@ -243,6 +353,64 @@ const styles = StyleSheet.create({
         paddingTop: 40,
         // paddingLeft: 32,
         // paddingRight: 32,
+    },
+    submitButton: {
+        backgroundColor: GlobalStyle.colour.primaryColor,
+        height: 48,
+
+    },
+    titleText: {
+        marginBottom:4,
+        fontSize:16,
+        color:'white',
+        fontWeight:'bold'
+    },
+
+    inputContainer: {
+        borderBottomWidth: 0
+    },
+    loginText: {
+        fontSize: 16,
+        fontWeight: '700',
+        color: 'white'
+    },
+});
+
+
+
+const styles2 = StyleSheet.create({
+    container: {
+        flex: 1,
+    },
+    dimLoadingView: {
+        height: windowHeight,
+        width:windowWidth,
+        //top:200,
+        position:'absolute',
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: 'rgba(0,0,0,0.7)',
+    },
+    loginContainer: {
+        width:'100%',
+        flex: 1,
+        marginTop: 60,
+        marginLeft:'10%'
+    },
+    registerText: {
+        fontSize: 28,
+        color: 'white',
+        fontWeight:'600',
+        marginBottom: 40
+    },
+
+    dimView: {
+        flex: 1,
+        backgroundColor: 'rgba(0,0,0,0.6)',
+    },
+    buttonContainer: {
+        paddingTop: 40,
+
     },
     submitButton: {
         backgroundColor: GlobalStyle.colour.primaryColor,

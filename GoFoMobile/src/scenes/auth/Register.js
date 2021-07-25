@@ -78,8 +78,8 @@ function Register(props) {
             setUserNameError({style:{borderColor:GlobalStyle.colour.errorColor,paddingTop: 16},text:'Vui lòng nhập tên đăng nhập'})
         } else {
             if (userName.length < 4) {
+                isValidAllFiled = false
                 setUserNameError({style:{borderColor:GlobalStyle.colour.errorColor,paddingTop: 16},text:"Tên đăng nhập " + MINIMUM_4_CHAR})
-
             }  else  {
                 if (AppUtils.isFullNameError(userName) === true) {
                     setUserNameError({style:{borderColor:GlobalStyle.colour.errorColor,paddingTop: 16},text:SPECIAL_CHAR_WARNING})
@@ -88,7 +88,6 @@ function Register(props) {
                 }
             }
 
-
         }
 
         if (fullName === "") {
@@ -96,9 +95,11 @@ function Register(props) {
             setFullNameError({style:{borderColor:GlobalStyle.colour.errorColor, paddingTop: 16},text:'Vui lòng nhập tên đầy đủ'})
         } else {
             if (fullName.length < 4) {
+                isValidAllFiled = false
                 setFullNameError({style:{borderColor:GlobalStyle.colour.errorColor, paddingTop: 16},text:"Tên đầy đủ " + MINIMUM_4_CHAR})
             } else {
                 if (AppUtils.isFullNameError(fullName) === true) {
+                    isValidAllFiled = false
                     setFullNameError({style:{borderColor:GlobalStyle.colour.errorColor, paddingTop: 16},text:SPECIAL_CHAR_WARNING})
                 } else {
                     setFullNameError({style: {marginTop: 0}, text: ''})
@@ -111,6 +112,7 @@ function Register(props) {
             setPhoneNumberError({style:{borderColor:GlobalStyle.colour.errorColor,paddingTop: 16},text:'Vui lòng nhập số điện thoại'})
         } else {
             if (AppUtils.isPhoneNumberError(phoneNumber)) {
+                isValidAllFiled = false
                 setPhoneNumberError({style:{borderColor:GlobalStyle.colour.errorColor,paddingTop: 16},text:PHONE_NUMBER_ERROR})
             } else {
                 setPhoneNumberError({style: {marginTop: 0}, text: ''})
@@ -123,6 +125,7 @@ function Register(props) {
             setPasswordError({style: {borderColor: GlobalStyle.colour.errorColor, paddingTop: 16}, text: 'Vui lòng nhập mật khẩu'})
 
         } else if (password.length < 8) {
+            isValidAllFiled = false
             setPasswordError({style: {borderColor: GlobalStyle.colour.errorColor, paddingTop: 16}, text: "Mật khẩu " + MINIMUM_8_CHAR})
         } else {
             setPasswordError({style: {marginTop: 0}, text: ''})
@@ -227,8 +230,11 @@ function Register(props) {
 
     function onFullNameChange(fullName) {
         setFullName(fullName)
-
     }
+
+
+
+
 
     function onPasswordChange(password) {
         const re = /^[A-Za-z0-9]+$/;
@@ -256,10 +262,11 @@ function Register(props) {
             <View style={styles.dimView}>
 
                 <StatusBar barStyle="light-content"/>
-                <Header titleText='Đăng Ký Tài Khoảng' navigation={navigation}/>
+                <Header titleText='Đăng Ký Tài Khoản' navigation={navigation}/>
                 <KeyboardAwareScrollView style={{flex: 1}} keyboardDismissMode={'on-drag'}>
                     <View style={styles.loginContainer}>
 
+                        <Text style={styles.titleText}>Tên đăng nhập</Text>
                         <View style={[AppStyle.inputView, userNameError.style]}>
                             <Input
                                 inputStyle={[AppStyle.inputStyle]}
@@ -275,7 +282,8 @@ function Register(props) {
                             />
                         </View>
 
-                        <Text style={{marginTop:-8,fontSize:12, color:'white'}}>Đây là tên sẽ hiển thị khi bạn đăng tin mua bán</Text>
+                        <Text style={styles.titleText}>Tên đầy đủ</Text>
+                        <Text style={{marginTop:-2,fontSize:12, color:GlobalStyle.colour.grayColor}}>(Đây là tên sẽ hiển thị khi bạn đăng tin mua bán)</Text>
                         <View style={[AppStyle.inputView,fullNameError.style]}>
                             <Input
                                 inputStyle={[AppStyle.inputStyle]}
@@ -291,8 +299,8 @@ function Register(props) {
                             />
                         </View>
 
-
-                        <Text style={{marginTop:-8,fontSize:12, color:'white'}}>Số điện thoại để liên lạc khi bạn đăng tin mua bán</Text>
+                        <Text style={styles.titleText}>Số điện thoại</Text>
+                        <Text style={{marginTop:-2,fontSize:12, color:'white'}}>(Số điện thoại để liên lạc khi bạn đăng tin mua bán)</Text>
                         <View style={[AppStyle.inputView, phoneNumberError.style]}>
                             <Input
                                 inputStyle={[AppStyle.inputStyle]}
@@ -308,6 +316,7 @@ function Register(props) {
                             />
                         </View>
 
+                        <Text style={styles.titleText}>Mật khẩu</Text>
                         <View style={[AppStyle.inputView, passwordError.style ]}>
                             <Input
                                 inputStyle={[AppStyle.inputStyle]}
@@ -333,6 +342,8 @@ function Register(props) {
 
                             />
                         </View>
+
+                        <Text style={styles.titleText}>Nhập lại mật khẩu</Text>
                         <View style={[AppStyle.inputView,confirmPassError.style]}>
                             <Input
                                 inputStyle={AppStyle.inputStyle}
@@ -381,9 +392,6 @@ function Register(props) {
 export default Register;
 
 
-//onPress={() => navigation.replace("Login")}
-//onPress={() => navigation.goBack()}
-
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -391,17 +399,17 @@ const styles = StyleSheet.create({
     dimLoadingView: {
         height: windowHeight,
         width:windowWidth,
-        //top:200,
         position:'absolute',
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: 'rgba(0,0,0,0.7)',
     },
     loginContainer: {
-        flex: 1,
-        marginTop: 60,
-        alignItems: 'center',
+        width:'100%',
+        marginTop: 20,
+        marginBottom: 60,
         justifyContent: 'center',
+        marginLeft:'10%'
     },
     registerText: {
         fontSize: 28,
@@ -423,6 +431,12 @@ const styles = StyleSheet.create({
         backgroundColor: GlobalStyle.colour.primaryColor,
         height: 48,
 
+    },
+    titleText: {
+        marginBottom:4,
+        fontSize:16,
+        color:'white',
+        fontWeight:'bold'
     },
 
     inputContainer: {

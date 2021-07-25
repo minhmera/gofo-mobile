@@ -43,6 +43,26 @@ export async function editUserInfo(data){
     }
 }
 
+export async function getUserDetail(data){
+    try{
+        let res = await axios.post(c.GET_USER_DETAIL, data);
+        console.log('getUserDetail ==>  ',c.GET_USER_DETAIL)
+        return res.data;
+    }catch (e) {
+        throw handler(e);
+    }
+}
+
+export async function changeUserDetail(data){
+    try{
+        let res = await axios.post(c.CHANGE_USER_DETAIL, data);
+        return res.data;
+    }catch (e) {
+        throw handler(e);
+    }
+}
+
+
 export async function changePassword(data){
     try{
         let res = await axios.post(c.CHANGE_PASSWORD, data);
