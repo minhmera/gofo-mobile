@@ -63,28 +63,34 @@ function Register(props) {
     function isValidAllField() {
         let isValidAllFiled = true
 
-        if (userName == "") {
+        if (userName === "") {
             isValidAllFiled = false
             setUserNameError({style:{borderColor:GlobalStyle.colour.errorColor,paddingTop: 16},text:'Vui lòng nhập tên đăng nhập'})
         } else {
-            setUserNameError({style: {marginTop: 0}, text: ''})
+            if (userName.length < 4) {
+                setUserNameError({style:{borderColor:GlobalStyle.colour.errorColor,paddingTop: 16},text:'Vui lòng nhập tên đăng nhập'})
+
+            } else {
+                setUserNameError({style: {marginTop: 0}, text: ''})
+            }
+
         }
 
-        if (fullName == "") {
+        if (fullName === "") {
             isValidAllFiled = false
             setFullNameError({style:{borderColor:GlobalStyle.colour.errorColor, paddingTop: 16},text:'Vui lòng nhập tên đầy đủ'})
         } else {
             setFullNameError({style: {marginTop: 0}, text: ''})
         }
 
-        if (phoneNumber == "") {
+        if (phoneNumber === "") {
             isValidAllFiled = false
             setPhoneNumberError({style:{borderColor:GlobalStyle.colour.errorColor,paddingTop: 16},text:'Vui lòng nhập số điện thoại'})
         } else {
             setPhoneNumberError({style: {marginTop: 0}, text: ''})
         }
 
-        if (password == "") {
+        if (password === "") {
             isValidAllFiled = false
             setPasswordError({style: {borderColor: GlobalStyle.colour.errorColor, paddingTop: 16}, text: 'Vui lòng nhập mật khẩu'})
 
@@ -95,7 +101,7 @@ function Register(props) {
 
         }
 
-        if (confirmPass != password) {
+        if (confirmPass !== password) {
             isValidAllFiled = false
             setConfirmPassError({style: {borderColor:GlobalStyle.colour.errorColor,paddingTop: 16}, text: 'Mật khẩu không trùng khớp'})
 
