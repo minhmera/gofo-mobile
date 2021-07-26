@@ -46,7 +46,6 @@ const AppStyle = StyleSheet.create({
     },
     inputStyle: {
         height:32,
-
         fontSize: 14,
         color: 'white',
         fontWeight: '400',

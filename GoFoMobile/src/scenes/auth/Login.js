@@ -1,5 +1,15 @@
 import React, {useState} from 'react';
-import {StatusBar, TextInput, TouchableOpacity, StyleSheet, View, Text, ImageBackground, Alert} from 'react-native';
+import {
+    StatusBar,
+    TextInput,
+    TouchableOpacity,
+    StyleSheet,
+    View,
+    Text,
+    ImageBackground,
+    Alert,
+    Dimensions
+} from 'react-native';
 
 import AsyncStorage from '@react-native-community/async-storage'
 
@@ -19,6 +29,9 @@ import {TOKEN_KEY, USER_ID_KEY, USER_KEY, USER_NAME_KEY,FULL_NAME_KEY,PASSWORD_K
 import Icon from "react-native-vector-icons/AntDesign";
 import LoadingPage from "../../components/LoadingPage";
 
+
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
 
 async function getTokenKey() {
     let token = await AsyncStorage.getItem(TOKEN_KEY);
@@ -52,20 +65,25 @@ export default function Login(props) {
         let isValidAllFiled = true
         if (userName == "") {
             isValidAllFiled = false
-            setUserNameError({style:{borderColor:'red'},text:'Vui lòng nhập tên đăng nhập'})
+            //setUserNameError({style:{borderColor:'red'},text:'Vui lòng nhập tên đăng nhập'})
+            setUserNameError({style:{borderColor:GlobalStyle.colour.errorColor,paddingTop: 8},text:'Vui lòng nhập tên đăng nhập'})
         } else {
-            setUserNameError({style: {marginTop: 0}, text: ''})
+            setUserNameError({style: {paddingTop: 0}, text: ''})
         }
 
         if (password == "") {
             isValidAllFiled = false
-            setPasswordError({style: {borderColor: 'red', marginTop: 10}, text: 'Vui lòng nhập mật khẩu'})
+            setPasswordError({style: {borderColor: 'red', paddingTop: 14}, text: 'Vui lòng nhập mật khẩu'})
 
         } else if (password.length < 8) {
-            setPasswordError({style: {borderColor: 'red', marginTop: 10}, text: 'Mật khẩu phải có ít nhất 8 kí tự'})
-        } else {
-            setPasswordError({style: {marginTop: 0}, text: ''})
+            isValidAllFiled = false
 
+            setPasswordError({style: {borderColor: 'red', paddingTop: 14}, text: 'Mật khẩu phải có ít nhất 8 kí tự'})
+
+        } else {
+
+
+            setPasswordError({style: {paddingTop: 0}, text: ''})
         }
 
         return isValidAllFiled
@@ -158,8 +176,9 @@ export default function Login(props) {
             <View style={styles.dimView}>
                 <KeyboardAwareScrollView style={{flex: 1}} keyboardDismissMode={'on-drag'}>
 
-                    <View style={styles.loginContainer}>
+                        <View style={styles.loginContainer}>
                         <Text style={styles.logo}>MP Food</Text>
+                        <Text style={styles.titleText}>Tên đăng nhập</Text>
                         <View style={[AppStyle.inputView, userNameError.style]}>
                             <Input
                                 inputStyle={AppStyle.inputStyle}
@@ -168,13 +187,15 @@ export default function Login(props) {
                                 placeholder='Tên đăng nhập...'
 
                                 errorMessage={userNameError.text}
-                                errorStyle={{marginTop:4}}
+                                errorStyle={{marginTop:0}}
 
                                 onChangeText={text => setUserName(text)}
 
 
                             />
                         </View>
+
+                        <Text style={styles.titleText}>Mật khẩu</Text>
                         <View style={[AppStyle.inputView, passwordError.style ]}>
                             <Input
                                 inputStyle={AppStyle.inputStyle}
@@ -185,7 +206,7 @@ export default function Login(props) {
                                 secureTextEntry={onPassSecure}
 
                                 errorMessage={passwordError.text}
-                                errorStyle={{marginTop:4}}
+                                errorStyle={{marginTop:0}}
 
 
                                 rightIcon={
@@ -200,21 +221,23 @@ export default function Login(props) {
                             />
                         </View>
                         <TouchableOpacity
+                            style={[AppStyle.commonButton,styles.signupButton,{marginTop:10, marginBottom:-20}]}
                             onPress={() => navigateToForgot() }
                         >
                             <Text style={styles.forgot}>Quên mật khẩu?</Text>
                         </TouchableOpacity>
                         <TouchableOpacity
-                            style={[AppStyle.commonButton,{marginTop:20, marginBottom:20}]}
+                            style={[AppStyle.commonButton,{marginTop:20, marginBottom:0}]}
                             onPress={() => onSubmit()}
                         >
                             <Text style={styles.loginText}>Đăng nhập</Text>
                         </TouchableOpacity>
                         <TouchableOpacity
+                            style={[AppStyle.commonButton,styles.signupButton]}
                             onPress={() => testNavigate()}
                             disabled={isDisableResButton}
                         >
-                            <Text style={styles.signUpText}>Đăng ký</Text>
+                            <Text style={styles.loginText}>Đăng ký</Text>
                         </TouchableOpacity>
 
 
@@ -243,97 +266,86 @@ Login.navigationOptions = ({}) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-
     },
+    logo: {
+        width:'80%',
+        marginTop:80,
+        marginBottom: 40,
+        fontWeight: "bold",
+        fontSize: 50,
+        color: "white",
+        //color: GlobalStyle.colour.primaryColor,
+
+        textAlign:'center'
+    },
+
+    dimLoadingView: {
+        height: windowHeight,
+        width:windowWidth,
+        position:'absolute',
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: 'rgba(0,0,0,0.7)',
+    },
+    loginContainer: {
+        width:'100%',
+        marginTop: 20,
+        marginBottom: 60,
+        justifyContent: 'center',
+        marginLeft:'10%',
+        //backgroundColor:'gray'
+    },
+    registerText: {
+        fontSize: 28,
+        color: 'white',
+        fontWeight:'600',
+        marginBottom: 40
+    },
+
     dimView: {
         flex: 1,
         backgroundColor: 'rgba(0,0,0,0.7)',
     },
-
-    lottie: {
-        width: 100,
-        height: 100
-    },
-    bottomView: {},
     buttonContainer: {
         paddingTop: 40,
-        paddingLeft: 32,
-        paddingRight: 32,
+        // paddingLeft: 32,
+        // paddingRight: 32,
     },
     submitButton: {
         backgroundColor: GlobalStyle.colour.primaryColor,
         height: 48,
 
     },
-    inputStyle: {
-
-        height: 56,
-        fontSize: 16,
-        fontWeight: '400',
-    },
-    basicInput: {
-        marginLeft: 24,
-        marginRight: 24,
-        borderBottomWidth: 0.5,
-        borderBottomColor: '#B5B5B5',
-    },
-    registerText: {
-        paddingLeft: 4,
-        color: GlobalStyle.colour.primaryColor,
-        fontWeight: '600'
-    },
-
-    loginContainer: {
-        flex: 1,
-        marginTop: 160,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    logo: {
-        fontWeight: "bold",
-        fontSize: 50,
-        color: "white",
-        //color: GlobalStyle.colour.primaryColor,
-        marginBottom: 40
-    },
-    inputView: {
-        width: "80%",
-        //backgroundColor:"#465881",
-        borderWidth: 1,
-        borderColor: 'white',
-        borderRadius: 25,
-        height: 50,
-        marginBottom: 20,
-        justifyContent: "center",
-        padding: 20
-    },
-    inputText: {
-        fontSize: 18,
-        height: 50,
-        color: 'white'
-    },
-    forgot: {
-        fontWeight: '600',
-        color: 'white',
-        fontSize: 13
-    },
-    loginText: {
-        fontSize: 16,
-        fontWeight: '700',
-        color: 'white'
-    },
-
-    signUpText: {
-        fontSize: 16,
-        fontWeight: '700',
-        color: 'white',
+    titleText: {
+        marginBottom:4,
+        fontSize:16,
+        color:'white',
+        fontWeight:'bold'
     },
 
     inputContainer: {
         borderBottomWidth: 0
     },
+    loginText: {
+        fontSize: 16,
+        fontWeight: '700',
+        color: 'white'
+
+    },
+    signupButton: {
+        backgroundColor:'transparent'
+    },
+
+
+    forgot: {
+        fontWeight: '600',
+        color: 'white',
+        fontSize: 12
+    }
+
 
 });
+
 
 
 
