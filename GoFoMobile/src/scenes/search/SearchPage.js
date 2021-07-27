@@ -21,7 +21,7 @@ import LocalizationContext from "../../localization/LocalizationContext";
 
 import {useGlobalDataContext, setCategories} from '../../contexts/globalDataContext'
 import GlobalStyle from "../../style/GlobalStyle";
-import {SEARCH_HISTORY_PRODUCT_KEY, TOKEN_KEY} from "../../config/Contants";
+import {SEARCH_HISTORY_PRODUCT_KEY,SEARCH_HISTORY_SELLER_KEY, TOKEN_KEY} from "../../config/Contants";
 import SegmentedControlTab from "react-native-segmented-control-tab";
 function SearchPage({navigation}) {
     const {t, i18n} = React.useContext(LocalizationContext);
@@ -31,15 +31,15 @@ function SearchPage({navigation}) {
     const [searchText, setSearchText] = useState('');
     const [selectedIndex, setSelectedIndex] = useState(0);
 
-    const [historySearch, setHistorySearch] = useState([]);
+    const [historySearchProduct, setHistorySearchProduct] = useState([]);
 
 
 
     function onEnterSearch(searchText) {
 
 
-        let storageArray = [...historySearch]
-        console.log('MERA Enter to search ',searchText, ' historySearch ==>  ',historySearch,' storageArray ==> ',storageArray)
+        let storageArray = [...historySearchProduct]
+        console.log('MERA Enter to search ',searchText, ' historySearchProduct ==>  ',historySearchProduct,' storageArray ==> ',storageArray)
         if (storageArray.length === 0) {
             storageArray.push(searchText);
         } else {
@@ -48,23 +48,23 @@ function SearchPage({navigation}) {
 
             }
         }
-        setHistorySearch(storageArray)
+        setHistorySearchProduct(storageArray)
         console.log('MERA new history search ==>  ',storageArray);
         AsyncStorage.setItem(SEARCH_HISTORY_PRODUCT_KEY,JSON.stringify(storageArray))
-            .then(json => console.log('MERA new history search 22  ==>  ',historySearch))
+            .then(json => console.log('MERA new history search 22  ==>  ',historySearchProduct))
         navigateToResult(searchText)
     }
 
-    function getHistorySearchList() {
+    function gethistorySearchProductList() {
         AsyncStorage.getItem(SEARCH_HISTORY_PRODUCT_KEY)
             .then(req => JSON.parse(req))
             .then(json => {
                 if (json === null) {
-                    setHistorySearch([])
+                    setHistorySearchProduct([])
                 } else {
-                    setHistorySearch(json)
+                    setHistorySearchProduct(json)
                 }
-                console.log('MERA getHistorySearchList 2 => ',json)
+                console.log('MERA gethistorySearchProductList 2 => ',json)
             })
             .catch(error => console.log('error!'));
 
@@ -72,7 +72,7 @@ function SearchPage({navigation}) {
 
     function removeSearchHistory() {
         AsyncStorage.removeItem(SEARCH_HISTORY_PRODUCT_KEY)
-        setHistorySearch([])
+        setHistorySearchProduct([])
     }
 
     function navigateToResult(text) {
@@ -82,7 +82,7 @@ function SearchPage({navigation}) {
 
     useEffect(() => {
         {
-            getHistorySearchList()
+            gethistorySearchProductList()
         }
     }, []);
 
@@ -173,11 +173,11 @@ function SearchPage({navigation}) {
                 </View>
 
                 <FlatList
-                    data={historySearch}
+                    data={historySearchProduct}
                     renderItem={({item}) =>
                         renderHistoryItem(item)
                     }
-                    extraData={historySearch}
+                    extraData={historySearchProduct}
                     keyExtractor={(item, index) => item}
                 />
 
@@ -187,7 +187,7 @@ function SearchPage({navigation}) {
     );
 
     function renderHistoryItem(item) {
-        console.log('MERA historySearch **==> ',historySearch)
+        console.log('MERA historySearchProduct **==> ',historySearchProduct)
         return (
             <TouchableOpacity
                 activeOpacity={1}
