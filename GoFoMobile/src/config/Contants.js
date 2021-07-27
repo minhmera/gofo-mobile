@@ -8,4 +8,4 @@ export const PASSWORD_KEY = 'password';
 export const USER_POINT_KEY = 'point';
 export const PHONE_NUMBER_KEY = 'point';
 
-export const SEARCH_HISTORY_KEY = 'SEARCH_HISTORY_KEY';
+export const SEARCH_HISTORY_PRODUCT_KEY = 'SEARCH_HISTORY_PRODUCT_KEY';
