@@ -1,8 +1,8 @@
 import React from 'react';
 
 //API URL
-export const API_URL = 'https://morning-crag-89761.herokuapp.com';
-//export const API_URL = 'http://192.168.1.2:3000';
+//export const API_URL = 'https://morning-crag-89761.herokuapp.com';
+export const API_URL = 'http://192.168.1.11:3000';
 
 //API End Points
 export const REGISTER = `${API_URL}/auth/signup`;
@@ -31,6 +31,8 @@ export const GET_BUYING_PRODUCTS = `${API_URL}/buyingPost/getAll?page=$page&size
 export const GET_SELLING_PRODUCTS_BY_CATEGORY = `${API_URL}/sellingPost/getByCategory?categoryId=$categoryId&provinceId=$provinceId&page=$page&size=$size`;
 export const GET_SELLING_PRODUCTS_BY_USER = `${API_URL}/sellingPost/getByUser?page=$page&size=$size`;
 export const SEARCH_SELLING_PRODUCT = `${API_URL}/sellingPost/searchSellingPost?productName=$productName&page=$page&size=$size`;
+
+export const SEARCH_SELLER = `${API_URL}/auth/searchUser?fullName=$fullName&page=$page&size=$size`;
 
 export const DELETE_SELLING_PRODUCT = `${API_URL}/sellingPost/$productId`;
 export const DELETE_BUYING_PRODUCT = `${API_URL}/buyingPost/$productId`;

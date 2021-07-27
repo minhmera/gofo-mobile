@@ -23,14 +23,17 @@ import {useGlobalDataContext, setCategories} from '../../contexts/globalDataCont
 import GlobalStyle from "../../style/GlobalStyle";
 import {SEARCH_HISTORY_KEY, TOKEN_KEY} from "../../config/Contants";
 import * as api from "../../services/products";
+import * as authAPI from "../../services/auth";
 import AnimatedLoader from "../../utils/custom-view/AnimatedLoader";
 import ProductItem from '../../components/ProductItem'
+import SellerItem from '../../components/SellerItem'
 
 
 function SearchResultPage({navigation}) {
     const {t, i18n} = React.useContext(LocalizationContext);
     let searchText = navigation.getParam('searchText');
-    console.log('MERA searchText ==>  ',searchText)
+    let searchType = navigation.getParam('searchType');
+    console.log('MERA searchText ==>  ',searchText, 'searchType ==>   ',searchType)
 
     const [loading, setLoading] = useState(false);
     const [page, setPage] = useState(1);
@@ -41,7 +44,17 @@ function SearchResultPage({navigation}) {
     const [isSearched, setIsSearched] = useState(false);
 
     function fetchData(isRefresh) {
+        if (searchType === 'PRODUCT'){
+            fetchProduct(isRefresh)
+        } else {
+            fetchSeller(isRefresh)
+        }
 
+
+    }
+
+
+    function fetchProduct(isRefresh) {
         if (isRefresh === true ) {
             console.log('MERA  =======================  fetchData ============== page:',page, 'isRefresh:',isRefresh)
             setLoading(true)
@@ -90,10 +103,59 @@ function SearchResultPage({navigation}) {
                 });
             }
         }
-
-
-
     }
+
+    function fetchSeller(isRefresh) {
+        if (isRefresh === true ) {
+            console.log('MERA  =======================  fetchData ============== page:',page, 'isRefresh:',isRefresh)
+            setLoading(true)
+            authAPI.searchSeller(searchText,1).then((response) => {
+                //console.log('MERA length 11: ',response.data.result.length,' : ', sellingList.length)
+                setIsSearched(true)
+                if (response.data.result.length > 0) {
+                    setSellingList(response.data.result)
+                    setLoading(false);
+                    setRefreshing(false)
+                } else {
+                    //setIsListEnd(true);
+                    setLoading(false);
+                    setRefreshing(false)
+                }
+
+            });
+        } else {
+            if (!loading && !isListEnd) {
+                console.log('MERA ......................  LOAD MORE  ........................   page: ',page, 'isRefresh:',isRefresh, 'loading: ',loading,'  isListEnd:',isListEnd)
+                setLoading(true)
+                authAPI.searchSeller(searchText,page).then((response) => {
+                    //setSellingList(response.data.result)
+                    setIsSearched(true)
+                    console.log('MERA LOAD MORE Lenght:  ',response.data.result.length,' =====:===== ', sellingList.length)
+                    if (response.data.result.length > 0) {
+
+                        setPage(page + 1);
+
+                        // After the response increasing the page
+                        if (page == 1) {
+                            setSellingList(response.data.result)
+                        } else {
+                            setSellingList([...sellingList, ...response.data.result])
+                        }
+
+                        setLoading(false);
+                        setRefreshing(false)
+                    } else {
+                        //setIsListEnd(true);
+                        //setSellingList([])
+                        setLoading(false);
+                        setRefreshing(false)
+                    }
+
+                });
+            }
+        }
+    }
+
 
     function refreshData() {
         setLoading(false);
@@ -103,6 +165,37 @@ function SearchResultPage({navigation}) {
         console.log('MERA  refreshData page :',page, '  ' ,refreshing)
         fetchData(true)
 
+    }
+
+    function RenderItem(item,navigation) {
+        if (searchType === 'PRODUCT'){
+            return renderProductItem(item,navigation)
+        } else {
+            return renderSellerItem(item,navigation)
+        }
+
+    }
+    function renderProductItem(item,navigation) {
+        return (
+            <ProductItem
+                item = {item}
+                onPress = {() => navigateToDetail(navigation,item._id)}
+            />
+        )
+    }
+
+    function renderSellerItem(item,navigation) {
+        return (
+            <SellerItem
+                item = {item}
+                onPress = {() => navigateToDetail(navigation,item._id)}
+            />
+        )
+    }
+
+    function navigateToDetail(navigation, productId) {
+        console.log("MERA navigateToDetail ==> productId: ",productId)
+        navigation.push('ProductDetail',{productId:productId, type:'SELL'})
     }
 
     function RenderList(navigation,data) {
@@ -152,6 +245,7 @@ function SearchResultPage({navigation}) {
         fetchData()
     }, []);
 
+
     return (
 
         <View
@@ -183,19 +277,7 @@ function SearchResultPage({navigation}) {
 
 export default SearchResultPage
 
-function RenderItem(item,navigation) {
-    return (
-        <ProductItem
-            item = {item}
-            onPress = {() => navigateToDetail(navigation,item._id)}
-        />
-    )
-}
 
-function navigateToDetail(navigation, productId) {
-    console.log("MERA navigateToDetail ==> productId: ",productId)
-    navigation.push('ProductDetail',{productId:productId, type:'SELL'})
-}
 
 const styles = StyleSheet.create({
     container: {

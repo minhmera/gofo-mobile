@@ -49,7 +49,7 @@ function ProductDetail({navigation}) {
         api.getBuyingProductDetail(productId).then((response) => {
             setLoading(false)
             //console.log('MERA getBuyingProductDetail RES : ', response.data.productName)
-            setBuyingData(response)
+            setBuyingData(response.data)
 
         });
     }
@@ -59,14 +59,12 @@ function ProductDetail({navigation}) {
         if (item === null) {
             return null
         } else {
-            if (item.photoUrls === null) {
+            if (item.photoUrls === null || item.photoUrls === undefined) {
                 return null
             }
         }
-        /* At the moment just show 1  */
-        console.log('MERA  renderProductImages    ', item)
+
         let images = item.photoUrls
-        let image = images[0]
 
         return (
             <View style={styles.productImageContainer}>

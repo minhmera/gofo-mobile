@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 import * as c from '../contants/apiConstants';
-
+const PAGE_SIZE = 20
 export async function register(data){
     try{
         let res = await axios.post(c.REGISTER, data);
@@ -111,4 +111,15 @@ export function handler(err) {
     else if (!err.hasOwnProperty("message")) error = err.toJSON();
 
     return new Error(error.message);
+}
+
+
+export async function searchSeller(fullName,page) {
+    let url = c.SEARCH_SELLER
+    url = url.replace('$fullName',fullName)
+    url = url.replace('$page',page)
+    url = url.replace('$size',PAGE_SIZE)
+    console.log('MERA searchSeller  _______________URL_________ ',url)
+    return axios.get(url);
+
 }

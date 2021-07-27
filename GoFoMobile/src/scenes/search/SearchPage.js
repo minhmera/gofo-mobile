@@ -76,7 +76,13 @@ function SearchPage({navigation}) {
     }
 
     function navigateToResult(text) {
-        navigation.push('SearchResultPage',{searchText:text})
+        let searchType = ''
+        if (selectedIndex === 0) {
+            searchType = 'PRODUCT'
+        }else {
+            searchType = 'SELLER'
+        }
+        navigation.push('SearchResultPage',{searchText:text,searchType:searchType})
     }
 
 
