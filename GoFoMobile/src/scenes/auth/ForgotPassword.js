@@ -51,7 +51,7 @@ function ForgotPassword(props) {
         let isValidAllFiled = true
         if (userName == "") {
             isValidAllFiled = false
-            setUserNameError({style:{borderColor:'red'},text:'Vui lòng nhập tên đăng nhập'})
+            setUserNameError({style:{borderColor:'red',paddingTop: 16},text:'Vui lòng nhập tên đăng nhập'})
         } else {
             setUserNameError({style: {marginTop: 0}, text: ''})
         }
@@ -133,7 +133,7 @@ function ForgotPassword(props) {
                 <Header titleText='Quên Mật Khẩu' navigation={navigation}/>
                 <KeyboardAwareScrollView style={{flex: 1}} keyboardDismissMode={'on-drag'}>
                     <View style={styles.loginContainer}>
-
+                        <Text style={styles.titleText}>Tên đăng nhập</Text>
                         <View style={[AppStyle.inputView, userNameError.style]}>
                             <Input
                                 inputStyle={[AppStyle.inputStyle]}
@@ -141,7 +141,7 @@ function ForgotPassword(props) {
                                 placeholderTextColor={GlobalStyle.colour.grayColor2}
                                 placeholder='Tên đăng nhập...'
                                 errorMessage={userNameError.text}
-                                errorStyle={{marginTop:4}}
+                                errorStyle={{marginTop:0}}
                                 onChangeText={text => setUserName(text)}
                             />
                         </View>
@@ -189,10 +189,12 @@ const styles = StyleSheet.create({
         backgroundColor: 'rgba(0,0,0,0.7)',
     },
     loginContainer: {
-        flex: 1,
-        marginTop: 60,
-        alignItems: 'center',
+        width:'100%',
+        marginTop: 20,
+        marginBottom: 60,
         justifyContent: 'center',
+        marginLeft:'10%',
+        //backgroundColor:'gray'
     },
     registerText: {
         fontSize: 28,
@@ -223,6 +225,12 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: '700',
         color: 'white'
+    },
+    titleText: {
+        marginBottom:4,
+        fontSize:16,
+        color:'white',
+        fontWeight:'bold'
     },
 });
 

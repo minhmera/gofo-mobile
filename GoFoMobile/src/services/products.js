@@ -293,7 +293,7 @@ export async function getSellingProductDetail(productId) {
 export async function getBuyingProductDetail(productId) {
     let url = c.GET_BUYING_PRODUCT_DETAIL
     url = url.replace('$productId',productId)
-    console.log('MERA getSellingProductDetail  _______________URL_________ ',url)
+    console.log('MERA getBuyingProductDetail  _______________URL_________ ',url)
     return axios.get(url);
 }
 

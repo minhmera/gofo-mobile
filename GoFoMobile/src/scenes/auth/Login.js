@@ -59,7 +59,12 @@ export default function Login(props) {
     const [password, setPassword] = useState('');
     const [passwordError, setPasswordError] = useState({});
     const [onPassSecure, setPassSecure] = useState(true)
+
+
+
     const [isDisableResButton, setDisableResButton] = useState(false)
+    const [isDisableForgotButton, setDisableForgotButton] = useState(false);
+
 
     function isValidAllField() {
         let isValidAllFiled = true
@@ -143,24 +148,30 @@ export default function Login(props) {
         }
     }
 
-    function testNavigate() {
+    function onRegisterClick() {
         console.log('MERA isLoginPressed ')
-
-
         setDisableResButton(true)
+        if (isDisableResButton === false) {
+            navigation.push('Register', {movies: {name: 'Lucy'}})
+        }
+
         setTimeout(() => {
            setDisableResButton(false)
-            navigation.push('Register', {movies: {name: 'Lucy'}})
-        }, 200);
+        }, 900);
 
     }
 
     function navigateToForgot() {
         console.log('MERA navigateToForgot ')
 
-        setTimeout(() => {
+        setDisableForgotButton(true)
+        if (isDisableForgotButton === false) {
             navigation.push('ForgotPassword', {movies: {name: 'Lucy'}})
-        }, 200);
+        }
+
+        setTimeout(() => {
+            setDisableForgotButton(false)
+        }, 900);
     }
 
     const {token} = AsyncStorage.getItem(TOKEN_KEY)
@@ -177,7 +188,7 @@ export default function Login(props) {
                 <KeyboardAwareScrollView style={{flex: 1}} keyboardDismissMode={'on-drag'}>
 
                         <View style={styles.loginContainer}>
-                        <Text style={styles.logo}>MP Food</Text>
+                        <Text style={styles.logo}>Wanam</Text>
                         <Text style={styles.titleText}>Tên đăng nhập</Text>
                         <View style={[AppStyle.inputView, userNameError.style]}>
                             <Input
@@ -234,7 +245,7 @@ export default function Login(props) {
                         </TouchableOpacity>
                         <TouchableOpacity
                             style={[AppStyle.commonButton,styles.signupButton]}
-                            onPress={() => testNavigate()}
+                            onPress={() => onRegisterClick()}
                             disabled={isDisableResButton}
                         >
                             <Text style={styles.loginText}>Đăng ký</Text>

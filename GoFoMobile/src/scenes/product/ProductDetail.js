@@ -40,7 +40,7 @@ function ProductDetail({navigation}) {
     function fetchSellingProductDetail() {
         api.getSellingProductDetail(productId).then((response) => {
             setLoading(false)
-            console.log('MERA getSellingProductDetail : ', response.data.productName)
+            console.log('MERA getSellingProductDetail : ', response.data)
             setSellingData(response.data)
         });
     }
@@ -48,8 +48,8 @@ function ProductDetail({navigation}) {
     function fetchBuyingProductDetail() {
         api.getBuyingProductDetail(productId).then((response) => {
             setLoading(false)
-            console.log('MERA getBuyingProductDetail RES : ', response.data.productName)
-            setBuyingData(response.data)
+            //console.log('MERA getBuyingProductDetail RES : ', response.data.productName)
+            setBuyingData(response)
 
         });
     }
@@ -67,14 +67,6 @@ function ProductDetail({navigation}) {
         console.log('MERA  renderProductImages    ', item)
         let images = item.photoUrls
         let image = images[0]
-        /*return (
-            <View style={styles.productImageContainer}>
-                <ImageBackground style={styles.productImage} source={{uri: image}}>
-
-                </ImageBackground>
-                <View style={{height: 2, backgroundColor: GlobalStyle.colour.grayColor}}></View>
-            </View>
-        )*/
 
         return (
             <View style={styles.productImageContainer}>
