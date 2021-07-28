@@ -27,7 +27,7 @@ function SearchPage({navigation}) {
     const {t, i18n} = React.useContext(LocalizationContext);
     const { globalState, dispatch } = useGlobalDataContext();
     //console.log('MERA  globalState ==>  ',globalState)
-    const [searchHint, setSearchHint] = useState('Tìm sản phẩm cần mua');
+    const [searchHint, setSearchHint] = useState('Tìm sản phẩm');
     const [searchText, setSearchText] = useState('');
     const [selectedIndex, setSelectedIndex] = useState(0);
 
@@ -36,43 +36,80 @@ function SearchPage({navigation}) {
 
 
     function onEnterSearch(searchText) {
-
-
-        let storageArray = [...historySearchProduct]
-        console.log('MERA Enter to search ',searchText, ' historySearchProduct ==>  ',historySearchProduct,' storageArray ==> ',storageArray)
-        if (storageArray.length === 0) {
-            storageArray.push(searchText);
-        } else {
-            if(storageArray.indexOf(searchText) === -1) {
+        if (selectedIndex === 0) {
+            let storageArray = [...historySearchProduct]
+            console.log('MERA Enter to search ',searchText, ' historySearchProduct ==>  ',historySearchProduct,' storageArray ==> ',storageArray)
+            if (storageArray.length === 0) {
                 storageArray.push(searchText);
-
+            } else {
+                if(storageArray.indexOf(searchText) === -1) {
+                    storageArray.push(searchText);
+                }
             }
+            setHistorySearchProduct(storageArray)
+            console.log('MERA new history search ==>  ',storageArray);
+            AsyncStorage.setItem(SEARCH_HISTORY_PRODUCT_KEY,JSON.stringify(storageArray))
+                .then(json => console.log('MERA new history search 11  ==>  ',historySearchProduct))
+        } else {
+            let storageArray = [...historySearchProduct]
+            console.log('MERA Enter to search ',searchText, ' historySearchProduct ==>  ',historySearchProduct,' storageArray ==> ',storageArray)
+            if (storageArray.length === 0) {
+                storageArray.push(searchText);
+            } else {
+                if(storageArray.indexOf(searchText) === -1) {
+                    storageArray.push(searchText);
+                }
+            }
+            setHistorySearchProduct(storageArray)
+            console.log('MERA new history search ==>  ',storageArray);
+            AsyncStorage.setItem(SEARCH_HISTORY_SELLER_KEY,JSON.stringify(storageArray))
+                .then(json => console.log('MERA new history search 22  ==>  ',historySearchProduct))
         }
-        setHistorySearchProduct(storageArray)
-        console.log('MERA new history search ==>  ',storageArray);
-        AsyncStorage.setItem(SEARCH_HISTORY_PRODUCT_KEY,JSON.stringify(storageArray))
-            .then(json => console.log('MERA new history search 22  ==>  ',historySearchProduct))
+
         navigateToResult(searchText)
     }
 
-    function gethistorySearchProductList() {
-        AsyncStorage.getItem(SEARCH_HISTORY_PRODUCT_KEY)
-            .then(req => JSON.parse(req))
-            .then(json => {
-                if (json === null) {
-                    setHistorySearchProduct([])
-                } else {
-                    setHistorySearchProduct(json)
-                }
-                console.log('MERA gethistorySearchProductList 2 => ',json)
-            })
-            .catch(error => console.log('error!'));
+    function getHistorySearchProductList(index) {
+        console.log('MERA gethistorySearchProductList 00 => ',selectedIndex)
+        if (index === 0) {
+            AsyncStorage.getItem(SEARCH_HISTORY_PRODUCT_KEY)
+                .then(req => JSON.parse(req))
+                .then(json => {
+                    if (json === null) {
+                        setHistorySearchProduct([])
+                    } else {
+                        setHistorySearchProduct(json)
+                    }
+                    console.log('MERA gethistorySearchProductList 11 => ',json)
+                })
+                .catch(error => console.log('error!'));
+        } else {
+            AsyncStorage.getItem(SEARCH_HISTORY_SELLER_KEY)
+                .then(req => JSON.parse(req))
+                .then(json => {
+                    if (json === null) {
+                        setHistorySearchProduct([])
+                    } else {
+                        setHistorySearchProduct(json)
+                    }
+                    console.log('MERA gethistorySearchProductList 22 => ',json)
+                })
+                .catch(error => console.log('error!'));
+        }
+
 
     }
 
     function removeSearchHistory() {
-        AsyncStorage.removeItem(SEARCH_HISTORY_PRODUCT_KEY)
-        setHistorySearchProduct([])
+        console.log('MERA removeSearchHistory  => ',selectedIndex)
+
+        if (selectedIndex === 0) {
+            AsyncStorage.removeItem(SEARCH_HISTORY_PRODUCT_KEY)
+            setHistorySearchProduct([])
+        } else {
+            AsyncStorage.removeItem(SEARCH_HISTORY_SELLER_KEY)
+            setHistorySearchProduct([])
+        }
     }
 
     function navigateToResult(text) {
@@ -82,24 +119,27 @@ function SearchPage({navigation}) {
         }else {
             searchType = 'SELLER'
         }
+        setSearchText('')
         navigation.push('SearchResultPage',{searchText:text,searchType:searchType})
     }
 
 
     useEffect(() => {
         {
-            gethistorySearchProductList()
+            getHistorySearchProductList(selectedIndex)
         }
     }, []);
 
     function handleIndexChange (index) {
         console.log('handleIndexChange    ',index)
         if (index === 0) {
-            setSearchHint('Tìm sản phẩm cần mua')
+            setSearchHint('Tìm sản phẩm')
         } else {
-            setSearchHint('Tìm tên người bán')
+            setSearchHint('Tìm người bán')
         }
+        setSearchText('')
         setSelectedIndex(index)
+        getHistorySearchProductList(index)
     }
 
 

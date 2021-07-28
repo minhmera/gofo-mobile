@@ -298,3 +298,20 @@ export async function getBuyingProductDetail(productId) {
 }
 
 
+export async function getSellingByFullName(fullName,page) {
+    let url = c.GET_SELLING_PRODUCTS_BY_FULLNAME
+
+    url = url.replace('$page',page)
+    url = url.replace('$size',PAGE_SIZE)
+    let token = await AsyncStorage.getItem(TOKEN_KEY);
+    let axiosConfig = {
+        headers: {
+            'Authorization': token,
+        }
+    };
+    console.log('getSellingByFullName  ==>  ',url)
+    let postData = { fullName: fullName}
+    return axios.post(url,postData)
+
+}
+

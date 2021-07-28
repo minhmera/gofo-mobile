@@ -188,14 +188,20 @@ function SearchResultPage({navigation}) {
         return (
             <SellerItem
                 item = {item}
-                onPress = {() => navigateToDetail(navigation,item._id)}
+                onPress = {() => navigateToSellingByUser(navigation,item)}
             />
         )
     }
 
+
     function navigateToDetail(navigation, productId) {
         console.log("MERA navigateToDetail ==> productId: ",productId)
         navigation.push('ProductDetail',{productId:productId, type:'SELL'})
+    }
+
+    function navigateToSellingByUser(navigation, user) {
+        console.log("MERA navigateToDetail ==> user: ",user)
+        navigation.push('SellingByUser',{user:user})
     }
 
     function RenderList(navigation,data) {

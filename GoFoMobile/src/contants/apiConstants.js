@@ -30,6 +30,8 @@ export const GET_BUYING_PRODUCTS = `${API_URL}/buyingPost/getAll?page=$page&size
 
 export const GET_SELLING_PRODUCTS_BY_CATEGORY = `${API_URL}/sellingPost/getByCategory?categoryId=$categoryId&provinceId=$provinceId&page=$page&size=$size`;
 export const GET_SELLING_PRODUCTS_BY_USER = `${API_URL}/sellingPost/getByUser?page=$page&size=$size`;
+export const GET_SELLING_PRODUCTS_BY_FULLNAME = `${API_URL}/searchSellingPost/getByFullName?page=$page&size=$size`;
+
 export const SEARCH_SELLING_PRODUCT = `${API_URL}/sellingPost/searchSellingPost?productName=$productName&page=$page&size=$size`;
 
 export const SEARCH_SELLER = `${API_URL}/auth/searchUser?fullName=$fullName&page=$page&size=$size`;
