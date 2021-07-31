@@ -195,6 +195,7 @@ function SellingByUser({navigation}) {
         <View style={styles.container}>
             <Header titleText='Sản phẩm đang bán' navigation={navigation}/>
 
+
             <View style={{flex:1, marginTop:8}}>
                 {RenderList(navigation,sellingList)}
             </View>

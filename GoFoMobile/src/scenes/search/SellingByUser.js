@@ -151,7 +151,19 @@ function SellingProduct({navigation}) {
     return (
         <View style={styles.container}>
             <Header titleText='Sản Phẩm Đang Bán' navigation={navigation}/>
+            <View style={styles.topBar}>
+                <View style={styles.topBarLeft}>
+                    <Text>
+                        ADMIN đang bán
+                    </Text>
+                </View>
+                <View style={styles.topBarRight}>
+                    <Text>
+                        Theo dõi
+                    </Text>
+                </View>
 
+            </View>
             <View style={{flex:1, marginTop:0}}>
                 {RenderList(navigation,sellingList)}
             </View>
@@ -187,6 +199,31 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#F5F5F5',
     },
+    topBar: {
+        height:40,
+        marginLeft:8,
+        marginRight:8,
+        paddingLeft:4,
+        paddingRight:4,
+
+        backgroundColor:'white',
+        borderBottomEndRadius: 4,
+        flexDirection:'row',
+        alignItems: 'center'
+    },
+
+    topBarLeft: {
+        flex:2,
+        alignItems: 'flex-start'
+
+    },
+
+    topBarRight: {
+        flex:1,
+        alignItems: 'flex-end'
+    },
+
+
     content: {
         flex: 1,
         //justifyContent: 'center',
