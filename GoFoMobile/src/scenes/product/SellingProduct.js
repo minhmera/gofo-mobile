@@ -246,7 +246,7 @@ function RenderItem(navigation,item) {
 
 function navigateToDetail(navigation, productId) {
     console.log("MERA navigateToDetail ==> productId: ",productId)
-    navigation.push('ProductDetail',{productId:productId, type:'SELLING'})
+    navigation.push('ProductDetail',{productId:productId, type:'SELL'})
 }
 
 export default SellingProduct

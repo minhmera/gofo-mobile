@@ -28,6 +28,8 @@ function SellingProduct({navigation}) {
     const [isListEnd, setIsListEnd] = useState(false);
 
 
+
+
     function fetchData(isRefresh) {
 
         if (isRefresh === true ) {
@@ -92,7 +94,14 @@ function SellingProduct({navigation}) {
     }
 
     function RenderList(navigation,data) {
-        //console.log('MERA RenderList data ==> ', data.length)
+        console.log('MERA RenderList data ==> ', data)
+        if (data === null) {
+            return (
+                <View style={styles.noItemView}>
+                    <Text style = {styles.noItemText} >ahihi</Text>
+                </View>
+            )
+        }
         if (data.length > 0) {
             return (
                 <View style={{marginTop: 0}}>
@@ -117,11 +126,19 @@ function SellingProduct({navigation}) {
                 </View>
             )
         } else {
-            return (
-                <View style={styles.noItemView}>
-                    <Text style = {styles.noItemText} >Không có sản phẩm nào đang bán</Text>
-                </View>
-            )
+            if (loading === true) {
+                return (
+                    <View style={styles.noItemView}>
+                    </View>
+                )
+            } else {
+                return (
+                    <View style={styles.noItemView}>
+                        <Text style = {styles.noItemText} >Không có sản phẩm nào đang bán</Text>
+                    </View>
+                )
+            }
+
         }
     }
 
@@ -159,7 +176,7 @@ function RenderItem(navigation,item) {
 
 function navigateToDetail(navigation, productId) {
     console.log("MERA navigateToDetail ==> productId: ",productId)
-    navigation.push('ProductDetail',{productId:productId, type:'SELLING'})
+    navigation.push('ProductDetail',{productId:productId, type:'SELL'})
 }
 
 export default SellingProduct
