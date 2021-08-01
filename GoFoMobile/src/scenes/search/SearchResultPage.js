@@ -201,7 +201,7 @@ function SearchResultPage({navigation}) {
 
     function navigateToSellingByUser(navigation, user) {
         console.log("MERA navigateToSellingByUser ==> user: ",user)
-        navigation.push('SellingByUser',{sellerInfo:user})
+        navigation.push('SellingByUserPage',{sellerInfo:user})
     }
 
     function RenderList(navigation,data) {
