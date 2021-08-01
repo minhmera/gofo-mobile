@@ -1,7 +1,12 @@
 import axios from 'axios';
 
 import * as c from '../contants/apiConstants';
+import AsyncStorage from "@react-native-community/async-storage";
+import {PASSWORD_KEY, PHONE_NUMBER_KEY, USER_ID_KEY} from "../config/Contants";
+
+
 const PAGE_SIZE = 20
+
 export async function register(data){
     try{
         let res = await axios.post(c.REGISTER, data);
@@ -122,4 +127,45 @@ export async function searchSeller(fullName,page) {
     console.log('MERA searchSeller  _______________URL_________ ',url)
     return axios.get(url);
 
+}
+
+
+export async function followSeller(userId,followingId){
+    let url = c.FOLLOW_SELLER
+
+    url = url.replace('$userId',userId)
+    url = url.replace('$followingId',followingId)
+    let postObjc = {
+        userId: userId,
+        followingId: followingId,
+        password: AsyncStorage.getItem(PASSWORD_KEY)
+        //let curPass = await AsyncStorage.getItem(PASSWORD_KEY);
+    }
+
+    console.log('MERA followSeller  _______________URL_________ ',url)
+    return axios.post(url,postObjc);
+}
+
+export async function unFollowSeller(userId,followingId){
+    let url = c.UN_FOLLOW_SELLER
+
+    url = url.replace('$userId',userId)
+    url = url.replace('$followingId',followingId)
+    let postObjc = {
+        userId: userId,
+        followingId: followingId,
+        password: AsyncStorage.getItem(PASSWORD_KEY)
+    }
+
+    console.log('MERA followSeller  _______________URL_________ ',url)
+    return axios.post(url,postObjc);
+}
+
+
+
+export async function getFollowingUser(followingIds){
+    let url = c.GET_FOLLOWING_SELLER
+    url = url.replace('$followingIds',followingIds)
+    console.log('MERA getFollowingUser  _______________URL_________ ',url)
+    return axios.get(url);
 }

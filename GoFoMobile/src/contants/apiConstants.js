@@ -36,6 +36,11 @@ export const SEARCH_SELLING_PRODUCT = `${API_URL}/sellingPost/searchSellingPost?
 
 export const SEARCH_SELLER = `${API_URL}/auth/searchUser?fullName=$fullName&page=$page&size=$size`;
 
+
+export const FOLLOW_SELLER = `${API_URL}/auth/followSeller?userId=$userId&followingId=$followingId`;
+export const UN_FOLLOW_SELLER = `${API_URL}/auth/unFollowSeller?userId=$userId&followingId=$followingId`;
+export const GET_FOLLOWING_SELLER = `${API_URL}/auth/getFollowingUser?followingIds=$followingIds`;
+
 export const DELETE_SELLING_PRODUCT = `${API_URL}/sellingPost/$productId`;
 export const DELETE_BUYING_PRODUCT = `${API_URL}/buyingPost/$productId`;
 

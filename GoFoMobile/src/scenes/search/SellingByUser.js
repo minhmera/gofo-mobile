@@ -15,9 +15,9 @@ import LoadingPage from "../../components/LoadingPage";
 function SellingProduct({navigation}) {
     //const {navigate} = props.navigation;
 
-    let user = navigation.getParam('user');
+    let sellerInfo = navigation.getParam('sellerInfo');
 
-    console.log('user  ==>   ',user)
+    console.log('sellerInfo  ==>   ',sellerInfo)
 
     const [loading, setLoading] = useState(false);
 
@@ -34,7 +34,7 @@ function SellingProduct({navigation}) {
 
         if (isRefresh === true ) {
             console.log('MERA  =======================  fetchData ============== page:',page, 'isRefresh:',isRefresh)
-            api.getSellingByFullName(user.local.fullName,1).then((response) => {
+            api.getSellingByFullName(sellerInfo.local.fullName,1).then((response) => {
                 //console.log('MERA length 11: ',response.data.result.length,' : ', sellingList.length)
                 if (response.data.result.length > 0) {
                     setSellingList(response.data.result)
@@ -51,7 +51,7 @@ function SellingProduct({navigation}) {
             if (!loading && !isListEnd) {
                 console.log('MERA ......................  LOAD MORE  ........................   page: ',page, 'isRefresh:',isRefresh, 'loading: ',loading,'  isListEnd:',isListEnd)
                 setLoading(false)
-                api.getSellingByFullName(user.local.fullName,1).then((response) => {
+                api.getSellingByFullName(sellerInfo.local.fullName,1).then((response) => {
                     //setSellingList(response.data.result)
                     console.log('MERA LOAD MORE Lenght:  ',response.data.result.length,' =====:===== ', sellingList.length)
                     if (response.data.result.length > 0) {
@@ -153,14 +153,20 @@ function SellingProduct({navigation}) {
             <Header titleText='Sản Phẩm Đang Bán' navigation={navigation}/>
             <View style={styles.topBar}>
                 <View style={styles.topBarLeft}>
-                    <Text>
+
+                    <Text style ={styles.sellerNameText}>
                         ADMIN đang bán
                     </Text>
+
                 </View>
                 <View style={styles.topBarRight}>
-                    <Text>
-                        Theo dõi
-                    </Text>
+                    <TouchableOpacity
+                        style={styles.followButton}
+                        onPress={()=> console.log('  ')}>
+                        <Text style = {styles.followText}>
+                            Theo dõi
+                        </Text>
+                    </TouchableOpacity>
                 </View>
 
             </View>
@@ -200,6 +206,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#F5F5F5',
     },
     topBar: {
+        marginTop:4,
         height:40,
         marginLeft:8,
         marginRight:8,
@@ -207,7 +214,7 @@ const styles = StyleSheet.create({
         paddingRight:4,
 
         backgroundColor:'white',
-        borderBottomEndRadius: 4,
+        borderRadius: 4,
         flexDirection:'row',
         alignItems: 'center'
     },
@@ -217,16 +224,36 @@ const styles = StyleSheet.create({
         alignItems: 'flex-start'
 
     },
+    sellerNameText: {
+        color:GlobalStyle.colour.primaryColor,
+        fontSize: 15,
+        fontWeight:'500'
+    },
+
 
     topBarRight: {
         flex:1,
         alignItems: 'flex-end'
     },
 
+    followButton: {
+        paddingLeft: 16,
+        paddingRight: 16,
+        paddingTop:4,
+        paddingBottom:4,
+        borderColor: GlobalStyle.colour.primaryColor,
+        borderWidth:1,
+        borderRadius:4
+    },
+
+    followText: {
+        color:GlobalStyle.colour.primaryColor,
+        //fontSize: 14,
+    },
+
 
     content: {
         flex: 1,
-        //justifyContent: 'center',
         padding: 8,
     },
 
