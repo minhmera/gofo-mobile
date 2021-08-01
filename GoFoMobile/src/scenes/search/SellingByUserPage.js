@@ -146,7 +146,7 @@ function SellingByUser({navigation}) {
         if (data === null) {
             return (
                 <View style={styles.noItemView}>
-                    <Text style = {styles.noItemText} >ahihi</Text>
+                    <Text style = {styles.noItemText} >Không có sản phẩm nào đang bán</Text>
                 </View>
             )
         }

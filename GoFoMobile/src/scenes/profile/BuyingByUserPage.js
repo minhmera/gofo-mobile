@@ -8,6 +8,8 @@ import * as api from "../../services/products";
 import EditingProductItem from "../../components/EditingProductItem";
 import AsyncStorage from "@react-native-community/async-storage";
 import {USER_ID_KEY} from "../../config/Contants";
+import {Text} from "react-native-paper";
+import LoadingPage from "../../components/LoadingPage";
 
 
 function BuyingByUser({navigation}) {
@@ -100,6 +102,13 @@ function BuyingByUser({navigation}) {
 
     function RenderList(navigation,data) {
         //console.log('MERA RenderList data ==> ', data.length)
+        if (data === null) {
+            return (
+                <View style={styles.noItemView}>
+                    <Text style = {styles.noItemText} >Không có sản phẩm</Text>
+                </View>
+            )
+        }
         if (data.length > 0) {
             return (
                 <View style={{flex:1,marginTop: 0}}>
@@ -122,6 +131,20 @@ function BuyingByUser({navigation}) {
                     />
                 </View>
             )
+        }else {
+            if (loading === true) {
+                return (
+                    <View style={styles.noItemView}>
+                    </View>
+                )
+            } else {
+                return (
+                    <View style={styles.noItemView}>
+                        <Text style = {styles.noItemText} >Không có sản phẩm</Text>
+                    </View>
+                )
+            }
+
         }
     }
 
@@ -200,7 +223,9 @@ function BuyingByUser({navigation}) {
                 {RenderList(navigation,sellingList)}
             </View>
 
-
+            <LoadingPage
+                isShow={loading}
+            />
 
         </View>
     )
@@ -308,6 +333,18 @@ const styles = StyleSheet.create({
         color: 'black',
         fontSize:13,
         marginTop:4
+    },
+    noItemView: {
+        flex: 1,
+        justifyContent:'center',
+        alignItems:'center',
+        backgroundColor: 'white'
+    },
+
+    noItemText: {
+        fontSize:16,
+        padding: 16,
+        textAlign:'center'
     }
 
 
