@@ -49,9 +49,10 @@ export async function editUserInfo(data){
 }
 
 export async function getUserDetail(data){
+
     try{
         let res = await axios.post(c.GET_USER_DETAIL, data);
-        console.log('getUserDetail ==>  ',c.GET_USER_DETAIL)
+        console.log('getUserDetail URL res ==>  ',c.GET_USER_DETAIL)
         return res.data;
     }catch (e) {
         throw handler(e);
@@ -135,10 +136,11 @@ export async function followSeller(userId,followingId){
 
     url = url.replace('$userId',userId)
     url = url.replace('$followingId',followingId)
+    let pass = await AsyncStorage.getItem(PASSWORD_KEY)
     let postObjc = {
         userId: userId,
         followingId: followingId,
-        password: AsyncStorage.getItem(PASSWORD_KEY)
+        password: pass
         //let curPass = await AsyncStorage.getItem(PASSWORD_KEY);
     }
 
@@ -151,10 +153,11 @@ export async function unFollowSeller(userId,followingId){
 
     url = url.replace('$userId',userId)
     url = url.replace('$followingId',followingId)
+    let pass = await AsyncStorage.getItem(PASSWORD_KEY)
     let postObjc = {
         userId: userId,
         followingId: followingId,
-        password: AsyncStorage.getItem(PASSWORD_KEY)
+        password: pass
     }
 
     console.log('MERA followSeller  _______________URL_________ ',url)

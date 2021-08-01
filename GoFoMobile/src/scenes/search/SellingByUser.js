@@ -2,15 +2,25 @@
 import React, {useEffect, useState} from 'react'
 
 import {Text, FAB, List} from 'react-native-paper'
-import {FlatList, ImageBackground, RefreshControl, StyleSheet, TouchableOpacity, View} from 'react-native';
+import {
+    FlatList,
+    ImageBackground,
+    RefreshControl,
+    StyleSheet,
+    TouchableOpacity,
+    View
+} from 'react-native';
 import Header from '../../components/Header'
 import GlobalStyle from "../../style/GlobalStyle";
 import Icon from "react-native-vector-icons/AntDesign";
 import * as api from "../../services/products";
+import * as authApi from "../../services/auth";
 import ModelList from "../../components/ModelList";
 import ProductItem from "../../components/ProductItem";
 import LoadingPage from "../../components/LoadingPage";
-
+import AsyncStorage from "@react-native-community/async-storage";
+import {PASSWORD_KEY, USER_ID_KEY, TOKEN_KEY, PHONE_NUMBER_KEY} from "../../config/Contants";
+import * as c from "../../contants/apiConstants";
 
 function SellingProduct({navigation}) {
     //const {navigate} = props.navigation;
@@ -26,8 +36,19 @@ function SellingProduct({navigation}) {
     const [sellingList, setSellingList] = useState([]);
 
     const [isListEnd, setIsListEnd] = useState(false);
+    const [isFollowed, setIsFollowed] = useState(false);
 
 
+    const [userInfo, setUserInfo] = useState({});
+    let [token, setToken] = useState(null);
+    let [userId, setUserId] = useState(null);
+
+    async function getTokenKey() {
+        let token = await AsyncStorage.getItem(TOKEN_KEY);
+        let userId = await AsyncStorage.getItem(USER_ID_KEY);
+        setToken(token)
+        setUserId(userId)
+    }
 
 
     function fetchData(isRefresh) {
@@ -81,6 +102,33 @@ function SellingProduct({navigation}) {
 
     }
 
+
+    async function getUserDetail() {
+        let userId = await AsyncStorage.getItem(USER_ID_KEY);
+        let submitObj = {
+            userId: userId
+        }
+        console.log('getUserDetail sellerInfo ==> ',sellerInfo)
+        authApi.getUserDetail(submitObj).then((user)=> {
+            console.log('getUserDetail res ==>  ',user)
+            if (user) {
+                setUserInfo(user)
+
+                if (user.local ) {
+                    if (user.local.followingSellers.length > 0 ) {
+                        let sellerUserId = sellerInfo._id
+                        let index  =  user.local.followingSellers.indexOf(sellerUserId)
+                        if (index !== -1) {
+                            setIsFollowed(true)
+                        }
+                        console.log('getUserDetail index ',index)
+                    }
+                }
+
+
+            }
+        })
+    }
 
 
     function refreshData() {
@@ -142,31 +190,74 @@ function SellingProduct({navigation}) {
         }
     }
 
-
-
-
     useEffect(() => {
-        fetchData(), setLoading(true);
+        fetchData(),getUserDetail(),getTokenKey(), setLoading(true);
     }, []);
+
+
+    function onFollowClick() {
+        let followingId = sellerInfo._id
+        console.log('onFollowClick  ==>  ', followingId)
+
+        if (isFollowed === true) {
+            authApi.unFollowSeller(userId,followingId).then((response) =>{
+                console.log('onFollowClick un ==>  ',response)
+                if (response) {
+                    if(response.data.success === true) {
+                        setIsFollowed(false)
+                    }
+                }
+            })
+        } else {
+            authApi.followSeller(userId,followingId).then((response) =>{
+                console.log('onFollowClick fo ==>  ',response)
+                if (response) {
+                    if(response.data.success === true) {
+                        setIsFollowed(true)
+                    }
+                }
+            })
+        }
+
+
+    }
+    function renderFollowButton() {
+     console.log( 'token ==>  ',token)
+     let text = 'Theo dõi'
+     if (isFollowed === true) {
+         text = 'Đang theo dõi'
+     }
+    if (token !== null) {
+        return (
+            <TouchableOpacity
+                style={styles.followButton}
+                onPress={()=> onFollowClick()}>
+                <Text style = {styles.followText}>
+                    {text}
+                </Text>
+            </TouchableOpacity>
+        )
+    } else {
+        return  null
+    }
+
+    }
+
     return (
+
         <View style={styles.container}>
             <Header titleText='Sản Phẩm Đang Bán' navigation={navigation}/>
             <View style={styles.topBar}>
                 <View style={styles.topBarLeft}>
 
                     <Text style ={styles.sellerNameText}>
-                        ADMIN đang bán
+                        {sellerInfo.local.fullName} đang bán
                     </Text>
 
                 </View>
+
                 <View style={styles.topBarRight}>
-                    <TouchableOpacity
-                        style={styles.followButton}
-                        onPress={()=> console.log('  ')}>
-                        <Text style = {styles.followText}>
-                            Theo dõi
-                        </Text>
-                    </TouchableOpacity>
+                    {renderFollowButton()}
                 </View>
 
             </View>
