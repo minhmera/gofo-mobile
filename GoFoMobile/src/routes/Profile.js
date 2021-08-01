@@ -6,7 +6,7 @@ import EditSellingPost from "../scenes/profile/EditSellingPost";
 import EditUserInfo from "../scenes/profile/EditUserInfo";
 import ChangePassword from "../scenes/profile/ChangePassword";
 import FollowingSeller from "../scenes/profile/FollowingSeller";
-
+import SellingByUserPage from "../scenes/search/SellingByUserPage";
 
 
 
@@ -34,7 +34,10 @@ const ProfileStack = createStackNavigator(
         },
         FollowingSeller: {
             screen: FollowingSeller
-        }
+        },
+        SellingByUserPage: {
+            screen: SellingByUserPage
+        },
     },{
         headerMode: 'none',
         initialRouteName: 'ProfilePage1',

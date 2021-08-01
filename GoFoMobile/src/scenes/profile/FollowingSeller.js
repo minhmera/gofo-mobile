@@ -83,6 +83,8 @@ function FollowingUser({navigation}) {
                             //this.setState({followingList: response.data})
                         }
                     })
+                } else {
+                    setLoading(false)
                 }
                 console.log('getUserDetail followingIdsString ==> ',followingIdsString)
             }
@@ -144,7 +146,7 @@ function FollowingUser({navigation}) {
             } else {
                 return (
                     <View style={styles.noItemView}>
-                        <Text style = {styles.noItemText} >Không có sản phẩm nào đang bán</Text>
+                        <Text style = {styles.noItemText} >Bạn chưa theo dõi bất cứ người bán nào</Text>
                     </View>
                 )
             }
@@ -181,7 +183,7 @@ function RenderItem(navigation,item) {
 
 function navigateToSellingByUser(navigation, user) {
     console.log("MERA navigateToSellingByUser ==> user: ",user)
-    navigation.push('SellingByUser',{sellerInfo:user})
+    navigation.push('SellingByUserPage',{sellerInfo:user})
 }
 
 
