@@ -225,7 +225,6 @@ export async function getSellingByUser(userId,page) {
 
     url = url.replace('$page',page)
     url = url.replace('$size',PAGE_SIZE)
-    console.log('MERA getSellingByUser 11 POST _______________URL_________ ',url, 'userId ==> ',userId)
     let token = await AsyncStorage.getItem(TOKEN_KEY);
     let axiosConfig = {
         headers: {

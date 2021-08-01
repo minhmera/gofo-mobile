@@ -200,7 +200,7 @@ function SearchResultPage({navigation}) {
     }
 
     function navigateToSellingByUser(navigation, user) {
-        console.log("MERA navigateToDetail ==> user: ",user)
+        console.log("MERA navigateToSellingByUser ==> user: ",user)
         navigation.push('SellingByUser',{sellerInfo:user})
     }
 

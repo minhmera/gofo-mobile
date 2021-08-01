@@ -25,6 +25,11 @@ function ProfilePage1({navigation}) {
 
     }
 
+    function navigateFollowingSeller() {
+        console.log('------------------------   navigateFollowingSeller ------------------------')
+        navigation.push('FollowingSeller',{userId:userId})
+    }
+
     function navigateSellingPost() {
         navigation.push('SellingByUser',{userId:userId})
     }
@@ -102,9 +107,10 @@ function ProfilePage1({navigation}) {
             return (
                 <View style={styles.body}>
                     <KeyboardAwareScrollView  keyboardDismissMode={'on-drag'}>
+                        {renderItem('Đổi thông tin cá nhân','setting',()=> onChangeUserInfo())}
+                        {renderItem('Đang theo dõi','export',()=> navigateFollowingSeller())}
                         {renderItem('Tin bán đã đăng','export',()=> navigateSellingPost())}
                         {renderItem('Tin mua đã đăng','book',()=> navigateBuyingPost())}
-                        {renderItem('Đổi số điện thoại','setting',()=> onChangeUserInfo())}
                         {renderItem('Đổi mật khẩu','setting',()=> onChangePassword())}
                         {renderItem('Cộng đồng','team',()=> onChangeUserInfo())}
                         {renderItem('Đăng xuất','logout',()=> logout())}

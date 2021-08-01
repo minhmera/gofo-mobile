@@ -15,7 +15,7 @@ import GlobalStyle from "../style/GlobalStyle";
 import moment from "moment";
 import * as Utils from '../utils/AppUtils';
 
-function ProductItem({item, onPress, type}) {
+function SellerItem({item, onPress, type}) {
 
     console.log('ProductItem ===>  ', item)
 
@@ -112,4 +112,4 @@ const styles = StyleSheet.create({
 
 })
 
-export default ProductItem
+export default SellerItem

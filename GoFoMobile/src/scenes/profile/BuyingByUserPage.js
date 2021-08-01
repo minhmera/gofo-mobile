@@ -14,17 +14,10 @@ function BuyingByUser({navigation}) {
     //const {navigate} = props.navigation;
 
     let userId = navigation.getParam('userId');
-    //console.log('MERA SellingByUser  userId ==>  ', userId);
-
     const [loading, setLoading] = useState(false);
-    const [selectedCity, setSelectedCity] = useState(null);
-    let [isShowCityDropdown, setShowCityDropdown] = useState(false);
-    const [cities, setCities] = useState({});
-
     const [page, setPage] = useState(1);
     const [refreshing, setRefreshing] = useState(false);
     const [sellingList, setSellingList] = useState([]);
-
     const [isListEnd, setIsListEnd] = useState(false);
 
 

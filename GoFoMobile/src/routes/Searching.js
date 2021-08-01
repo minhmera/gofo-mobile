@@ -1,7 +1,7 @@
 import {createStackNavigator} from "react-navigation-stack";
 import SearchPage from "../scenes/search/SearchPage";
 import SearchResultPage from "../scenes/search/SearchResultPage";
-import SellingByUser from "../scenes/search/SellingByUser";
+import SellingByUser from "../scenes/search/SellingByUserPage";
 import AuthStack from "./Auth";
 import ProductDetail from "../scenes/product/ProductDetail";
 

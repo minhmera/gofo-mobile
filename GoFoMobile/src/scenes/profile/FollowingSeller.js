@@ -21,8 +21,9 @@ import LoadingPage from "../../components/LoadingPage";
 import AsyncStorage from "@react-native-community/async-storage";
 import {PASSWORD_KEY, USER_ID_KEY, TOKEN_KEY, PHONE_NUMBER_KEY} from "../../config/Contants";
 import * as c from "../../contants/apiConstants";
+import SellerItem from "../../components/SellerItem";
 
-function SellingProduct({navigation}) {
+function FollowingUser({navigation}) {
     //const {navigate} = props.navigation;
 
     let sellerInfo = navigation.getParam('sellerInfo');
@@ -33,7 +34,7 @@ function SellingProduct({navigation}) {
 
     const [page, setPage] = useState(1);
     const [refreshing, setRefreshing] = useState(false);
-    const [sellingList, setSellingList] = useState([]);
+    const [followingList, setFollowingList] = useState([]);
 
     const [isListEnd, setIsListEnd] = useState(false);
     const [isFollowed, setIsFollowed] = useState(false);
@@ -51,81 +52,39 @@ function SellingProduct({navigation}) {
     }
 
 
-    function fetchData(isRefresh) {
-
-        if (isRefresh === true ) {
-            console.log('MERA  =======================  fetchData ============== page:',page, 'isRefresh:',isRefresh)
-            api.getSellingByFullName(sellerInfo.local.fullName,1).then((response) => {
-                //console.log('MERA length 11: ',response.data.result.length,' : ', sellingList.length)
-                if (response.data.result.length > 0) {
-                    setSellingList(response.data.result)
-                    setLoading(false);
-                    setRefreshing(false)
-                } else {
-                    //setIsListEnd(true);
-                    setLoading(false);
-                    setRefreshing(false)
-                }
-
-            });
-        } else {
-            if (!loading && !isListEnd) {
-                console.log('MERA ......................  LOAD MORE  ........................   page: ',page, 'isRefresh:',isRefresh, 'loading: ',loading,'  isListEnd:',isListEnd)
-                setLoading(false)
-                api.getSellingByFullName(sellerInfo.local.fullName,1).then((response) => {
-                    //setSellingList(response.data.result)
-                    console.log('MERA LOAD MORE Lenght:  ',response.data.result.length,' =====:===== ', sellingList.length)
-                    if (response.data.result.length > 0) {
-
-                        setPage(page + 1);
-
-                        // After the response increasing the page
-                        if (page == 1) {
-                            setSellingList(response.data.result)
-                        } else {
-                            setSellingList([...sellingList, ...response.data.result])
-                        }
-
-                        setLoading(false);
-                        setRefreshing(false)
-                    } else {
-
-                        setLoading(false);
-                        setRefreshing(false)
-                    }
-
-                });
-            }
-        }
-
-
-
-    }
-
-
     async function getUserDetail() {
         let userId = await AsyncStorage.getItem(USER_ID_KEY);
         let submitObj = {
             userId: userId
         }
-        console.log('getUserDetail sellerInfo ==> ',sellerInfo)
+        //console.log('getUserDetail sellerInfo ==> ',sellerInfo)
         authApi.getUserDetail(submitObj).then((user)=> {
             console.log('getUserDetail res ==>  ',user)
             if (user) {
                 setUserInfo(user)
-
-                if (user.local ) {
-                    if (user.local.followingSellers.length > 0 ) {
-                        let sellerUserId = sellerInfo._id
-                        let index  =  user.local.followingSellers.indexOf(sellerUserId)
-                        if (index !== -1) {
-                            setIsFollowed(true)
+                let followingIdsString = ""
+                if (user.local.followingSellers.length > 0) {
+                    user.local.followingSellers.map((item,index) => {
+                        if  (index === 0) {
+                            followingIdsString = followingIdsString + item
+                        } else {
+                            followingIdsString = followingIdsString + ','+ item
                         }
-                        console.log('getUserDetail index ',index)
-                    }
+
+                    })
                 }
 
-
+                if (followingIdsString !== '') {
+                    authApi.getFollowingUser(followingIdsString).then((response) =>{
+                        setLoading(false)
+                        if (response) {
+                            console.log('getFollowingUser  ==>  ',response.data)
+                            setFollowingList(response.data)
+                            //this.setState({followingList: response.data})
+                        }
+                    })
+                }
+                console.log('getUserDetail followingIdsString ==> ',followingIdsString)
             }
         })
     }
@@ -137,9 +96,12 @@ function SellingProduct({navigation}) {
         setIsListEnd(false)
         setPage(1);
         console.log('MERA  refreshData page :',page, '  ' ,refreshing)
-        fetchData(true)
+
 
     }
+    useEffect(() => {
+        getUserDetail(),getTokenKey(), setLoading(true);
+    }, []);
 
     function RenderList(navigation,data) {
         console.log('MERA RenderList data ==> ', data)
@@ -160,7 +122,7 @@ function SellingProduct({navigation}) {
                             RenderItem(navigation,item)
                         }
                         keyExtractor={(item, index) => item._id}
-                        onEndReached={() => fetchData()}
+                        onEndReached={() => getUserDetail()}
                         onEndReachedThreshold={0.01}
                         refreshControl={
                             <RefreshControl
@@ -190,79 +152,13 @@ function SellingProduct({navigation}) {
         }
     }
 
-    useEffect(() => {
-        fetchData(),getUserDetail(),getTokenKey(), setLoading(true);
-    }, []);
-
-
-    function onFollowClick() {
-        let followingId = sellerInfo._id
-        console.log('onFollowClick  ==>  ', followingId)
-
-        if (isFollowed === true) {
-            authApi.unFollowSeller(userId,followingId).then((response) =>{
-                console.log('onFollowClick un ==>  ',response)
-                if (response) {
-                    if(response.data.success === true) {
-                        setIsFollowed(false)
-                    }
-                }
-            })
-        } else {
-            authApi.followSeller(userId,followingId).then((response) =>{
-                console.log('onFollowClick fo ==>  ',response)
-                if (response) {
-                    if(response.data.success === true) {
-                        setIsFollowed(true)
-                    }
-                }
-            })
-        }
-
-
-    }
-    function renderFollowButton() {
-     console.log( 'token ==>  ',token)
-     let text = 'Theo dõi'
-     if (isFollowed === true) {
-         text = 'Đang theo dõi'
-     }
-    if (token !== null) {
-        return (
-            <TouchableOpacity
-                style={styles.followButton}
-                onPress={()=> onFollowClick()}>
-                <Text style = {styles.followText}>
-                    {text}
-                </Text>
-            </TouchableOpacity>
-        )
-    } else {
-        return  null
-    }
-
-    }
 
     return (
 
         <View style={styles.container}>
-            <Header titleText='Sản Phẩm Đang Bán' navigation={navigation}/>
-            <View style={styles.topBar}>
-                <View style={styles.topBarLeft}>
-
-                    <Text style ={styles.sellerNameText}>
-                        {sellerInfo.local.fullName} đang bán
-                    </Text>
-
-                </View>
-
-                <View style={styles.topBarRight}>
-                    {renderFollowButton()}
-                </View>
-
-            </View>
+            <Header titleText='Đang Theo Dõi' navigation={navigation}/>
             <View style={{flex:1, marginTop:0}}>
-                {RenderList(navigation,sellingList)}
+                {RenderList(navigation,followingList)}
             </View>
 
             <LoadingPage
@@ -276,19 +172,20 @@ function SellingProduct({navigation}) {
 
 function RenderItem(navigation,item) {
     return (
-        <ProductItem
+        <SellerItem
             item = {item}
-            onPress = {() => navigateToDetail(navigation,item._id)}
+            onPress = {() => navigateToSellingByUser(navigation,item)}
         />
     )
 }
 
-function navigateToDetail(navigation, productId) {
-    console.log("MERA navigateToDetail ==> productId: ",productId)
-    navigation.push('ProductDetail',{productId:productId, type:'SELL'})
+function navigateToSellingByUser(navigation, user) {
+    console.log("MERA navigateToSellingByUser ==> user: ",user)
+    navigation.push('SellingByUser',{sellerInfo:user})
 }
 
-export default SellingProduct
+
+export default FollowingUser
 
 const styles = StyleSheet.create({
 
