@@ -163,7 +163,7 @@ function CreatePost1({navigation}) {
             console.log('MERA  sellingPost   ', response);
 
             Alert.alert(
-                'Thành công ',
+                'Thành công',
                 'Đăng sản phẩm thành công, vui lòng đợi quản trị viên duyệt bài ',
 
                 [
@@ -185,6 +185,7 @@ function CreatePost1({navigation}) {
         }
     }
 
+
     function submitPost() {
         if (isSell == true) {
             if (isSellingValid() == true) {
@@ -192,15 +193,44 @@ function CreatePost1({navigation}) {
             }
 
         } else {
-            let res = uploadBuyingProduct()
+            if (isSellingValid() == true) {
+                let res = uploadBuyingProduct()
+            }
+
         }
     }
 
     async function uploadBuyingProduct() {
         setLoading(true);
+        try {
+
+            if (images !== null) {
+                let response = await api.uploadImages(images);
+                console.log('uploadImage response ==> ', response);
+                let imageUrls = response.imageUrls
+                let res = await onSubmitBuying(imageUrls)
+                console.log('MERA ==> onSubmit ', res)
+                setLoading(false);
+            } else {
+                let res = await onSubmitBuying([])
+                console.log('MERA ==> onSubmit ', res)
+                setLoading(false);
+            }
+
+
+        } catch (e) {
+            console.log('uploadSellingProduct Error ', e);
+            setLoading(false);
+        }
+    }
+
+    async function onSubmitBuying(photoUrls) {
+
+        setLoading(true);
         let userId = await AsyncStorage.getItem(USER_ID_KEY);
         let fullName = await AsyncStorage.getItem(FULL_NAME_KEY);
         let buyingObj = {
+            "photoUrls": photoUrls,
             "userId": userId,
             "fullName": fullName,
             "categoryId": selectedCategory.type,
@@ -221,8 +251,8 @@ function CreatePost1({navigation}) {
             console.log('MERA  sellingPost   ', response);
             setLoading(false);
             Alert.alert(
-                'Posting Successful',
-                response.message,
+                'Thành công',
+                'Đăng sản phẩm thành công, vui lòng đợi quản trị viên duyệt bài',
 
                 [
                     {text: 'OK'}, //  {text: 'OK', onPress: () => navigation.replace("Login")}
@@ -231,14 +261,15 @@ function CreatePost1({navigation}) {
             );
         } catch (error) {
             Alert.alert(
-                'Posting',
-                error.message,
+                'Lỗi ',
+                'Xảy ra lỗi, vui lòng thử lại sau',
 
                 [
                     {text: 'OK'}, //  {text: 'OK', onPress: () => navigation.replace("Login")}
                 ],
                 {cancelable: false},
             );
+            setLoading(false);
             setError(error.message);
         }
     }
@@ -408,8 +439,6 @@ function CreatePost1({navigation}) {
     function onPriceChange(price) {
         console.log('onPriceChange 11 ==>  ',price)
         setProductPrice(price)
-
-
         console.log('onPriceChange ==> ',price,' formatPrice ==>  ')
     }
 
