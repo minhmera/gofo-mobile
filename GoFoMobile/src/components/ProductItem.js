@@ -11,6 +11,7 @@ require('moment/locale/es.js');
 
 
 
+
 import GlobalStyle from "../style/GlobalStyle";
 
 import moment from "moment";
@@ -22,8 +23,6 @@ function ProductItem({item, onPress, type}) {
     if (item.createDate != undefined){
         //let time = moment(item.createDate).format(fortmatString)
         //timeString = time.replace('T',' - ')
-
-
         timeString = moment(item.createDate).locale('vi').fromNow()
     }
 
@@ -36,16 +35,14 @@ function ProductItem({item, onPress, type}) {
                 imageStyle={{ borderRadius: 4 }}
                 style={styles.imageWrapperView}
                 source={{uri: item.photoUrls[0]}}
-                //source={{uri: uri}}
+                defaultSource={require('../resources/backGround/ph_product_item.png')}
                 >
-
-
             </ImageBackground>
             )
 
         } else {
             console.log('ProductItem photoUrls 2222 ==>  ',item.photoUrls)
-            return (
+            /*return (
                 <View style={[styles.imageWrapperView,{backgroundColor:GlobalStyle.colour.grayColor,justifyContent:'center',alignItems:'center'}]} >
                     <IconEntypo
                         name={'images'}
@@ -53,6 +50,15 @@ function ProductItem({item, onPress, type}) {
                         color = {'white'}
                     />
                 </View>
+            )*/
+            return  (
+                <ImageBackground
+                    imageStyle={{ borderRadius: 4 }}
+                    style={styles.imageWrapperView}
+                    source={require('../resources/backGround/ph_product_item.png')}
+                    //defaultSource={require('../resources/backGround/ph_product_item.png')}
+                >
+                </ImageBackground>
             )
         }
     }
@@ -60,12 +66,12 @@ function ProductItem({item, onPress, type}) {
 
 
 
-    let typeString = 'Người bán'
+    /*let typeString = 'Người bán'
     if (type === 'BUY') {
         typeString = 'Người mua'
     } else if (type === 'SELL') {
         typeString = 'Người bán'
-    }
+    }*/
 
     function renderPrice(productItem) {
         let measuringText = ''

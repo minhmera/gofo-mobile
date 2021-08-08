@@ -134,6 +134,11 @@ function CreatePost1({navigation}) {
 
         let userId = await AsyncStorage.getItem(USER_ID_KEY);
         let fullName = await AsyncStorage.getItem(FULL_NAME_KEY);
+        let cropTime = ''
+        if (selectedCropTimeDate !== null) {
+            cropTime =  selectedCropTimeDate.format('YYYY-MM-DD')
+        }
+
         let sellingObj = {
             "photoUrls": photoUrls,
             "userId": userId,
@@ -147,8 +152,8 @@ function CreatePost1({navigation}) {
             "districtId": selectedDistrict.id,
             "provinceName": selectedCity.name,
             "districtName": selectedDistrict.name,
-            "cropDay": selectedCropTimeDate.format('YYYY-MM-DD'),
-            "productCertification": selectedCertification,
+            "cropDay": cropTime,
+            "productCertification": "",//selectedCertification,
             "sellerPhone": phoneNumber
         }
 
@@ -158,18 +163,18 @@ function CreatePost1({navigation}) {
             console.log('MERA  sellingPost   ', response);
 
             Alert.alert(
-                'Đăng sản phẩm thành công',
-                response.message,
+                'Thành công ',
+                'Đăng sản phẩm thành công, vui lòng đợi quản trị viên duyệt bài ',
 
                 [
-                    {text: 'OK'}, //  {text: 'OK', onPress: () => navigation.replace("Login")}
+                    {text: 'OK'},
                 ],
                 {cancelable: false},
             );
         } catch (error) {
             Alert.alert(
-                'Posting',
-                error.message,
+                'Lỗi !!!',
+                'Có lỗi xảy ra, vui lòng thử lại',
 
                 [
                     {text: 'OK'}, //  {text: 'OK', onPress: () => navigation.replace("Login")}
@@ -617,7 +622,7 @@ function CreatePost1({navigation}) {
                             {renderCropDayView()}
 
 
-                            <View style={styles.selectionItem}>
+                            {/*<View style={styles.selectionItem}>
                                 <View style={styles.selectionTitleView}>
                                     <Text style={styles.selectionTitleText}>Tiêu chuẩn</Text>
                                 </View>
@@ -627,7 +632,7 @@ function CreatePost1({navigation}) {
 
                                     containerStyle = {{flex:2}}
                                 />
-                            </View>
+                            </View>*/}
 
                             <View style={styles.selectionItem}>
                                 <View style={styles.selectionTitleView}>

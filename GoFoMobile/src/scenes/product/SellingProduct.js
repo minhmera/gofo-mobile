@@ -190,6 +190,10 @@ function SellingProduct({navigation}) {
 
     function cityDropDownCallBack(cityObj) {
         console.log('MERA selected city ',cityObj)
+        if (cityObj === null) {
+            setShowCityDropdown(false)
+            return
+        }
 
         setLoading(false);
         setRefreshing(true)

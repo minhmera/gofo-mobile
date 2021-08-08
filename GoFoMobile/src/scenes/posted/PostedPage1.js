@@ -35,7 +35,7 @@ function PostedPage1({navigation}) {
 
 
     function fetchData(isRefresh) {
-        console.log('MERA fetchData ==>  page: ', page, 'isRefresh: ', isRefresh, 'loading ==> ' ,loading, 'isListEnd ==> ' ,isListEnd)
+        //console.log('MERA fetchData ==>  page: ', page, 'isRefresh: ', isRefresh, 'loading ==> ' ,loading, 'isListEnd ==> ' ,isListEnd)
         if (isRefresh == true ) {
             api.getSellingProduct2(1).then((response) => {
                 console.log('MERA length 11: ',response.data.result.length,' : ', sellingList.length)
@@ -52,12 +52,12 @@ function PostedPage1({navigation}) {
 
         if ((!loading && !isListEnd)) {
             api.getSellingProduct2(page).then((response) => {
-                console.log('MERA  getSellingProduct2 response ', response)
+               // console.log('MERA  getSellingProduct2 response ', response)
                 setLoading(false);
                 if (response.data.result.length > 0) {
 
                     setPage(page + 1);
-                    console.log('MERA length 22: ',response.data.result.length,' : ', sellingList.length)
+                    //console.log('MERA length 22: ',response.data.result.length,' : ', sellingList.length)
                     // After the response increasing the page
                     if (page == 1) {
                         setSellingList(response.data.result)
@@ -65,11 +65,8 @@ function PostedPage1({navigation}) {
                         setSellingList([...sellingList, ...response.data.result])
                     }
 
-
                     setRefreshing(false)
                 } else {
-                    //setIsListEnd(true);
-
                     setRefreshing(false)
                 }
 

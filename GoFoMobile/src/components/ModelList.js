@@ -9,10 +9,7 @@ import Modal, { SlideAnimation, ModalContent } from 'react-native-modal';
 
 
 function ModelList({isVisible, title, items, customField, customItemId, style, callBack}) {
-    //console.log('MERA ModelList 11 ==> ', items);
-
     function RenderCategoryItem(item,index, customField) {
-        console.log('MERA ModelList 11 ==> item: ', items.length,'--------  index:',index);
         let lastItemStyle = {}
         if (index === items.length - 1) {
             lastItemStyle = {
