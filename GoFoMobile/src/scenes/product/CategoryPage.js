@@ -91,7 +91,11 @@ function CategoryPage({navigation}) {
     function RenderCategoryItem(item) {
         return (
             <View style={[styles.itemContainer]} >
-                <ImageBackground source={{uri: item.photoUrl}} style={styles.bgImage}>
+                <ImageBackground
+                    source={{uri: item.photoUrl}}
+                    style={styles.bgImage}
+                    defaultSource={require('../../resources/backGround/place_holder_category.jpeg')}
+                >
                     <View style={styles.itemContent} onPress = {() => console.log(' pressed on11  ',item.title_vi)}>
                         <Text style={styles.itemTitle} >
                             {item.title_vi}

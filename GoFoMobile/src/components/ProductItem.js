@@ -42,7 +42,7 @@ function ProductItem({item, onPress, type}) {
 
         } else {
             console.log('ProductItem photoUrls 2222 ==>  ',item.photoUrls)
-            /*return (
+            return (
                 <View style={[styles.imageWrapperView,{backgroundColor:GlobalStyle.colour.grayColor,justifyContent:'center',alignItems:'center'}]} >
                     <IconEntypo
                         name={'images'}
@@ -50,16 +50,16 @@ function ProductItem({item, onPress, type}) {
                         color = {'white'}
                     />
                 </View>
-            )*/
-            return  (
-                <ImageBackground
-                    imageStyle={{ borderRadius: 4 }}
-                    style={styles.imageWrapperView}
-                    source={require('../resources/backGround/ph_product_item.png')}
-                    //defaultSource={require('../resources/backGround/ph_product_item.png')}
-                >
-                </ImageBackground>
             )
+            // return  (
+            //     <ImageBackground
+            //         imageStyle={{ borderRadius: 4 }}
+            //         style={styles.imageWrapperView}
+            //         source={require('../resources/backGround/place_holder_product_item.png')}
+            //         //defaultSource={require('../resources/backGround/ph_product_item.png')}
+            //     >
+            //     </ImageBackground>
+            // )
         }
     }
 

@@ -124,7 +124,7 @@ function ForgotPassword(props) {
 
         <ImageBackground
             style={styles.container}
-            source={{uri: 'https://dongxanh.s3.us-east-2.amazonaws.com/app_resource/bg_01.jpg'}}
+            source={require('../../resources/backGround/place_holder_login.png')}
         >
 
             <View style={styles.dimView}>

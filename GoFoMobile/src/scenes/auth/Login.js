@@ -180,7 +180,7 @@ export default function Login(props) {
 
         <ImageBackground
             style={styles.container}
-            source={{uri: 'https://drscdn.500px.org/photo/212672423/q%3D80_m%3D2000_k%3D1/v2?sig=c9fd062b0dedfdddb0466365d92b195adec52f91efabe3b88a76a738ffbc0b98'}}
+            source={require('../../resources/backGround/place_holder_login.png')}
         >
             <StatusBar barStyle="light-content"/>
 
