@@ -108,6 +108,7 @@ function CreatePost1({navigation}) {
 
     async function uploadSellingProduct() {
         setLoading(true);
+        //setLoading(false);
         try {
 
             if (images !== null) {
@@ -152,7 +153,7 @@ function CreatePost1({navigation}) {
             "districtId": selectedDistrict.id,
             "provinceName": selectedCity.name,
             "districtName": selectedDistrict.name,
-            "cropDay": cropTime,
+            //"cropDay": cropTime,
             "productCertification": "",//selectedCertification,
             "sellerPhone": phoneNumber
         }
@@ -281,7 +282,11 @@ function CreatePost1({navigation}) {
             cropping: true,
             multiple: true,
         }).then(images => {
-            console.log('selectFile  ==> ', images);
+            //console.log('selectFile  ==> ', images);
+            images.map((image,index)=>{
+                console.log('selectFile  image  ==> ', image);
+            })
+
             setImages(images);
         });
     }
@@ -474,7 +479,7 @@ function CreatePost1({navigation}) {
         return (
             <View style={styles.container}>
                 <Header titleText='Đăng Tin'/>
-                <KeyboardAwareScrollView style={{flex: 1}} keyboardDismissMode={'on-drag'}>
+                <KeyboardAwareScrollView style={{flex: 1}} >
 
 
                     <View style={styles.content}>
@@ -648,7 +653,7 @@ function CreatePost1({navigation}) {
                                 />
                             </View>
 
-                            {renderCropDayView()}
+                            {/*{renderCropDayView()}*/}
 
 
                             {/*<View style={styles.selectionItem}>
@@ -691,9 +696,10 @@ function CreatePost1({navigation}) {
                                         numberOfLines={8}
                                         inputStyle={[styles.inputStyle,{alignSelf:'flex-start'}]}
                                         placeholder="Nhập mô tả"
-                                        inputContainerStyle={[styles.basicInput,{height:80,marginLeft:2}, {borderColor: isPhoneError === true ? GlobalStyle.colour.errorColor : GlobalStyle.colour.grayColor}]}
+                                        inputContainerStyle={[styles.basicInput,{height:120,marginLeft:2}, {borderColor: isPhoneError === true ? GlobalStyle.colour.errorColor : GlobalStyle.colour.grayColor}]}
                                         onChangeText={value => setDescription(value)}
                                         value={description}
+                                        maxLength={400}
                                     />
                                 </View>
                             </View>
@@ -726,13 +732,13 @@ function CreatePost1({navigation}) {
                                 callBack={(item) => districtDropDownCallBack(item)}
                             />
 
-                            <ModelCalendar
+                            {/*<ModelCalendar
                                 isVisible={isShowCropTimeCalendar}
                                 title={'Chọn ngày thu hoạch'}
                                 style={{height: 460}}
                                 items={districts}
                                 callBack={(day) => cropTimeCalendarCallBack(day)}
-                            />
+                            />*/}
 
                             <ModelList
                                 isVisible={isShowCertification}
@@ -874,7 +880,7 @@ const styles = StyleSheet.create({
         padding: 40,
     },
     bottomView: {
-        height: 260,
+        height: 120,
         alignItems:'center'
     },
     submitButton: {

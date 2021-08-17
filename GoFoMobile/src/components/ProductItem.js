@@ -1,5 +1,5 @@
 import React from 'react'
-import {View, TouchableOpacity, StyleSheet, Linking, ImageBackground} from 'react-native';
+import {View, TouchableOpacity, StyleSheet, Linking, ImageBackground, Image} from 'react-native';
 import {Appbar, Text, Title} from 'react-native-paper'
 import IconEntypo from 'react-native-vector-icons/Entypo';
 import IconAnt from "react-native-vector-icons/AntDesign";
@@ -31,17 +31,17 @@ function ProductItem({item, onPress, type}) {
         if (item.photoUrls !== undefined && item.photoUrls.length > 0){
             console.log('ProductItem photoUrls 1111 ==>  ',item.photoUrls)
             return  (
-            <ImageBackground
+            <Image
                 imageStyle={{ borderRadius: 4 }}
                 style={styles.imageWrapperView}
                 source={{uri: item.photoUrls[0]}}
                 defaultSource={require('../resources/backGround/ph_product_item.png')}
                 >
-            </ImageBackground>
+            </Image>
             )
 
         } else {
-            console.log('ProductItem photoUrls 2222 ==>  ',item.photoUrls)
+            console.log('ProductItem photoUrls 2222333 ==>  ',item.photoUrls)
             return (
                 <View style={[styles.imageWrapperView,{backgroundColor:GlobalStyle.colour.grayColor,justifyContent:'center',alignItems:'center'}]} >
                     <IconEntypo

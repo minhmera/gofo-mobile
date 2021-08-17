@@ -231,10 +231,12 @@ function ProductDetail({navigation}) {
         if (data === null) {
             return null
         }
-        if (data.createDate != undefined){
+        if (data.createDate !== undefined){
             let time = moment(data.cropDay).format(fortmatString)
             timeString = time.replace('T',' - ')
         }
+
+        console.log('data.createDate   ',data.createDate)
 
         return (
             <View style={styles.productView}>
@@ -273,14 +275,14 @@ function ProductDetail({navigation}) {
                                 {' '} {data.districtName}, {data.provinceName}
                             </Text>
                         </View>
-                        <View style={styles.itemView}>
+                        {/*<View style={styles.itemView}>
                             <Text style = {styles.itemTitleText}>
                                 Thời điểm thu hoạch:
                             </Text>
                             <Text style= {styles.itemContentText}>
                                 {' '} {timeString}
                             </Text>
-                        </View>
+                        </View>*/}
 
 
 
