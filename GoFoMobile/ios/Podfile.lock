@@ -321,7 +321,7 @@ PODS:
     - React-Core
   - RNScreens (2.0.0-alpha.12):
     - React
-  - RNVectorIcons (6.7.0):
+  - RNVectorIcons (7.1.0):
     - React
   - TOCropViewController (2.6.0)
   - Yoga (1.14.0)
@@ -521,11 +521,11 @@ SPEC CHECKSUMS:
   RNImageCropPicker: 38865ab4af1b0b2146ad66061196bc0184946855
   RNReanimated: e03f7425cb7a38dcf1b644d680d1bfc91c3337ad
   RNScreens: 254da4b84f25971cbb30ed3ddc84131f23cac812
-  RNVectorIcons: 368d6d8b8301224e5ffb6254191f4f8876c2be0d
+  RNVectorIcons: bc69e6a278b14842063605de32bec61f0b251a59
   TOCropViewController: 3105367e808b7d3d886a74ff59bf4804e7d3ab38
   Yoga: 7740b94929bbacbddda59bf115b5317e9a161598
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
 PODFILE CHECKSUM: da3137fad765636eb41b5b31aa8139cf61b2b881
 
-COCOAPODS: 1.9.1
+COCOAPODS: 1.10.1

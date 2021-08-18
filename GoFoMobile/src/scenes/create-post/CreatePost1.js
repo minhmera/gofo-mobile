@@ -33,6 +33,11 @@ import DropdownButton from "../../components/DropdownButton";
 import * as Utils from '../../utils/AppUtils';
 import {value} from "react-native-extended-stylesheet";
 
+
+
+
+
+
 function renderImage(images) {
     //let arrImages = ['a','b','c']
 
@@ -64,6 +69,7 @@ function CreatePost1({navigation}) {
     const {globalState, dispatch} = useGlobalDataContext();
 
     let [images, setImages] = useState(null);
+    //let [resizeImages, setResizeImages] = useState(null);
     let [isSell, setSellStatus] = useState(true);
 
     const [productName, setProductName] = useState('');
@@ -281,15 +287,15 @@ function CreatePost1({navigation}) {
             height: 400,
             cropping: true,
             multiple: true,
+            compressImageMaxWidth:500
         }).then(images => {
-            //console.log('selectFile  ==> ', images);
-            images.map((image,index)=>{
-                console.log('selectFile  image  ==> ', image);
-            })
-
             setImages(images);
         });
     }
+
+
+
+
 
     async function fetchData() {
         //setLoading(true);
