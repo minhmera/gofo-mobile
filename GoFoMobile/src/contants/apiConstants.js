@@ -2,8 +2,8 @@ import React from 'react';
 
 //API URL
 //export const API_URL = 'https://morning-crag-89761.herokuapp.com';
-export const API_URL = 'http://192.168.1.11:3000';
-//export const API_URL = 'http://api.wanam.com.vn';
+//export const API_URL = 'http://192.168.1.11:3000';
+export const API_URL = 'http://api.wanam.com.vn';
 
 //API End Points
 export const REGISTER = `${API_URL}/auth/signup`;

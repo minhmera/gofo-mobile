@@ -9,7 +9,6 @@
     "test": "jest"
   },
   "dependencies": {
-    "@react-native-async-storage/async-storage": "github:react-native-community/async-storage",
     "@react-native-community/async-storage": "github:react-native-community/async-storage",
     "lottie-react-native": "^3.5.0",
     "prop-types": "^15.7.2",
