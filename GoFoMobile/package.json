@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@react-native-community/async-storage": "github:react-native-community/async-storage",
+    "intl": "^1.2.5",
     "lottie-react-native": "^3.5.0",
     "prop-types": "^15.7.2",
     "react": "16.11.0",

@@ -279,6 +279,7 @@ function EditSellingPost({navigation}) {
             height: 400,
             cropping: true,
             multiple: true,
+            compressImageMaxWidth:500
         }).then(images => {
             console.log('selectFile  ==> ', images);
             setImages(images);

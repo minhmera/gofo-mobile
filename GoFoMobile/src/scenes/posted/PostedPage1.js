@@ -230,6 +230,7 @@ function PostedPage1({navigation}) {
         <View style={styles.container}>
 
             <Header titleText='Sản phẩm'/>
+            {/*<View style={{backgroundColor:GlobalStyle.colour.primaryColor, height:2}} />*/}
             <View style={styles.tabContainer}>
 
                 {/* Simple Segmented with Custom Styling*/}
@@ -238,7 +239,7 @@ function PostedPage1({navigation}) {
                     selectedIndex={customStyleIndex}
                     onTabPress={handleCustomIndexSelect}
                     borderRadius={0}
-                    tabsContainerStyle={{height: 40, backgroundColor: '#F2F2F2'}}
+                    tabsContainerStyle={{marginTop:0,height: 40, backgroundColor: '#F2F2F2'}}
                     tabStyle={{
                         backgroundColor: GlobalStyle.colour.primaryColor,
                         borderWidth: 0,

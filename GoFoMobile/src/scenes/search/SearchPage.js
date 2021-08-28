@@ -152,7 +152,7 @@ function SearchPage({navigation}) {
         >
             <View style={styles.topView}>
             <View style={styles.header}>
-                <Text style={{marginTop:68,fontSize:18, fontWeight:'bold', color: 'white'}}>Tìm kiếm</Text>
+                <Text style={{marginTop:48,fontSize:18, fontWeight:'bold', color: 'white'}}>Tìm kiếm</Text>
             </View>
 
             <View style={styles.searchViewWrapper}>
@@ -268,7 +268,7 @@ const styles = StyleSheet.create({
     },
 
     header: {
-        height:96,
+        height:66,
         width:'100%',
         //backgroundColor:'white',
         //justifyContent:'center',

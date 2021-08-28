@@ -39,7 +39,6 @@ function Header({ titleText,navigation, customStyle }) {
             <View style={styles.titleView}>
               <Title style={styles.titleText}>{titleText}</Title>
             </View>
-
           </View>
         </Appbar.Header>
     )
@@ -49,7 +48,10 @@ function Header({ titleText,navigation, customStyle }) {
 
 const styles = StyleSheet.create({
   headerContainer: {
-    backgroundColor: GlobalStyle.colour.primaryColor
+    backgroundColor: GlobalStyle.colour.primaryColor,
+    borderBottomWidth:0,
+    borderBottomColor:GlobalStyle.colour.primaryColor,
+
   },
   container: {
     flex:1,
