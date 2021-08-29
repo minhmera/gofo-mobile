@@ -106,6 +106,7 @@ function CreatePost1({navigation}) {
 
     let [isCategoryError, setCategoryErrorState] = useState(null);
     let [isCityError, setCityErrorState] = useState(null);
+    let [isDistrictError, setDistrictErrorState] = useState(null);
     let [isProductNameError, setProductNameError] = useState(null);
     let [isPhoneError, setPhoneError] = useState(null);
     let [token, setToken] = useState(null);
@@ -377,6 +378,9 @@ function CreatePost1({navigation}) {
 
     function districtDropDownCallBack(district) {
         console.log('MERA selected district ', district)
+        if (district != null) {
+            setDistrictErrorState(false)
+        }
         setSelectedDistrict(district)
         setShowDistrictDropdown(false)
     }
@@ -420,6 +424,13 @@ function CreatePost1({navigation}) {
             setCityErrorState(true)
         } else {
             setCityErrorState(false)
+        }
+
+        if (selectedDistrict == null) {
+            isValidAllField = false
+            setDistrictErrorState(true)
+        } else {
+            setDistrictErrorState(false)
         }
 
         if (productName === "") {
@@ -654,7 +665,7 @@ function CreatePost1({navigation}) {
                                 <DropdownButton
                                     title={selectedDistrict === null ? "Chọn" : selectedDistrict.name}
                                     onPress={()=> handleShowDistrictDropdown()}
-                                    isError={isCityError}
+                                    isError={isDistrictError}
                                     containerStyle = {{flex:2}}
                                 />
                             </View>

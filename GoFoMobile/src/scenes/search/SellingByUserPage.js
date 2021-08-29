@@ -74,7 +74,6 @@ function SellingByUser({navigation}) {
                 setLoading(false)
                 api.getSellingByFullName(sellerInfo.local.fullName,1).then((response) => {
                     //setSellingList(response.data.result)
-                    console.log('MERA LOAD MORE Lenght:  ',response.data.result.length,' =====:===== ', sellingList.length)
                     if (response.data.result.length > 0) {
 
                         setPage(page + 1);

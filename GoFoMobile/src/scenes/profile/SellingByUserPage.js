@@ -52,7 +52,6 @@ function SellingByUser({navigation}) {
 
                 api.getSellingByUser(userId,page).then((response) => {
                     setLoading(false);
-                    console.log('MERA LOAD MORE Lenght:  ',response.data,' =====:===== ')
                     if (response.data.result.length > 0) {
 
                         setPage(page + 1);

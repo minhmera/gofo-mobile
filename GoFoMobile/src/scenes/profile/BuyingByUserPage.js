@@ -27,10 +27,8 @@ function BuyingByUser({navigation}) {
     function fetchData(isRefresh) {
 
         if (isRefresh === true ) {
-            console.log('MERA  =======================  fetchData ============== page:',page, 'isRefresh:',isRefresh)
             api.getBuyingByUser(userId,1).then((response) => {
                 setLoading(false);
-                console.log('MERA getBuyingByUser Refresh ',response.data)
                 setRefreshing(false)
                 if (response.data.result.length > 0) {
                     setSellingList(response.data.result)
@@ -41,11 +39,9 @@ function BuyingByUser({navigation}) {
             });
         } else {
             if (!loading && !isListEnd) {
-                console.log('MERA ......................  LOAD MORE  ........................   page: ',page, 'isRefresh:',isRefresh, 'loading: ',loading,'  isListEnd:',isListEnd)
 
                 api.getBuyingByUser(userId,page).then((response) => {
                     setLoading(false);
-                    //console.log('MERA LOAD MORE Lenght:  ',response.data,' =====:===== ')
                     if (response.data.result.length > 0) {
 
                         setPage(page + 1);
@@ -76,7 +72,6 @@ function BuyingByUser({navigation}) {
 
     function fetchSelectedData(provinceId) {
         api.getBuyingByCategory(categoryItem.type,provinceId,1,).then((response) => {
-            console.log('MERA fetchSelectedData : ',response.data.result.length,' ---:---', sellingList.length)
             if (response.data.result.length > 0) {
                 setSellingList(response.data.result)
                 setLoading(false);
@@ -95,13 +90,11 @@ function BuyingByUser({navigation}) {
         setRefreshing(true)
         setIsListEnd(false)
         setPage(1);
-        console.log('MERA  refreshData page :',page, '  ' ,refreshing)
         fetchData(true)
 
     }
 
     function RenderList(navigation,data) {
-        //console.log('MERA RenderList data ==> ', data.length)
         if (data === null) {
             return (
                 <View style={styles.noItemView}>
@@ -166,13 +159,11 @@ function BuyingByUser({navigation}) {
     async function deleteBuyingProduct(item) {
         let userId = await AsyncStorage.getItem(USER_ID_KEY);
         let objData = {userId:userId}
-        console.log('MERA deleteSellingProduct body  ',objData,'item ==>',item )
         setLoading(true)
         try {
             let response = await api.deleteBuyingPost(objData,item._id);
             if (response) {
                 setLoading(false)
-                console.log('MERA ------------------------ deleteSellingProduct response ----------------   ', response);
                 Alert.alert(
                     'Thành công',
                     'Xoá sản phẩm thành công',
@@ -235,7 +226,6 @@ function BuyingByUser({navigation}) {
 
 
 function navigateToEdit(navigation, item) {
-    console.log("MERA navigateToDetail ==> productId: ",item)
     navigation.push('EditSellingPost',{item:item, type:'BUY'})
 }
 

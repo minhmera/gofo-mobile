@@ -87,11 +87,10 @@ function ProductDetail({navigation}) {
     function openCall(){
         //const url='tel://:+0946334909'
         let url='tel:0946334909'
-        console.log('phoneNumber: ',sellingData.phoneNumber)
         if (type === 'SELL') {
             url= `tel:${sellingData.sellerPhone}`
         } else {
-            url= `tel:${buyingData.sellerPhone}`
+            url= `tel:${buyingData.buyerPhone}`
         }
         console.log('openCall ==>  ',url)
         Linking.openURL(url)
@@ -192,7 +191,7 @@ function ProductDetail({navigation}) {
                                 Điện thoại:
                             </Text>
                             <Text style={styles.itemContentText}>
-                                {' '} {data.sellerPhone}
+                                {' '} {type === 'SELL' ?  data.sellerPhone : data.buyerPhone }
                             </Text>
                         </View>
 

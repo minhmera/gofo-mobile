@@ -29,7 +29,7 @@ function ProductItem({item, onPress, type}) {
     function renderImage() {
 
         if (item.photoUrls !== undefined && item.photoUrls.length > 0){
-            console.log('ProductItem photoUrls 1111 ==>  ',item.photoUrls)
+            //console.log('ProductItem photoUrls 1111 ==>  ',item.photoUrls)
             return  (
             <Image
                 imageStyle={{ borderRadius: 4 }}
@@ -66,12 +66,12 @@ function ProductItem({item, onPress, type}) {
 
 
 
-    /*let typeString = 'Người bán'
+    let typeString = 'Người bán'
     if (type === 'BUY') {
         typeString = 'Người mua'
     } else if (type === 'SELL') {
         typeString = 'Người bán'
-    }*/
+    }
 
     function renderPrice(productItem) {
         let measuringText = ''
@@ -156,7 +156,8 @@ function ProductItem({item, onPress, type}) {
                             onPress={()=> openCall(item.sellerPhone)}
                         >
                             <Text style={styles.phoneText}>
-                                {item.sellerPhone}
+
+                                {type === 'SELL' ? item.sellerPhone : item.buyerPhone }
                             </Text>
                         </TouchableOpacity>
 
