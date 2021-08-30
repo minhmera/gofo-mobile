@@ -217,21 +217,22 @@ function EditSellingPost({navigation}) {
                 console.log('MERA ------------------------ sellingPost response ----------------   ', response);
 
                 Alert.alert(
-                    'Posting Successful',
-                    response.message,
+                    'Thành công',
+                    'Đăng sản phẩm thành công, vui lòng đợi quản trị viên duyệt bài ',
 
                     [
-                        {text: 'OK'}, //  {text: 'OK', onPress: () => navigation.replace("Login")}
+                        {text: 'OK', onPress: () => navigation.goBack()}
                     ],
                     {cancelable: false},
                 );
             } catch (error) {
                 Alert.alert(
-                    'Posting',
-                    error.message,
+                    'Lỗi !!!',
+                    'Có lỗi xảy ra, vui lòng thử lại',
 
                     [
-                        {text: 'OK'}, //  {text: 'OK', onPress: () => navigation.replace("Login")}
+                        {text: 'OK'},
+
                     ],
                     {cancelable: false},
                 );
@@ -243,18 +244,18 @@ function EditSellingPost({navigation}) {
                 console.log('MERA ------------------------ sellingPost response ----------------   ', response);
 
                 Alert.alert(
-                    'Posting Successful',
-                    response.message,
+                    'Thành công',
+                    'Đăng sản phẩm thành công, vui lòng đợi quản trị viên duyệt bài ',
 
                     [
-                        {text: 'OK'}, //  {text: 'OK', onPress: () => navigation.replace("Login")}
+                        {text: 'OK', onPress: () => navigation.goBack()}
                     ],
                     {cancelable: false},
                 );
             } catch (error) {
                 Alert.alert(
-                    'Posting',
-                    error.message,
+                    'Lỗi !!!',
+                    'Có lỗi xảy ra, vui lòng thử lại',
 
                     [
                         {text: 'OK'}, //  {text: 'OK', onPress: () => navigation.replace("Login")}

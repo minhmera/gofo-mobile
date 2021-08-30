@@ -137,7 +137,7 @@ function SellingProduct({navigation}) {
     }
 
     function RenderList(navigation,data) {
-        //console.log('MERA RenderList data ==> ', data.length)
+        console.log('MERA RenderList SELLING data ==> ', data.length)
         if (data.length > 0) {
             return (
                 <View style={{marginTop: 0}}>
@@ -159,6 +159,12 @@ function SellingProduct({navigation}) {
                         }
 
                     />
+                </View>
+            )
+        } else {
+            return (
+                <View style={{flex:1,marginLeft:12,marginRight:12,borderRadius:4, backgroundColor:'white', justifyContent:'center',alignItems:'center'}}>
+                    <Text style ={{fontSize:18}}> Không có sản phẩm nào </Text>
                 </View>
             )
         }

@@ -171,6 +171,12 @@ function BuyingProduct({navigation}) {
                     />
                 </View>
             )
+        } else {
+            return (
+                <View style={{flex:1,marginLeft:12,marginRight:12,borderRadius:4, backgroundColor:'white', justifyContent:'center',alignItems:'center'}}>
+                    <Text style ={{fontSize:18}}> Không có sản phẩm nào </Text>
+                </View>
+            )
         }
     }
     function dropdownButton(title,onPress,isError) {
