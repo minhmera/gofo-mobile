@@ -133,7 +133,7 @@ function CreatePost1({navigation}) {
 
 
         } catch (e) {
-            console.log('uploadSellingProduct Error ', e);
+            console.log('uploadSellingProduct Error ', e.toString());
             setLoading(false);
         }
     }
@@ -493,6 +493,16 @@ function CreatePost1({navigation}) {
             </View>
         )
     } else {
+        console.log(' selectedDistrict  ==> ',selectedCity, '  -----  ',selectedDistrict)
+
+        let categoryName = 'Chọn'
+        if (selectedCategory !== null) {
+            categoryName =  selectedCategory.title_vi
+        }
+
+            //selectedCategory.title_vi
+
+
         return (
             <View style={styles.container}>
                 <Header titleText='Đăng Tin'/>
@@ -564,7 +574,8 @@ function CreatePost1({navigation}) {
                                     <Text style={styles.selectionTitleText}>*Loại sản phẩm</Text>
                                 </View>
                                 <DropdownButton
-                                    title={selectedCategory === null ? 'Chọn' : selectedCategory.title_vi}
+                                    //title={selectedCategory === null ? 'Chọn' : selectedCategory.title_vi}
+                                    title={categoryName}
                                     onPress={() => setShowCategoryDropdown(true)}
                                     isError={isCategoryError}
                                     containerStyle = {{flex:2}}
@@ -665,7 +676,7 @@ function CreatePost1({navigation}) {
                                 <DropdownButton
                                     title={selectedDistrict === null ? "Chọn" : selectedDistrict.name}
                                     onPress={()=> handleShowDistrictDropdown()}
-                                    isError={isDistrictError}
+                                    //isError={isDistrictError}
                                     containerStyle = {{flex:2}}
                                 />
                             </View>

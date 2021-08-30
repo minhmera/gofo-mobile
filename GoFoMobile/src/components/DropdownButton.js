@@ -50,7 +50,9 @@ const styles = StyleSheet.create({
         borderBottomColor: GlobalStyle.colour.grayColor,
         borderBottomWidth: 0.5,
     },
-
+    dropdownButtonTitle: {
+        color: 'black'
+    },
     dropdownItem: {
         justifyContent: 'center',
         height: 40,

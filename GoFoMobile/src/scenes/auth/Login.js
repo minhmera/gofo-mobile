@@ -7,6 +7,7 @@ import {
     View,
     Text,
     ImageBackground,
+    Image,
     Alert,
     Dimensions
 } from 'react-native';
