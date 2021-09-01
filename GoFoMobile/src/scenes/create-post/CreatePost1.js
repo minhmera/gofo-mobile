@@ -42,7 +42,6 @@ function renderImage(images) {
     //let arrImages = ['a','b','c']
 
     return images.map((item, index) => {
-        console.log('index ', index, 'item11 ', item.path);
         return (
             <View
                 style={styles.pickupImageView}
@@ -493,7 +492,6 @@ function CreatePost1({navigation}) {
             </View>
         )
     } else {
-        console.log(' selectedDistrict  ==> ',selectedCity, '  -----  ',selectedDistrict)
 
         let categoryName = 'Chọn'
         if (selectedCategory !== null) {

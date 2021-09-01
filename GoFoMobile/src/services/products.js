@@ -1,9 +1,9 @@
 import axios from 'axios';
-
 import * as c from '../contants/apiConstants';
 import {handler} from './auth';
 import AsyncStorage from '@react-native-community/async-storage'
 import {TOKEN_KEY, USER_ID_KEY} from "../config/Contants";
+import  {Platform} from "react-native";
 
 const PAGE_SIZE = 20
 
@@ -21,21 +21,33 @@ export async function uploadImages(images) {
     console.log('******************** uploadImages ****************')
     try {
         const formData = new FormData();
-        Array.from(images).forEach(image => {
-            console.log('uploadImages  images param ==>  ', images)
-            const file = {
-                uri: image.path,
-                name: `${Date.now()}` + '.jpg',
-                type: 'image/jpeg/jpg'
-            };
-            formData.append('images', file);
-        });
-        //formData.append('images', file);
+        if (Platform.OS === 'ios') {
+            Array.from(images).forEach(image => {
+                console.log('uploadImages  images param ==>  ', images)
+                const file = {
+                    uri: image.path,
+                    name: `${Date.now()}` + '.jpg',
+                    type: 'image/jpeg/jpg'
+                };
+                formData.append('images', file);
+            });
+        }
+        else {
+            Array.from(images).forEach(image => {
+                const file = {
+                    uri: image.path,
+                    name: `${Date.now()}` + '.jpg',
+                    type: 'image/jpeg'
+                };
+                formData.append('images', file);
+            });
+        }
+        console.log('uploadImages  formData ==>  ', formData)
         let res = await  axios.post(c.UPLOAD_IMAGES, formData, {
             headers: {'Content-Type': 'multipart/form-data'},
         })
-
         return res.data;
+
     } catch (e) {
         throw handler(e)
     }
