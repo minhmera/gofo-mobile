@@ -6,10 +6,17 @@ import AuthProvider from './src/contexts/auth';
 import {GlobalDataProvider} from './src/contexts/globalDataContext';
 import { StoreProvider } from './src/store'
 import {StatusBar} from 'react-native';
-//'default' | 'light-content' | 'dark-content';
+import SplashScreen from 'react-native-splash-screen';
+
+
+
 export default function App() {
 
-
+    useEffect(() => {
+        {
+            SplashScreen.hide()
+        }
+    }, []);
     return (
         <StoreProvider>
 
