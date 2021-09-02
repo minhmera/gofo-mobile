@@ -5,7 +5,7 @@ import AuthProvider from './src/contexts/auth';
 //import GlobalData from './src/contexts/globalDataContext';
 import {GlobalDataProvider} from './src/contexts/globalDataContext';
 import { StoreProvider } from './src/store'
-import {StatusBar} from 'react-native';
+import {StatusBar, Platform} from 'react-native';
 import SplashScreen from 'react-native-splash-screen';
 
 
@@ -14,7 +14,11 @@ export default function App() {
 
     useEffect(() => {
         {
-            SplashScreen.hide()
+            if (Platform.OS === 'android') {
+                SplashScreen.hide()
+            }
+
+
         }
     }, []);
     return (
