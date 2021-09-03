@@ -110,7 +110,6 @@ export default function Login(props) {
             let response = await api.login(submitObj);
             //await handleLogin(response);
 
-            setLoading(false);
             try {
                 let token = await AsyncStorage.setItem(TOKEN_KEY, response.result.token)
                 let id = await AsyncStorage.setItem(USER_ID_KEY, response.result.userInfo._id)
@@ -124,6 +123,7 @@ export default function Login(props) {
             } catch (error) {
                 // Error saving data
                 console.log(' ------------------ ERROR 11 -------------- ',error)
+                setLoading(false);
                 Alert.alert(
                     'Lỗi !!!',
                     'Tên đăng nhập hoặc mật khẩu không đúng, vui lòng thử lại',
@@ -316,7 +316,7 @@ const styles = StyleSheet.create({
 
     dimView: {
         flex: 1,
-        backgroundColor: 'rgba(0,0,0,0.7)',
+        backgroundColor: 'rgba(0,0,0,0.5)',
     },
     buttonContainer: {
         paddingTop: 40,

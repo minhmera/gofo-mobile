@@ -320,7 +320,12 @@ function EditUserInfo(props) {
                                 />
                             </View>
 
-
+                            <Text style={{marginTop:8,fontSize:12, color:GlobalStyle.colour.grayColor}}>
+                                Ví dụ Shop URL của bạn là abc
+                            </Text>
+                            <Text style={{marginTop:2,fontSize:12, color:GlobalStyle.colour.grayColor}}>
+                                Thì link trang web tới shop của bạn là wanam.com.vn/abc
+                            </Text>
                             <CommonButton
                                 title={'OK'}
                                 customStyle={{width: '80%', marginTop: 24}}

@@ -420,7 +420,7 @@ const styles = StyleSheet.create({
 
     dimView: {
         flex: 1,
-        backgroundColor: 'rgba(0,0,0,0.7)',
+        backgroundColor: 'rgba(0,0,0,0.45)',
     },
     buttonContainer: {
         paddingTop: 40,

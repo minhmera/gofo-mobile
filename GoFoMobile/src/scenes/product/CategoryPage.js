@@ -44,7 +44,7 @@ function CategoryPage({navigation}) {
         setLoading(true);
         try {
             let response = await api.getAppGeneralInfo();
-
+            console.log('getAppGeneralInfo 22  ======>    ',response)
             if (response) {
                 let latestVersion = 0.0
 
@@ -88,7 +88,7 @@ function CategoryPage({navigation}) {
             }
 
 
-            setLoading(false);
+            //setLoading(false);
 
         } catch (error) {
             setError(error.message);
@@ -284,14 +284,12 @@ const styles = StyleSheet.create({
 
     sellButtonView: {
         width:120,
-        height:32,
+        height:44,
         marginRight:4,
         borderRadius:8,
         //justifyContent: 'center',
         borderColor:GlobalStyle.colour.primaryColor,
         //borderWidth:0.5,
-
-
     },
 
 

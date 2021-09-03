@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react'
 
 import {Text, FAB, List} from 'react-native-paper'
-import {StyleSheet, TouchableOpacity, View} from 'react-native';
+import {Alert, Linking, Platform, StyleSheet, TouchableOpacity, View} from 'react-native';
 import Header from '../../components/Header'
 import AsyncStorage from '@react-native-community/async-storage';
 import {TOKEN_KEY, USER_ID_KEY, FULL_NAME_KEY} from "../../config/Contants";
@@ -9,6 +9,7 @@ import GlobalStyle from "../../style/GlobalStyle";
 import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
 import Icon from 'react-native-vector-icons/AntDesign';
 import DeviceInfo from 'react-native-device-info';
+import * as api from "../../services/home";
 
 
 function ProfilePage1({navigation}) {
@@ -17,6 +18,7 @@ function ProfilePage1({navigation}) {
     let [token, setToken] = useState(null);
     let [userName, setUserName] = useState(null);
     let [userId, setUserId] = useState(null);
+    let [fbGroupUrl, setFbGroupUrl] = useState(null);
 
 
     async function logout() {
@@ -54,6 +56,22 @@ function ProfilePage1({navigation}) {
         console.log("MERA getUserInfo   ==> token: ", token,'userName ==>  ', userName)
     }
 
+    async function getAppInfo() {
+        try {
+            let response = await api.getAppGeneralInfo();
+            console.log('getAppGeneralInfo 22  ======>    ',response)
+            if (response) {
+                setFbGroupUrl(response.appInfo.fbGroupUrl)
+            }
+
+
+            //setLoading(false);
+
+        } catch (error) {
+
+        }
+    }
+
     function renderUserName() {
         if (userName === null) {
             return (
@@ -80,6 +98,12 @@ function ProfilePage1({navigation}) {
         }
     }
 
+    function onCommunityClick() {
+        Linking.canOpenURL(fbGroupUrl).then(supported => {
+            supported && Linking.openURL(fbGroupUrl);
+        }, (err) => console.log(err));
+    }
+
     function onChangeUserInfo() {
         console.log('MERA onTestPress')
         navigation.push('EditUserInfo')
@@ -100,7 +124,7 @@ function ProfilePage1({navigation}) {
             return (
                 <View style={styles.body}>
                     <KeyboardAwareScrollView  keyboardDismissMode={'on-drag'}>
-                        {renderItem('Cộng đồng','team',()=> onChangeUserInfo())}
+                        {renderItem('Cộng đồng','team',()=> onCommunityClick())}
 
                     </KeyboardAwareScrollView>
                 </View>
@@ -114,7 +138,7 @@ function ProfilePage1({navigation}) {
                         {renderItem('Tin bán đã đăng','export',()=> navigateSellingPost())}
                         {renderItem('Tin mua đã đăng','book',()=> navigateBuyingPost())}
                         {renderItem('Đổi mật khẩu','setting',()=> onChangePassword())}
-                        {renderItem('Cộng đồng','team',()=> onChangeUserInfo())}
+                        {renderItem('Cộng đồng','team',()=> onCommunityClick())}
                         {renderItem('Đăng xuất','logout',()=> logout())}
 
                     </KeyboardAwareScrollView>
@@ -125,7 +149,7 @@ function ProfilePage1({navigation}) {
 
     useEffect(() => {
         {
-            getUserInfo()
+            getUserInfo(),getAppInfo()
         }
     }, []);
 
@@ -139,9 +163,9 @@ function ProfilePage1({navigation}) {
                 <Text style = {{color: GlobalStyle.colour.grayColor}}>Phiên bản: {DeviceInfo.getVersion()}</Text>
             </View>
             <View style={styles.bottom}>
-                <Text>Thông tin nhà phát triển</Text>
-                <Text>Nhật Minh</Text>
-                <Text>Liên hệ: 0976999864 - nhatminhn900@gmail.com</Text>
+                <Text style={styles.bottomTitle}>Thông tin nhà phát triển</Text>
+                <Text style={styles.bottomText}>Điện thoại:  0976999864</Text>
+                <Text style={styles.bottomText}>Email:  nhatminhn900@gmail.com</Text>
 
             </View>
 
@@ -184,11 +208,10 @@ const styles = StyleSheet.create({
         marginTop:20,
         marginLeft:16,
     },
-    bottom: {
-        flex: 1,
-        backgroundColor:GlobalStyle.colour.grayBackground,
-        justifyContent: 'center'
-    },
+
+
+
+
     userNameView: {
         flex: 1,
         justifyContent:'flex-end'
@@ -209,7 +232,24 @@ const styles = StyleSheet.create({
         fontSize: 16,
         marginLeft:8,
 
+    },
+    bottom: {
+        flex: 1,
+        backgroundColor:GlobalStyle.colour.grayBackground,
+        paddingTop: 16,
+        paddingLeft: 12,
+
+    },
+    bottomTitle: {
+        fontSize: 16,
+        fontWeight: '500',
+        marginBottom: 4
+    },
+    bottomText: {
+        fontSize: 13,
+        marginTop: 4
     }
+
 })
 
 export default ProfilePage1
