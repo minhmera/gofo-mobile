@@ -101,14 +101,13 @@ function CategoryPage({navigation}) {
                             {item.title_vi}
                         </Text>
 
-
                         <View style={styles.buttonContainerView}>
                             <TouchableOpacity
-                                style={[styles.sellButtonView,{marginTop:24}]}
+                                style={[styles.sellButtonView,{marginTop:0}]}
                                 onPress={()=> navigateToSellingPost(item)}
                             >
                                 <Text style={styles.buttonText}>
-                                    Xem tin bán
+                                    Tin bán
                                 </Text>
                             </TouchableOpacity>
 
@@ -116,7 +115,7 @@ function CategoryPage({navigation}) {
                                 style={styles.sellButtonView}
                                 onPress={()=> navigateToBuyingPost(item)}>
                                 <Text style={[styles.buttonText]} >
-                                    Xem tin mua
+                                    Tin mua
                                 </Text>
                             </TouchableOpacity>
 
@@ -163,7 +162,8 @@ const styles = StyleSheet.create({
         flex: 1,
         height:150,
         backgroundColor: 'rgba(0,0,0,0.5)',
-        //justifyContent:'flex-end',
+        //alignItems:'center',
+
     },
     itemContainer: {
         height:186,
@@ -176,17 +176,17 @@ const styles = StyleSheet.create({
     itemTitle: {
         flex:1,
         color: 'white',
-        fontSize:18,
-        paddingLeft:8,
-        paddingTop:8,
+        fontSize:20,
+        paddingLeft:16,
+        paddingTop:16,
         fontWeight:'bold',
-
+        //textAlign:'center'
 
     },
     buttonContainerView: {
-        flex: 1,
-        alignItems:'flex-end',
-
+        flex:2,
+        alignItems:'center',
+        //backgroundColor: 'gray',
     },
 
     sellButtonView: {
@@ -194,7 +194,7 @@ const styles = StyleSheet.create({
         height:32,
         marginRight:4,
         borderRadius:8,
-        justifyContent: 'center',
+        //justifyContent: 'center',
         borderColor:GlobalStyle.colour.primaryColor,
         //borderWidth:0.5,
 
@@ -203,11 +203,12 @@ const styles = StyleSheet.create({
 
 
     buttonText: {
-        color: 'white',
-
-        fontSize:14,
-        textAlign:'right',
+        //color: GlobalStyle.colour.primaryColor,
+        color:'white',
+        fontSize:16,
         fontWeight:'700',
+        textAlign:'center'
+
     }
 
 
