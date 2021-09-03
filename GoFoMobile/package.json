@@ -17,6 +17,7 @@
     "react-native": "0.63.2",
     "react-native-basic-form": "^1.1.11",
     "react-native-calendars": "^1.1129.0",
+    "react-native-device-info": "^8.3.1",
     "react-native-gesture-handler": "^1.9.0",
     "react-native-image-crop-picker": "^0.31.1",
     "react-native-keyboard-aware-scroll-view": "^0.9.3",

@@ -92,6 +92,8 @@ target 'GoFoMobile' do
 
   pod 'lottie-react-native', :path => '../node_modules/lottie-react-native'
 
+  pod 'RNDeviceInfo', :path => '../node_modules/react-native-device-info'
+
   target 'GoFoMobileTests' do
     inherit! :complete
     # Pods for testing

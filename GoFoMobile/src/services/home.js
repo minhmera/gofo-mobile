@@ -12,3 +12,14 @@ export async function getCategoryList() {
     }
 }
 
+
+export async function getAppGeneralInfo() {
+    try {
+        //console.log('getAppGeneralInfo URL =============================> ', c.GET_APP_GENERAL_INFO)
+        let res = await axios.get(c.GET_APP_GENERAL_INFO);
+        return res.data;
+    } catch (e) {
+        throw handler(e)
+    }
+}
+

@@ -1,5 +1,7 @@
 import React, {useState, useEffect, useReducer} from 'react';
-import {View,TouchableOpacity,TouchableWithoutFeedback, ImageBackground, Text, FlatList, StyleSheet, Alert,RefreshControl} from 'react-native'
+import {View,TouchableOpacity, ImageBackground, Text, FlatList, StyleSheet, Alert,RefreshControl,
+    Platform, Linking
+} from 'react-native'
 import Header from '../../components/Header'
 import LocalizationContext from "../../localization/LocalizationContext";
 import * as api from "../../services/home";
@@ -7,7 +9,8 @@ import {useGlobalDataContext, setCategories} from '../../contexts/globalDataCont
 import AnimatedLoader from '../../utils/custom-view/AnimatedLoader';
 import GlobalStyle from '../../style/GlobalStyle'
 import LoadingPage from "../../components/LoadingPage";
-
+import DeviceInfo from 'react-native-device-info';
+import {func} from "prop-types";
 
 
 
@@ -21,6 +24,7 @@ function CategoryPage({navigation}) {
     const { globalState, dispatch } = useGlobalDataContext();
 
     async function fetchData() {
+
         setLoading(true);
         try {
             let response = await api.getCategoryList();
@@ -33,6 +37,69 @@ function CategoryPage({navigation}) {
             setError(error.message);
             setLoading(false)
         }
+    }
+
+    async function getAppInfo() {
+
+        setLoading(true);
+        try {
+            let response = await api.getAppGeneralInfo();
+
+            if (response) {
+                let latestVersion = 0.0
+
+                let appStoreUrl = ''
+                if (Platform.OS === 'ios') {
+                    appStoreUrl = response.appInfo.appStoreUrl
+                    latestVersion = response.appInfo.latestVersionIOS
+                }else {
+                    appStoreUrl = response.appInfo.chPlayUrl
+                    latestVersion = response.appInfo.latestVersionAndroid
+                }
+
+                let version = DeviceInfo.getVersion();
+                if (version <  latestVersion) {
+                    console.log('checkVersion()  OLD  ======>    ',version)
+                    Alert.alert(
+                        '',
+                        'Phiên bản hiện tại đã cũ, vui lòng nâng cấp phiên bản mới để được trãi nghiệm tốt hơn  ',
+
+                        [
+
+                            {text: 'Nâng cấp', onPress: () => openAppStore(appStoreUrl)}
+                        ],
+                        {cancelable: false},
+                    );
+                } else {
+                    console.log('getAppGeneralInfo  response message ======>    ',response.appInfo)
+                    if (response.appInfo.message !== '') {
+                        Alert.alert(
+                            '',
+                            response.message,
+
+                            [
+
+                                {text: 'OK'}
+                            ],
+                            {cancelable: false},
+                        );
+                    }
+                }
+            }
+
+
+            setLoading(false);
+
+        } catch (error) {
+            setError(error.message);
+            setLoading(false)
+        }
+    }
+
+    function openAppStore(url) {
+        Linking.canOpenURL(url).then(supported => {
+            supported && Linking.openURL(url);
+        }, (err) => console.log(err));
     }
 
     function navigateToSellingPost(item) {
@@ -59,8 +126,34 @@ function CategoryPage({navigation}) {
         }
     }
 
+    function checkVersion() {
+        let latestVersion = 2.0
+
+        let appStoreUrl = ''
+        if (Platform.OS === 'ios') {
+            appStoreUrl = 'https://apps.apple.com/us/app/facebook/id284882215'
+        }else {
+            appStoreUrl = 'https://play.google.com/store/apps/details?id=com.facebook.katana&hl=en&gl=US'
+        }
+
+        let version = DeviceInfo.getVersion();
+        if (version <  latestVersion) {
+            console.log('checkVersion()  OLD  ======>    ',version)
+            Alert.alert(
+                '',
+                'Phiên bản hiện tại đã cũ, vui lòng nâng cấp phiên bản mới để được trãi nghiệm tốt hơn  ',
+
+                [
+                    {text: 'Nâng cấp'},
+                ],
+                {cancelable: false},
+            );
+        }
+
+    }
+
     useEffect(() => {
-        fetchData();
+        fetchData(),getAppInfo();
     }, []);
 
     function RenderCategoryList(data,refreshing,onRefresh) {

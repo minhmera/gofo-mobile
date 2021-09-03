@@ -792,6 +792,7 @@
 				);
 				INFOPLIST_FILE = GoFoMobile/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MARKETING_VERSION = 1.49;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -819,6 +820,7 @@
 				DEVELOPMENT_TEAM = LY5K2C8AGJ;
 				INFOPLIST_FILE = GoFoMobile/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MARKETING_VERSION = 1.49;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",

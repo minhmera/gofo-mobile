@@ -21,6 +21,7 @@ export const FORGOT_PASSWORD = `${API_URL}/auth/recover`;
 
 
 export const GET_CATEGORY_LIST = `${API_URL}/categories/getAll`;
+export const GET_APP_GENERAL_INFO = `${API_URL}/general/appInfo`;
 export const UPLOAD_IMAGES = `${API_URL}/image-upload`;
 export const SELLING_POST = `${API_URL}/sellingPost/createOne`;
 export const EDIT_SELLING_POST = `${API_URL}/sellingPost/$productId`;

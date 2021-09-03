@@ -8,6 +8,8 @@ import {TOKEN_KEY, USER_ID_KEY, FULL_NAME_KEY} from "../../config/Contants";
 import GlobalStyle from "../../style/GlobalStyle";
 import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
 import Icon from 'react-native-vector-icons/AntDesign';
+import DeviceInfo from 'react-native-device-info';
+
 
 function ProfilePage1({navigation}) {
     //const {navigate} = props.navigation;
@@ -134,12 +136,13 @@ function ProfilePage1({navigation}) {
             </View>
             {renderBody()}
             <View style={{marginBottom:12,alignItems:'center'}}>
-                <Text style = {{color: GlobalStyle.colour.grayColor}}>Phiên bản 0.35</Text>
+                <Text style = {{color: GlobalStyle.colour.grayColor}}>Phiên bản: {DeviceInfo.getVersion()}</Text>
             </View>
             <View style={styles.bottom}>
                 <Text>Thông tin nhà phát triển</Text>
                 <Text>Nhật Minh</Text>
                 <Text>Liên hệ: 0976999864 - nhatminhn900@gmail.com</Text>
+
             </View>
 
         </View>
