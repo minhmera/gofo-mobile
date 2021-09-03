@@ -324,7 +324,7 @@ function EditUserInfo(props) {
                                 Ví dụ Shop URL của bạn là abc
                             </Text>
                             <Text style={{marginTop:2,fontSize:12, color:GlobalStyle.colour.grayColor}}>
-                                Thì link trang web tới shop của bạn là wanam.com.vn/abc
+                                Thì link trang web tới shop của bạn là wanam.vn/abc
                             </Text>
                             <CommonButton
                                 title={'OK'}

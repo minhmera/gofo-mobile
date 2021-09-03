@@ -50,7 +50,7 @@ function SellerItem({item, onPress, type}) {
                             Shop URL
                         </Text>
                         <Text style={styles.sellerText}>
-                            {item.local.shopPath}
+                            http://wanam.vn/shopPage?{item.local.shopPath}
                         </Text>
 
                     </View>
@@ -95,11 +95,13 @@ const styles = StyleSheet.create({
 
     infoRow: {
         flexDirection: 'row',
-        height: 24
+        //height: 24
+        height: 'auto'
     },
 
     normalText: {
         width: '30%',
+        //flex:0.5,
         color: '#6B6B6B',
         marginTop: 4
     },
@@ -107,7 +109,13 @@ const styles = StyleSheet.create({
     sellerText: {
         marginTop: 4,
         color: GlobalStyle.colour.grayColor3,
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        flexWrap: 'wrap',
+        flexDirection: 'row',
+        flexGrow: 1,
+        flex: 1,
+        marginRight: 8
+
     },
 
 })
