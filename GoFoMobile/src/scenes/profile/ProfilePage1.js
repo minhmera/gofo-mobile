@@ -166,6 +166,7 @@ function ProfilePage1({navigation}) {
                 <Text style={styles.bottomTitle}>Thông tin nhà phát triển</Text>
                 <Text style={styles.bottomText}>Điện thoại:  0976999864</Text>
                 <Text style={styles.bottomText}>Email:  nhatminhn900@gmail.com</Text>
+                <Text style={styles.bottomText}>Website:  http://wanam.vn</Text>
 
             </View>
 

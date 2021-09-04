@@ -20,7 +20,7 @@ function LoginWarningView({navigation}) {
     return (
         <View style={styles.container}>
             <Text style={{textAlign:'center',margin:16}} >
-                Vui lòng đăng nhập để sử dụng chức năng này
+                Vui lòng đăng nhập để đăng tin mua, bán
             </Text>
             <Text style={{margin:16,textAlign:'center'}} >
                 Nếu bạn chưa có tài khoảng vui lòng đăng ký thành viên

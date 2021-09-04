@@ -232,7 +232,7 @@ function BuyingProduct({navigation}) {
     }, []);
     return (
         <View style={styles.container}>
-            <Header titleText='Buying List' navigation={navigation}/>
+            <Header titleText='Tin mua' navigation={navigation}/>
             {dropdownButton(selectedCity === null ?  "Tất cả tỉnh thành" : selectedCity.name,()=> setShowCityDropdown(true))}
             <ModelList
                 isVisible = {isShowCityDropdown}
