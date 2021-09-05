@@ -43,7 +43,6 @@ function BuyingProduct({navigation}) {
 
         try {
             let response = await api.getLocation();
-            //console.log('MERA getLocation22  :  ==>  ',response)
             let allCity = { name: 'Tất cả', id: 0}
             let cities = [allCity]
             if (response.result) {
@@ -59,7 +58,6 @@ function BuyingProduct({navigation}) {
                 setCities(cities)
             }
             //setCities(response.result)
-            //console.log(' getLocation1 =====>  ',cities)
             setLoading(false);
 
         } catch (error) {
@@ -71,7 +69,6 @@ function BuyingProduct({navigation}) {
     function fetchData(isRefresh) {
 
         if (isRefresh === true ) {
-            console.log('MERA  =======================  fetchData ============== page:',page, 'isRefresh:',isRefresh)
             api.getBuyingByCategory(categoryItem.type,provinceId,1,).then((response) => {
                 //console.log('MERA length 11: ',response.data.result.length,' : ', sellingList.length)
                 if (response.data.result.length > 0) {
@@ -87,11 +84,9 @@ function BuyingProduct({navigation}) {
             });
         } else {
             if (!loading && !isListEnd) {
-                console.log('MERA ......................  LOAD MORE  ........................   page: ',page, 'isRefresh:',isRefresh, 'loading: ',loading,'  isListEnd:',isListEnd)
                 setLoading(false)
                 api.getBuyingByCategory(categoryItem.type,provinceId,page,).then((response) => {
                     //setSellingList(response.data.result)
-                    console.log('MERA LOAD MORE Lenght:  ',response.data.result.length,' =====:===== ', sellingList.length)
                     if (response.data.result.length > 0) {
 
                         setPage(page + 1);
@@ -141,13 +136,11 @@ function BuyingProduct({navigation}) {
         setRefreshing(true)
         setIsListEnd(false)
         setPage(1);
-        console.log('MERA  refreshData page :',page, '  ' ,refreshing)
         fetchData(true)
 
     }
 
     function RenderList(navigation,data) {
-        //console.log('MERA RenderList data ==> ', data.length)
         if (data.length > 0) {
             return (
                 <View style={{marginTop: 0}}>
@@ -205,7 +198,6 @@ function BuyingProduct({navigation}) {
     }
 
     function cityDropDownCallBack(cityObj) {
-        console.log('MERA selected city ',cityObj)
         if (cityObj === null) {
             setShowCityDropdown(false)
             return
@@ -260,6 +252,7 @@ function RenderItem(navigation,item) {
     return (
         <ProductItem
             item = {item}
+            type={'BUY'}
             onPress = {() => navigateToDetail(navigation,item._id)}
         />
     )

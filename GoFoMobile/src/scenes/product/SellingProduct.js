@@ -16,7 +16,6 @@ function SellingProduct({navigation}) {
     //const {navigate} = props.navigation;
 
     let categoryItem = navigation.getParam('categoryItem');
-    //console.log('MERA SellingProduct ==>  ', categoryItem);
 
 
     const [locations, setLocations] = useState({});
@@ -38,7 +37,6 @@ function SellingProduct({navigation}) {
 
         try {
             let response = await api.getLocation();
-            //console.log('MERA getLocation22  :  ==>  ',response)
             let allCity = { name: 'Tất cả', id: 0}
             let cities = [allCity]
             if (response.result) {
@@ -62,9 +60,7 @@ function SellingProduct({navigation}) {
     function fetchData(isRefresh) {
 
         if (isRefresh === true ) {
-            console.log('MERA  =======================  fetchData ============== page:',page, 'isRefresh:',isRefresh)
             api.getSellingByCategory(categoryItem.type,provinceId,1,).then((response) => {
-                //console.log('MERA length 11: ',response.data.result.length,' : ', sellingList.length)
                 if (response.data.result.length > 0) {
                     setSellingList(response.data.result)
                     setLoading(false);
@@ -78,11 +74,9 @@ function SellingProduct({navigation}) {
             });
         } else {
             if (!loading && !isListEnd) {
-                console.log('MERA ......................  LOAD MORE  ........................   page: ',page, 'isRefresh:',isRefresh, 'loading: ',loading,'  isListEnd:',isListEnd)
                 setLoading(false)
                 api.getSellingByCategory(categoryItem.type,provinceId,page,).then((response) => {
                     //setSellingList(response.data.result)
-                    console.log('MERA LOAD MORE Lenght:  ',response.data.result.length,' =====:===== ', sellingList.length)
                     if (response.data.result.length > 0) {
 
                         setPage(page + 1);
@@ -112,7 +106,6 @@ function SellingProduct({navigation}) {
 
     function fetchSelectedData(provinceId) {
         api.getSellingByCategory(categoryItem.type,provinceId,1,).then((response) => {
-            console.log('MERA fetchSelectedData : ',response.data.result.length,' ---:---', sellingList.length)
             if (response.data.result.length > 0) {
                 setSellingList(response.data.result)
                 setLoading(false);
@@ -131,13 +124,11 @@ function SellingProduct({navigation}) {
         setRefreshing(true)
         setIsListEnd(false)
         setPage(1);
-        console.log('MERA  refreshData page :',page, '  ' ,refreshing)
         fetchData(true)
 
     }
 
     function RenderList(navigation,data) {
-        console.log('MERA RenderList SELLING data ==> ', data.length)
         if (data.length > 0) {
             return (
                 <View style={{marginTop: 0}}>
@@ -195,7 +186,6 @@ function SellingProduct({navigation}) {
     }
 
     function cityDropDownCallBack(cityObj) {
-        console.log('MERA selected city ',cityObj)
         if (cityObj === null) {
             setShowCityDropdown(false)
             return
@@ -249,6 +239,7 @@ function RenderItem(navigation,item) {
     return (
         <ProductItem
             item = {item}
+            type={'SELL'}
             onPress = {() => navigateToDetail(navigation,item._id)}
         />
     )

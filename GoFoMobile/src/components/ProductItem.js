@@ -51,15 +51,7 @@ function ProductItem({item, onPress, type}) {
                     />
                 </View>
             )
-            // return  (
-            //     <ImageBackground
-            //         imageStyle={{ borderRadius: 4 }}
-            //         style={styles.imageWrapperView}
-            //         source={require('../resources/backGround/place_holder_product_item.png')}
-            //         //defaultSource={require('../resources/backGround/ph_product_item.png')}
-            //     >
-            //     </ImageBackground>
-            // )
+
         }
     }
 
@@ -156,7 +148,6 @@ function ProductItem({item, onPress, type}) {
                             onPress={()=> openCall(item.sellerPhone)}
                         >
                             <Text style={styles.phoneText}>
-
                                 {type === 'SELL' ? item.sellerPhone : item.buyerPhone }
                             </Text>
                         </TouchableOpacity>
