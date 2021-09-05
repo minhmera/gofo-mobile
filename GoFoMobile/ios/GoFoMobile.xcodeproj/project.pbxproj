@@ -783,7 +783,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer: Nguyen Nhat Minh (22GKJ6Y5HD)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Nguyen Nhat Minh (22GKJ6Y5HD)";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = LY5K2C8AGJ;
 				ENABLE_BITCODE = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -804,6 +804,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "Wanam Dev";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -817,7 +818,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Nguyen Nhat Minh (LY5K2C8AGJ)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Nguyen Nhat Minh (LY5K2C8AGJ)";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = LY5K2C8AGJ;
 				INFOPLIST_FILE = GoFoMobile/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -832,6 +833,7 @@
 				PRODUCT_NAME = GoFoMobile;
 				PROVISIONING_PROFILE_SPECIFIER = "Wanam Production";
 				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;

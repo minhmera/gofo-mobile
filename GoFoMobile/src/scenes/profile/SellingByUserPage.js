@@ -160,6 +160,7 @@ function SellingByUser({navigation}) {
             let response = await api.deleteSellingPost(objData,item._id);
             if (response) {
                 setLoading(false)
+                fetchData(true)
                 console.log('MERA ------------------------ deleteSellingProduct response ----------------   ', response);
                 Alert.alert(
                     'Thành công',
