@@ -1,4 +1,4 @@
-package com.gofomobile;
+package com.nhatminh.wanam;
 import android.content.Intent;
 import android.os.Bundle;
 

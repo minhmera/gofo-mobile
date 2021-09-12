@@ -1,4 +1,4 @@
-package com.gofomobile;
+package com.nhatminh.wanam;
 
 import com.facebook.react.ReactActivity;
 import org.devio.rn.splashscreen.SplashScreen;
