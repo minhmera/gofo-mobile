@@ -129,7 +129,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.nhatminh.wanam"
+        applicationId "com.gofomobile"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
