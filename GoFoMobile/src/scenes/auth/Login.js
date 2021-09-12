@@ -256,11 +256,12 @@ export default function Login(props) {
                     </View>
 
 
-                    <LoadingPage
-                        isShow={loading}
-                    />
+
 
                 </KeyboardAwareScrollView>
+                <LoadingPage
+                    isShow={loading}
+                />
             </View>
         </ImageBackground>
 
