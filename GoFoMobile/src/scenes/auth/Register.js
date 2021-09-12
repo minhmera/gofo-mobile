@@ -237,18 +237,25 @@ function Register(props) {
 
 
     function onPasswordChange(password) {
-        const re = /^[A-Za-z0-9]+$/;
+        const re = /^[A-Za-z0-9-!@#$%^&]+$/;
         console.log('isValid pass ==>   ',re.test(password))
         if (password === '' || re.test(password)) {
             setPassword(password)
         }
     }
 
-
+    function onConfirmPasswordChange(password) {
+        const re = /^[A-Za-z0-9-!@#$%^&]+$/;
+        console.log('isValid pass ==>   ',re.test(password))
+        if (password === '' || re.test(password)) {
+            setConfirmPass(password)
+        }
+    }
 
 
     function setConfirmPassPress() {
         console.log('MERA  onConfirmPassSecure==> ', onConfirmPassSecure)
+
         setConfirmPassSecure(!onConfirmPassSecure)
     }
     return (
@@ -354,7 +361,7 @@ function Register(props) {
                                 maxLength={16}
                                 placeholderTextColor={GlobalStyle.colour.grayColor2}
                                 secureTextEntry={onConfirmPassSecure}
-                                onChangeText={text => setConfirmPass(text)}
+                                onChangeText={text => onConfirmPasswordChange(text)}
 
                                 rightIcon={
                                     <Icon

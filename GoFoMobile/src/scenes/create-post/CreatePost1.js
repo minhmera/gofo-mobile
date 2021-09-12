@@ -75,7 +75,7 @@ function CreatePost1({navigation}) {
     const [productPrice, setProductPrice] = useState('');
     const [displayPrice, setDisplayPrice] = useState('');
     const [measuring, setMeasuring] = useState('');
-    const [description, setDescription] = useState('');
+    const [description, setDescripsetItion] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
     const [cities, setCities] = useState({});
     const [districts, setDistricts] = useState({});
@@ -411,6 +411,12 @@ function CreatePost1({navigation}) {
 
     function isSellingValid() {
         let isValidAllField = true
+        if  (images) {
+            if (images.length > 3){
+                isValidAllField = false
+            }
+        }
+
         if (selectedCategory == null) {
             isValidAllField = false
             setCategoryErrorState(true)
@@ -445,7 +451,8 @@ function CreatePost1({navigation}) {
         } else {
             setPhoneError(false)
         }
-        console.log('MERA1  isSellingValid  ==>   ', productName, ' < -- >', isProductNameError)
+        //console.log('MERA1  isSellingValid  ==>  images ', images)
+        //isValidAllField = false
         return isValidAllField
     }
 
@@ -481,6 +488,16 @@ function CreatePost1({navigation}) {
             return null
         }
 
+    }
+
+    function renderImageError() {
+        if (images) {
+            if (images.length > 3) {
+                return (
+                        <Text style={styles.errorImageText}>Chỉ được đăng tối đa 3 ảnh </Text>
+                )
+            }
+        }
     }
 
     if (token === null) {
@@ -536,7 +553,10 @@ function CreatePost1({navigation}) {
                                 />
 
                             </TouchableOpacity>
+
                         </View>
+                        {renderImageError()}
+
                         <View style={styles.inputInfoView}>
                             <View style={styles.checkBoxView}>
                                 <View style={[styles.checkBoxItem, {marginLeft: 0}]}>
@@ -608,7 +628,7 @@ function CreatePost1({navigation}) {
                                         <Input
                                             inputStyle={[styles.inputStyle]}
                                             placeholder=''
-                                            inputContainerStyle={[styles.basicInput,{marginRight:24}, {borderBottomColor: isProductNameError === true ? GlobalStyle.colour.errorColor : GlobalStyle.colour.grayColor}]}
+                                            inputContainerStyle={[styles.basicInput,{marginRight:24}, {borderBottomColor: GlobalStyle.colour.grayColor}]}
                                             onChangeText={value => onPriceChange(value)}
                                             value={productPrice}
 
@@ -633,7 +653,7 @@ function CreatePost1({navigation}) {
                                         <Input
                                             inputStyle={[styles.inputStyle]}
                                             placeholder='Nhập đơn vị'
-                                            inputContainerStyle={[styles.basicInput,{marginRight:8}, {borderBottomColor: isProductNameError === true ? GlobalStyle.colour.errorColor : GlobalStyle.colour.grayColor}]}
+                                            inputContainerStyle={[styles.basicInput,{marginRight:8}, {borderBottomColor: GlobalStyle.colour.grayColor}]}
                                             onChangeText={value => setMeasuring(value)}
                                             value={measuring}
                                         />
@@ -814,6 +834,13 @@ const styles = StyleSheet.create({
         borderWidth: 0.5,
         borderRadius: 6,
     },
+    errorImageText: {
+        marginTop: 4,
+        marginBottom:4,
+        fontSize:14,
+        color: GlobalStyle.colour.redColor
+    },
+
     pickupImageView: {
         width: '30%',
         height: 80,
