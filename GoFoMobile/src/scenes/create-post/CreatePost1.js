@@ -75,7 +75,7 @@ function CreatePost1({navigation}) {
     const [productPrice, setProductPrice] = useState('');
     const [displayPrice, setDisplayPrice] = useState('');
     const [measuring, setMeasuring] = useState('');
-    const [description, setDescripsetItion] = useState('');
+    const [description, setDescription] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
     const [cities, setCities] = useState({});
     const [districts, setDistricts] = useState({});

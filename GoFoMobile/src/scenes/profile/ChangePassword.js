@@ -61,17 +61,17 @@ function ChangePassword(props) {
 
         if (password == "") {
             isValidAllFiled = false
-            setPasswordError({style: {borderColor: 'red', marginTop: 10}, text: 'Vui lòng nhập mật khẩu'})
+            setPasswordError({style: {borderColor: 'red', paddingTop: 12}, text: 'Vui lòng nhập mật khẩu'})
 
         } else if (password.length < 8) {
-            setPasswordError({style: {borderColor: 'red', marginTop: 10}, text: 'Mật khẩu phải có ít nhất 8 kí tự'})
+            setPasswordError({style: {borderColor: 'red', paddingTop: 12}, text: 'Mật khẩu phải có ít nhất 8 kí tự'})
         } else {
             setPasswordError({style: {marginTop: 0}, text: ''})
         }
 
         if (confirmPass != password) {
             isValidAllFiled = false
-            setConfirmPassError({style: {borderColor: 'red',marginTop: 10}, text: 'Mật khẩu không trùng khớp'})
+            setConfirmPassError({style: {borderColor: 'red',paddingTop: 12}, text: 'Mật khẩu không trùng khớp'})
 
         } else {
             setConfirmPassError({style: {marginTop: 0}, text: ''})
@@ -152,7 +152,7 @@ function ChangePassword(props) {
 
 
     function onPasswordChange(password) {
-        const re = /^[A-Za-z0-9]+$/;
+        const re = /^[A-Za-z0-9-!@#$%^&]+$/;
         console.log('isValid pass ==>   ',re.test(password))
         if (password === '' || re.test(password)) {
             setPassword(password)
@@ -211,7 +211,7 @@ function ChangePassword(props) {
                                 inputStyle={AppStyle.inputStyle}
                                 inputContainerStyle={[styles.inputContainer]}
                                 errorMessage={confirmPassError.text}
-                                errorStyle={{marginTop:4}}
+                                errorStyle={{marginTop:12}}
                                 placeholder='Xác nhận mật khẩu... '
                                 maxLength={16}
                                 placeholderTextColor={GlobalStyle.colour.grayColor2}

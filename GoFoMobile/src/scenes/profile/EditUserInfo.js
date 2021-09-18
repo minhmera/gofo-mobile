@@ -78,7 +78,10 @@ function EditUserInfo(props) {
                 console.log("getUserDetail   ===>  ",response.local)
                 setPhoneNumber(response.local.phoneNumber)
                 setFullName(response.local.fullName)
-                setShopPath(response.local.shopPath)
+                if  (response.local.shopPath !== undefined) {
+                    setShopPath(response.local.shopPath)
+                }
+
 
                 setOrgFullName(response.local.fullName)
                 setOrgShopPath(response.local.shopPath)
@@ -156,7 +159,7 @@ function EditUserInfo(props) {
     }
 
     async function onSubmit() {
-
+        console.log(' shopPath ==>   ',shopPath)
 
         if (isValidAllField() === false) {
             return
@@ -257,13 +260,13 @@ function EditUserInfo(props) {
 
         <ImageBackground
             style={styles.container}
-            source={{uri: 'https://dongxanh.s3.us-east-2.amazonaws.com/app_resource/bg_01.jpg'}}
+            source={require('../../resources/backGround/place_holder_login.png')}
         >
 
             <View style={styles.dimView}>
 
                 <StatusBar barStyle="light-content"/>
-                <Header titleText='Đổi Số Điện Thoại' navigation={navigation}/>
+                <Header titleText='Đổi Thông Tin Cá Nhân' navigation={navigation}/>
                 <KeyboardAwareScrollView style={{flex: 1}} keyboardDismissMode={'on-drag'}>
                     <View style={{flex: 1}}>
                         <View style={styles.loginContainer}>
@@ -294,7 +297,6 @@ function EditUserInfo(props) {
                                     errorMessage={fullNameError.text}
                                     errorStyle={{marginTop: 4}}
                                     onChangeText={text => onFullNameChange(text)}
-                                    keyboardType={'number-pad'}
                                     value={fullName}
                                     maxLength={16}
 
@@ -303,7 +305,8 @@ function EditUserInfo(props) {
 
 
                             <Text style={styles.titleText}>Shop URL</Text>
-                            <Text style={{marginTop:-2,fontSize:12, color:GlobalStyle.colour.grayColor}}>(Link trang web tới shop của bạn)</Text>
+                            <Text
+                                style={styles.descText}>(Link trang web tới shop của bạn)</Text>
                             <View style={[AppStyle.inputView, shopPathError.style]}>
                                 <Input
                                     inputStyle={[AppStyle.inputStyle]}
@@ -320,11 +323,14 @@ function EditUserInfo(props) {
                                 />
                             </View>
 
-                            <Text style={{marginTop:8,fontSize:12, color:GlobalStyle.colour.grayColor}}>
+                            <Text style={styles.descText}>
                                 Ví dụ Shop URL của bạn là abc
                             </Text>
-                            <Text style={{marginTop:2,fontSize:12, color:GlobalStyle.colour.grayColor}}>
-                                Thì link trang web tới shop của bạn là wanam.vn/abc
+                            <Text style={styles.descText}>
+                                 Thì link trang web tới shop của bạn là:
+                            </Text>
+                            <Text style={[styles.descText,{marginTop:4}]}>
+                                 wanam.vn/shopPage?abc
                             </Text>
                             <CommonButton
                                 title={'OK'}
@@ -357,6 +363,8 @@ export default EditUserInfo;
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        //alignItems: 'center',
+        //justifyContent: 'center'
     },
     dimLoadingView: {
         height: windowHeight,
@@ -368,10 +376,13 @@ const styles = StyleSheet.create({
     },
     loginContainer: {
         width:'100%',
+        //flex:1,
         marginTop: 20,
         marginBottom: 60,
         justifyContent: 'center',
-        marginLeft:'10%'
+        alignItems: 'center',
+        //backgroundColor:'red',
+        //marginLeft:'5%'
     },
     registerText: {
         fontSize: 28,
@@ -395,10 +406,18 @@ const styles = StyleSheet.create({
 
     },
     titleText: {
+        width:'80%',
         marginBottom:4,
         fontSize:16,
         color:'white',
         fontWeight:'bold'
+    },
+
+    descText: {
+        marginTop:-2,
+        fontSize:12,
+        color:GlobalStyle.colour.grayColor,
+        width:'80%',
     },
 
     inputContainer: {
