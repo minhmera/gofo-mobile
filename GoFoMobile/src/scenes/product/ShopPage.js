@@ -22,7 +22,7 @@ import AsyncStorage from "@react-native-community/async-storage";
 import {PASSWORD_KEY, USER_ID_KEY, TOKEN_KEY, PHONE_NUMBER_KEY} from "../../config/Contants";
 import * as c from "../../contants/apiConstants";
 
-function SellingByUser({navigation}) {
+function ShopPage({navigation}) {
     //const {navigate} = props.navigation;
 
     let sellerInfo = navigation.getParam('sellerInfo');
@@ -224,23 +224,23 @@ function SellingByUser({navigation}) {
 
     }
     function renderFollowButton() {
-     let text = 'Theo dõi'
-     if (isFollowed === true) {
-         text = 'Đang theo dõi'
-     }
-    if (token !== null) {
-        return (
-            <TouchableOpacity
-                style={styles.followButton}
-                onPress={()=> onFollowClick()}>
-                <Text style = {styles.followText}>
-                    {text}
-                </Text>
-            </TouchableOpacity>
-        )
-    } else {
-        return  null
-    }
+        let text = 'Theo dõi'
+        if (isFollowed === true) {
+            text = 'Đang theo dõi'
+        }
+        if (token !== null) {
+            return (
+                <TouchableOpacity
+                    style={styles.followButton}
+                    onPress={()=> onFollowClick()}>
+                    <Text style = {styles.followText}>
+                        {text}
+                    </Text>
+                </TouchableOpacity>
+            )
+        } else {
+            return  null
+        }
 
     }
 
@@ -290,7 +290,7 @@ function navigateToDetail(navigation, productId) {
     navigation.push('ProductDetail',{productId:productId, type:'SELL'})
 }
 
-export default SellingByUser
+export default ShopPage
 
 const styles = StyleSheet.create({
 

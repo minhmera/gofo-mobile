@@ -22,6 +22,8 @@ import Icon from "react-native-vector-icons/AntDesign";
 import {color} from "react-native-reanimated";
 import * as Utils from "../../utils/AppUtils";
 import {Input} from "react-native-elements";
+import { NavigationActions } from 'react-navigation';
+
 
 function ProductDetail({navigation}) {
     //const {navigate} = props.navigation;
@@ -86,7 +88,7 @@ function ProductDetail({navigation}) {
 
     function openCall(){
         //const url='tel://:+0946334909'
-        let url='tel:0946334909'
+        let url='tel:'
         if (type === 'SELL') {
             url= `tel:${sellingData.sellerPhone}`
         } else {
@@ -94,6 +96,19 @@ function ProductDetail({navigation}) {
         }
         console.log('openCall ==>  ',url)
         Linking.openURL(url)
+    }
+
+    function navigateToSeller(){
+        let seller =  { local:
+                { followingSellers: [],
+                    createDate: '2021-08-30T15:19:07.964Z',
+                    fullName: 'Ngọc Phúc',
+                    phoneNumber: '0946334909',
+                    shopPath: 'ngocphuc'
+                }
+        }
+        navigation.push('ShopPage',{sellerInfo:seller})
+
     }
 
     useEffect(() => {
@@ -107,13 +122,24 @@ function ProductDetail({navigation}) {
                 {renderInfo()}
 
 
-                <View style={{alignItems:'center', marginTop:24, marginBottom:48}}>
+                <View style={{
+                    flexDirection:'row',
+                    justifyContent:'center',
+                    alignItems:'center',
+                    marginTop:24, marginBottom:48
+                }}>
                     <CommonButton
                         title={'Gọi'}
                         iconName={'phone'}
                         iconSize={24}
                         iconStyle={{color: 'white'}}
+                        customStyle = {{marginRight:4, width: '40%', height:40}}
                         onPress={()=> openCall()}
+                    />
+                    <CommonButton
+                        title={'Đến gian hàng'}
+                        customStyle = {{marginLeft:4,width: '40%', height:40}}
+                        onPress={()=> navigateToSeller()}
                     />
                 </View>
 

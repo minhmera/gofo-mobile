@@ -101,11 +101,11 @@ function EditUserInfo(props) {
         if (fullName === "") {
             console.log('MERA isValidAllField ');
             isValidAllFiled = false
-            setFullNameError({style:{borderColor:GlobalStyle.colour.errorColor, paddingTop: 16},text:'Vui lòng nhập tên đầy đủ'})
+            setFullNameError({style:{borderColor:GlobalStyle.colour.errorColor, paddingTop: 16},text:'Vui lòng nhập tên bán hàng'})
         } else {
             if (fullName.length < 4) {
                 isValidAllFiled = false
-                setFullNameError({style:{borderColor:GlobalStyle.colour.errorColor, paddingTop: 16},text:"Tên đầy đủ " + MINIMUM_4_CHAR})
+                setFullNameError({style:{borderColor:GlobalStyle.colour.errorColor, paddingTop: 16},text:"Tên bán hàng " + MINIMUM_4_CHAR})
             } else {
 
                 if (AppUtils.isFullNameError(fullName) === true) {
@@ -287,13 +287,13 @@ function EditUserInfo(props) {
                                 />
                             </View>
 
-                            <Text style={styles.titleText}>Tên đầy đủ</Text>
+                            <Text style={styles.titleText}>Tên bán hàng</Text>
                             <View style={[AppStyle.inputView, fullNameError.style]}>
                                 <Input
                                     inputStyle={[AppStyle.inputStyle]}
                                     inputContainerStyle={[styles.inputContainer]}
                                     placeholderTextColor={GlobalStyle.colour.grayColor2}
-                                    placeholder='Tên đầy đủ ...'
+                                    placeholder='Tên bán hàng ...'
                                     errorMessage={fullNameError.text}
                                     errorStyle={{marginTop: 4}}
                                     onChangeText={text => onFullNameChange(text)}

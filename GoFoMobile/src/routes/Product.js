@@ -21,6 +21,7 @@ const ProductStack = createStackNavigator(
         ProductDetail: {
             screen: ProductDetail
         },
+
         ProductPage2: {
             screen: ProductPage2
         },
