@@ -23,7 +23,6 @@ function EditingProductItem({item, onEdit, onDelete}) {
     const {globalState, dispatch} = useGlobalDataContext();
 
     function renderImage() {
-        console.log('')
         if (item.photoUrls !== undefined && item.photoUrls.length > 0){
             return  <ImageBackground imageStyle={{ borderRadius: 4 }} source={{uri: item.photoUrls[0]}} style={styles.imageWrapperView}></ImageBackground>
         } else {
@@ -81,7 +80,6 @@ function EditingProductItem({item, onEdit, onDelete}) {
             </View>
         )
     }
-
     return (
         <TouchableOpacity
             style={[styles.itemContainer]}
@@ -131,8 +129,13 @@ function EditingProductItem({item, onEdit, onDelete}) {
                     </View>
 
 
+                    <Text style={[styles.normalText,{marginTop: 10,fontWeight:'500',color: GlobalStyle.colour.orangeColor}]}>
+                        {item.isApprove === true ? 'Đã duyệt': 'Chưa duyệt' }
+                    </Text>
+
 
                 </View>
+
 
                 <View style={styles.editingButtonView}>
                     <TouchableOpacity
@@ -151,6 +154,9 @@ function EditingProductItem({item, onEdit, onDelete}) {
                 </View>
 
             </View>
+
+
+
 
         </TouchableOpacity>
     )
