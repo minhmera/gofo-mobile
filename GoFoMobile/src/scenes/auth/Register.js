@@ -291,6 +291,7 @@ function Register(props) {
 
                         <Text style={styles.titleText}>Tên bán hàng</Text>
                         <Text style={{marginTop:-2,fontSize:12, color:GlobalStyle.colour.grayColor}}>(Đây là tên sẽ hiển thị khi bạn đăng tin mua bán)</Text>
+                        <Text style={{marginTop:2,fontSize:12, fontWeight:'600', color:GlobalStyle.colour.grayBackground}}>(Bạn sẽ không thể thay đổi tên bán hàng)</Text>
                         <View style={[AppStyle.inputView,fullNameError.style]}>
                             <Input
                                 inputStyle={[AppStyle.inputStyle]}

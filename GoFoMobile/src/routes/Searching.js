@@ -4,7 +4,7 @@ import SearchResultPage from "../scenes/search/SearchResultPage";
 import SellingByUserPage from "../scenes/search/SellingByUserPage";
 import AuthStack from "./Auth";
 import ProductDetail from "../scenes/product/ProductDetail";
-
+import ShopPage from "../scenes/product/ShopPage";
 
 const SearchingStack = createStackNavigator(
     {
@@ -19,6 +19,9 @@ const SearchingStack = createStackNavigator(
         },
         SellingByUserPage: {
             screen: SellingByUserPage
+        },
+        ShopPage: {
+            screen: ShopPage
         },
 
     },{

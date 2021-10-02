@@ -299,6 +299,7 @@ function EditUserInfo(props) {
                                     onChangeText={text => onFullNameChange(text)}
                                     value={fullName}
                                     maxLength={16}
+                                    disabled={true}
 
                                 />
                             </View>

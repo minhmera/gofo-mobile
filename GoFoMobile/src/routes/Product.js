@@ -4,6 +4,7 @@ import ProductPage2 from "../scenes/product/ProductPage2";
 import SellingProduct from "../scenes/product/SellingProduct";
 import BuyingProduct from "../scenes/product/BuyingProduct";
 import ProductDetail from "../scenes/product/ProductDetail";
+import ShopPage from "../scenes/product/ShopPage";
 import AuthStack from "./Auth";
 
 
@@ -20,6 +21,9 @@ const ProductStack = createStackNavigator(
         },
         ProductDetail: {
             screen: ProductDetail
+        },
+        ShopPage: {
+            screen: ShopPage
         },
 
         ProductPage2: {
